@@ -29,6 +29,7 @@
       color: var(--text);
       font-size: 14px;
       min-height: 100vh;
+      margin: 0;
     }
 
     /* ── Header ── */
