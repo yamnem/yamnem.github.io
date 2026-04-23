@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tokyo — May 2025</title>
+  <title>Japón — Mayo 2025</title>
   <style>
     :root {
       --bg:       #F4F4F0;
@@ -13,6 +13,8 @@
       --muted:    #7A7A72;
       --navy:     #1A1A2E;
       --crimson:  #6B1A2A;
+      --shinkansen: #0B3060;
+      --express:    #1A5233;
       --arch:     #C89A00;
       --food:     #1E8449;
       --anime:    #6C3483;
@@ -28,44 +30,301 @@
       background: var(--bg);
       color: var(--text);
       font-size: 14px;
-      min-height: 100vh;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
       margin: 0;
     }
 
     /* ── Header ── */
     .header {
-      background: var(--navy);
-      color: #fff;
-      padding: 28px 32px 22px;
+      background: transparent;
+      border-top: 3px solid var(--navy);
+      padding: 28px clamp(40px, 8vw, 120px) 26px;
+      position: relative;
+      z-index: 10;
+      flex-shrink: 0;
+      transition: opacity 0.25s ease;
     }
-    .header h1 { font-size: 20px; font-weight: 700; letter-spacing: -0.2px; }
-    .header-chips { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 6px; }
-    .chip {
-      font-size: 11.5px;
-      background: rgba(255,255,255,0.1);
-      border: 1px solid rgba(255,255,255,0.15);
-      color: #BFC8DC;
-      padding: 3px 9px;
-      border-radius: 20px;
+    .header.scroll-hidden {
+      opacity: 0;
+      pointer-events: none;
     }
-    .chip strong { color: #fff; }
-
-    /* ── Warning ── */
-    .warning {
+    .header-photo {
+      position: absolute;
+      top: 50%;
+      right: clamp(40px, 8vw, 120px);
+      transform: translateY(-50%);
+      width: 84px;
+      height: 84px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    .header-eyebrow {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1.6px;
+      color: var(--muted);
+      margin-bottom: 5px;
+    }
+    .header h1 {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--navy);
+      letter-spacing: -0.8px;
+      line-height: 1;
+    }
+    .header-date {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 4px;
+      font-weight: 400;
+    }
+    /* ── Warning pill ── */
+    .warning-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
       background: #FEF3C7;
-      border-left: 4px solid #D97706;
-      padding: 9px 32px;
-      font-size: 12px;
-      color: #78350F;
-      line-height: 1.5;
+      border: 1px solid #FDE68A;
+      color: #92400E;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-top: 12px;
+    }
+
+    /* ── Navigation ── */
+    .nav-bar {
+      background: transparent;
+      display: flex;
+      justify-content: center;
+      padding: 16px 16px 0;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 10;
+      transition: opacity 0.25s ease;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .nav-bar::-webkit-scrollbar { display: none; }
+    .nav-bar.scroll-hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .nav-pill {
+      display: flex;
+      background: rgba(26,26,46,0.07);
+      border-radius: 24px;
+      padding: 3px;
+      gap: 2px;
+      position: relative;
+    }
+    .nav-slider {
+      position: absolute;
+      top: 3px; bottom: 3px;
+      border-radius: 20px;
+      background: var(--navy);
+      transition: transform 0.28s cubic-bezier(0.34, 1.2, 0.64, 1), width 0.28s cubic-bezier(0.34, 1.2, 0.64, 1);
+      pointer-events: none;
+      will-change: transform, width;
+    }
+    .nav-tab {
+      padding: 8px 28px;
+      border-radius: 20px;
+      border: none; background: none; cursor: pointer;
+      font-size: 13px; font-weight: 600;
+      color: var(--muted);
+      font-family: inherit;
+      position: relative; z-index: 1;
+      transition: color 0.2s;
+    }
+    .nav-tab.active { color: #fff; }
+
+    /* ── Sections ── */
+    #sec-calendar {
+      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      display: flex; flex-direction: column;
+      overflow-y: auto;
+      z-index: 5;
+    }
+    #sec-stays, #sec-trenes, #sec-lenguaje {
+      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      overflow-y: auto;
+      z-index: 5;
     }
 
     /* ── Content ── */
-    .legend-wrap { max-width: 700px; margin: 0 auto; padding: 22px 24px 14px; }
-    .cal-wrap    { max-width: 1100px; margin: 0 auto; padding: 0 16px 60px; }
+    .legend-wrap { flex-shrink: 0; max-width: 700px; margin: 0 auto; padding: 16px 24px 10px; }
+    .cal-wrap    { flex: 1; min-height: 0; display: flex; flex-direction: column; max-width: 1100px; margin: 0 auto; padding: 0 16px 0; width: 100%; }
+    .cal-wrap::after { content: ''; display: block; height: 32px; flex-shrink: 0; }
+
+    /* ── Stays section ── */
+    .stays-wrap { max-width: 700px; margin: 0 auto; padding: 24px 24px 60px; }
+    .stay-card {
+      background: var(--card);
+      border-radius: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07), 0 3px 12px rgba(0,0,0,0.06);
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+    .stay-card-header { display: flex; align-items: stretch; }
+    .stay-date-box {
+      flex-shrink: 0;
+      width: 72px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 16px 0;
+      color: #fff;
+      text-align: center;
+    }
+    .stay-date-box.airbnb  { background: var(--crimson); }
+    .stay-date-box.hotel   { background: var(--navy); }
+    .stay-date-box.nature  { background: #4A3728; }
+    .stay-date-mo   { font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: rgba(255,255,255,0.55); }
+    .stay-date-num  { font-size: 20px; font-weight: 800; line-height: 1.1; margin-top: 2px; }
+    .stay-date-thru { font-size: 10px; color: rgba(255,255,255,0.45); margin-top: 1px; }
+    .stay-info { flex: 1; padding: 14px 16px; }
+    .stay-name { font-size: 15px; font-weight: 700; color: var(--navy); }
+    .stay-location { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .stay-divider { border: none; border-top: 1px solid var(--border); margin: 10px 0; }
+    .stay-meta { display: flex; gap: 6px 20px; flex-wrap: wrap; }
+    .stay-meta-group { display: flex; flex-direction: column; gap: 2px; }
+    .stay-meta-label { font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); }
+    .stay-meta-val { font-size: 12.5px; color: var(--text); font-weight: 500; }
+    .stay-address { font-size: 11.5px; color: var(--muted); margin-top: 10px; line-height: 1.5; }
+    .stay-badges { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+    .badge-paid    { font-size: 9.5px; font-weight: 700; padding: 2px 8px; border-radius: 4px; background: #DCFCE7; color: #166534; text-transform: uppercase; letter-spacing: 0.3px; }
+    .badge-partial { font-size: 9.5px; font-weight: 700; padding: 2px 8px; border-radius: 4px; background: #FEF3C7; color: #92400E; text-transform: uppercase; letter-spacing: 0.3px; }
+    .badge-type    { font-size: 9.5px; font-weight: 600; padding: 2px 8px; border-radius: 4px; background: rgba(26,26,46,0.07); color: var(--navy); }
+
+    /* ── Train cards ── */
+    .trains-wrap { max-width: 700px; margin: 0 auto; padding: 24px 24px 60px; }
+    .train-card {
+      background: var(--card);
+      border-radius: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07), 0 3px 12px rgba(0,0,0,0.06);
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+    .train-card-header { display: flex; align-items: stretch; }
+    .train-date-box {
+      flex-shrink: 0;
+      width: 72px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 16px 0;
+      color: #fff;
+      text-align: center;
+    }
+    .train-date-box.shinkansen { background: var(--shinkansen); }
+    .train-date-box.express    { background: var(--express); }
+    .train-date-box.combo {
+      background: linear-gradient(160deg, var(--express) 50%, var(--shinkansen) 50%);
+    }
+    .train-info { flex: 1; padding: 14px 16px; }
+    .train-route { font-size: 14px; font-weight: 800; color: var(--navy); letter-spacing: 0.5px; }
+    .train-leg { margin-top: 10px; }
+    .train-leg + .train-leg { margin-top: 8px; }
+    .train-type { font-size: 12px; font-weight: 700; color: var(--navy); }
+    .train-schedule { font-size: 16px; font-weight: 800; color: var(--text); margin-top: 2px; }
+    .train-duration { font-size: 11px; color: var(--muted); font-weight: 400; }
+    .train-stations { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
+    .train-connector {
+      display: flex; align-items: center; gap: 6px;
+      margin: 6px 0; font-size: 10px; color: var(--muted); font-style: italic;
+    }
+    .train-connector::before { content: ''; display: block; width: 14px; height: 1px; background: var(--border); }
+    .train-prices { display: flex; align-items: baseline; gap: 8px; margin-top: 12px; }
+    .train-price-jpy { font-size: 12px; font-weight: 600; color: var(--muted); }
+    .train-price-usd { font-size: 11px; color: var(--muted); font-weight: 400; }
+
+    /* ── Language section ── */
+    .lang-filter-bar {
+      display: flex; justify-content: center;
+      padding: 20px 16px 14px;
+    }
+    .lang-filters {
+      display: flex; gap: 6px; flex-wrap: wrap;
+      justify-content: center;
+      width: 100%;
+    }
+    .lang-wrap { max-width: 900px; margin: 0 auto; padding: 0 16px 60px; }
+    .lang-filter {
+      padding: 6px 14px; border-radius: 16px;
+      border: 1.5px solid var(--border);
+      background: none; cursor: pointer;
+      font-size: 12px; font-weight: 600;
+      color: var(--muted); font-family: inherit;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+    }
+    .lang-filter.active { background: var(--navy); color: #fff; border-color: var(--navy); }
+    .phrase-group {
+      margin-bottom: 24px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 8px;
+    }
+    .phrase-group-label {
+      grid-column: 1 / -1;
+      font-size: 10px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 1.2px; color: var(--muted);
+      margin-bottom: 4px; padding: 0 2px;
+    }
+    .phrase-card {
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 2px 8px rgba(0,0,0,0.04);
+      aspect-ratio: 1;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      transition: box-shadow 0.15s, transform 0.15s;
+    }
+    .phrase-card:hover { transform: translateY(-2px); box-shadow: 0 4px 14px rgba(0,0,0,0.1); }
+    .phrase-main {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 14px 10px; gap: 5px;
+      transition: opacity 0.2s ease;
+    }
+    .phrase-card.open .phrase-main { opacity: 0; pointer-events: none; transition: opacity 0.15s ease; }
+    .phrase-name { font-size: 13px; font-weight: 700; color: var(--navy); line-height: 1.3; }
+    .phrase-pronunciation {
+      font-size: 10px; color: #8A7A6A; margin-top: 3px;
+      font-family: 'Courier New', Courier, monospace; letter-spacing: 0.3px;
+    }
+    .phrase-when {
+      font-size: 10px; color: var(--muted); margin-top: 4px;
+      font-style: italic; line-height: 1.4;
+    }
+    .phrase-chevron { display: none; }
+    .phrase-tip {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 14px;
+      font-size: 11.5px; line-height: 1.55;
+      background: var(--navy); color: #fff;
+      opacity: 0; pointer-events: none;
+      transform: scale(0.94);
+      transition: opacity 0.25s ease 0.1s, transform 0.25s ease 0.1s;
+    }
+    .phrase-tip.visible { opacity: 1; pointer-events: auto; transform: scale(1); }
 
     /* ── Legend ── */
-    .legend { display: flex; flex-wrap: wrap; gap: 10px 14px; padding: 0 0 18px; }
+    .legend { display: flex; flex-wrap: wrap; gap: 10px 14px; padding: 0 0 18px; justify-content: center; }
     .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--muted); }
     .legend-swatch { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
 
@@ -75,18 +334,23 @@
       border-radius: 16px;
       box-shadow: 0 1px 4px rgba(0,0,0,0.07), 0 3px 12px rgba(0,0,0,0.06);
       overflow: hidden;
+      flex: 1; min-height: 0;
+      display: flex; flex-direction: column;
     }
     .cal-month-header {
-      padding: 16px 18px 10px;
+      padding: 12px 18px 8px;
       display: flex;
       align-items: baseline;
       gap: 9px;
+      flex-shrink: 0;
     }
     .cal-month-title { font-size: 15px; font-weight: 700; color: var(--navy); }
     .cal-month-hint { font-size: 11px; color: var(--muted); }
     .cal-grid {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
+      grid-template-rows: auto repeat(5, 1fr);
+      flex: 1; min-height: 0;
     }
     .cal-dow {
       padding: 4px 0 7px;
@@ -104,17 +368,17 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 11px 3px 13px;
-      min-height: clamp(72px, 9vw, 130px);
+      padding: clamp(5px, 1.2vh, 13px) 3px;
+      min-height: 0;
       border-bottom: 1px solid #F0F0E8;
     }
     .cal-num {
-      width: 40px; height: 40px;
+      width: clamp(28px, 4vh, 40px); height: clamp(28px, 4vh, 40px);
       display: flex;
       align-items: center;
       justify-content: center;
       border-radius: 50%;
-      font-size: 15px;
+      font-size: clamp(11px, 1.7vh, 15px);
       font-weight: 500;
       color: #AAAAAA;
       transition: background 0.15s, color 0.15s, transform 0.13s, box-shadow 0.15s;
@@ -187,11 +451,12 @@
 
     /* gap legend footer inside card */
     .cal-footer {
-      padding: 8px 18px 11px;
+      padding: 7px 18px 9px;
       display: flex;
       align-items: center;
       gap: 7px;
       border-top: 1px solid var(--border);
+      flex-shrink: 0;
     }
     .cal-footer-swatch {
       width: 10px; height: 10px;
@@ -202,7 +467,7 @@
     .cal-footer span { font-size: 10.5px; color: var(--muted); font-style: italic; }
 
     /* ── Detail panel ── */
-    .detail-outer { margin-top: 8px; }
+    .detail-outer { margin-top: 8px; flex-shrink: 0; }
     .detail-panel {
       background: var(--card);
       border-radius: 16px;
@@ -315,16 +580,23 @@
     .c-arch .act-arch { color: var(--arch); }
 
     @media (max-width: 600px) {
-      .header { padding: 18px 16px 14px; }
-      .header h1 { font-size: 17px; }
-      .warning { padding: 9px 16px; font-size: 11.5px; }
-      .content { padding: 14px 12px 48px; }
-      .cal-wrap { padding: 0 10px 48px; }
-      .cal-cell { padding: 7px 1px 8px; }
-      .cal-num { width: 30px; height: 30px; font-size: 12px; }
-      .cal-day-name { font-size: 8.5px; margin-top: 2px; }
-      .cal-dots { gap: 2.5px; max-width: 26px; margin-top: 5px; }
-      .cal-dot { width: 4px; height: 4px; }
+      .header { padding: 12px 20px 10px; }
+      .header h1 { font-size: 24px; letter-spacing: -0.5px; }
+      .header-date { font-size: 12px; }
+      .header-photo { width: 64px; height: 64px; }
+      .warning-pill { font-size: 10px; margin-top: 8px; }
+      .nav-bar { padding: 10px 0 0; }
+      .nav-tab { padding: 6px 10px; font-size: 11px; }
+      .stays-wrap { padding: 16px 12px 40px; }
+      .stay-date-box { width: 56px; }
+      .stay-date-num { font-size: 17px; }
+      .stay-name { font-size: 14px; }
+      .cal-wrap { padding: 0 8px 14px; }
+      .legend-wrap { padding: 10px 14px 8px; }
+      .cal-num { width: 28px; height: 28px; font-size: 11px; }
+      .cal-day-name { font-size: 8px; margin-top: 1px; }
+      .cal-dots { gap: 2px; max-width: 24px; margin-top: 3px; }
+      .cal-dot { width: 3.5px; height: 3.5px; }
       .detail-date-box { width: 56px; }
       .detail-date-num { font-size: 25px; }
       .detail-title { font-size: 13.5px; }
@@ -332,32 +604,43 @@
       .act-name { font-size: 12.5px; }
       .act-note { font-size: 11px; }
     }
+
+    /* Portrait phone: allow vertical scroll for calendar detail */
+    @media (max-height: 700px) {
+      #sec-calendar { overflow-y: auto; }
+    }
   </style>
 </head>
 <body>
 
 <div class="header">
-  <h1>Tokyo — May 2025</h1>
-  <div class="header-chips">
-    <span class="chip"><strong>Stay 1</strong> May 4–6 · AirBnb · Ikebukuro</span>
-    <span class="chip"><strong>Stay 2</strong> May 26–27 · Lang Hotel · Kameido</span>
-    <span class="chip">Suica covers all transport</span>
+  <img class="header-photo" src="assets/img/cover.jpeg" alt="Yamil & Mel">
+  <div class="header-eyebrow">Itinerario de Viaje</div>
+  <h1>Japón</h1>
+  <div class="header-date">Mayo 2025</div>
+  <div class="warning-pill">⚠️ Golden Week 4–5 de mayo — llegar a los lugares icónicos antes de las 9am</div>
+</div>
+
+<nav class="nav-bar">
+  <div class="nav-pill">
+    <div class="nav-slider" id="nav-slider"></div>
+    <button class="nav-tab active" onclick="switchSection('calendar')">Calendario</button>
+    <button class="nav-tab" onclick="switchSection('stays')">Alojamientos</button>
+    <button class="nav-tab" onclick="switchSection('trenes')">Trenes</button>
+    <button class="nav-tab" onclick="switchSection('lenguaje')">Lenguaje</button>
   </div>
-</div>
+</nav>
 
-<div class="warning">
-  ⚠️ <strong>Golden Week (May 4–5):</strong> National holidays. Meiji Shrine, Shibuya Crossing, Harajuku will be packed — aim to start before 9am for iconic spots.
-</div>
-
+<section id="sec-calendar">
 <div class="legend-wrap">
   <div class="legend">
-    <div class="legend-item"><div class="legend-swatch" style="background:var(--arch)"></div>Architecture</div>
-    <div class="legend-item"><div class="legend-swatch" style="background:var(--food)"></div>Food</div>
+    <div class="legend-item"><div class="legend-swatch" style="background:var(--arch)"></div>Arquitectura</div>
+    <div class="legend-item"><div class="legend-swatch" style="background:var(--food)"></div>Gastronomía</div>
     <div class="legend-item"><div class="legend-swatch" style="background:var(--anime)"></div>Anime / Gaming</div>
     <div class="legend-item"><div class="legend-swatch" style="background:var(--volley)"></div>Volleyball</div>
     <div class="legend-item"><div class="legend-swatch" style="background:var(--shopping)"></div>Shopping</div>
-    <div class="legend-item"><div class="legend-swatch" style="background:var(--sight)"></div>Sightseeing</div>
-    <div class="legend-item"><div class="legend-swatch" style="background:var(--night)"></div>Nightlife</div>
+    <div class="legend-item"><div class="legend-swatch" style="background:var(--sight)"></div>Turismo</div>
+    <div class="legend-item"><div class="legend-swatch" style="background:var(--night)"></div>Vida nocturna</div>
   </div>
 </div><!-- /legend-wrap -->
 
@@ -366,19 +649,19 @@
   <!-- ── Calendar ── -->
   <div class="calendar-card">
     <div class="cal-month-header">
-      <span class="cal-month-title">May 2025</span>
-      <span class="cal-month-hint">Tap a trip day to expand</span>
+      <span class="cal-month-title">Mayo 2025</span>
+      <span class="cal-month-hint">Toca un día del viaje para expandir</span>
     </div>
 
     <div class="cal-grid">
       <!-- Day-of-week headers (Mon–Sun) -->
-      <div class="cal-dow">Mon</div>
-      <div class="cal-dow">Tue</div>
-      <div class="cal-dow">Wed</div>
-      <div class="cal-dow">Thu</div>
-      <div class="cal-dow">Fri</div>
-      <div class="cal-dow wknd">Sat</div>
-      <div class="cal-dow wknd">Sun</div>
+      <div class="cal-dow">Lun</div>
+      <div class="cal-dow">Mar</div>
+      <div class="cal-dow">Mié</div>
+      <div class="cal-dow">Jue</div>
+      <div class="cal-dow">Vie</div>
+      <div class="cal-dow wknd">Sáb</div>
+      <div class="cal-dow wknd">Dom</div>
 
       <!-- Row 1: May 1 starts on Thursday (offset 3) -->
       <div class="cal-cell empty"><div class="cal-num"></div></div>
@@ -390,7 +673,7 @@
       <!-- May 4 — Trip Day 1, Golden Week -->
       <div class="cal-cell trip-day holiday" data-day="day1" onclick="selectDay('day1')">
         <div class="cal-num">4</div>
-        <div class="cal-day-name">Sun</div>
+        <div class="cal-day-name">Dom</div>
         <div class="cal-dots">
           <div class="cal-dot" style="background:var(--accom)"></div>
           <div class="cal-dot" style="background:var(--food)"></div>
@@ -404,7 +687,7 @@
       <!-- May 5 — Trip Day 2, Golden Week -->
       <div class="cal-cell trip-day holiday" data-day="day2" onclick="selectDay('day2')">
         <div class="cal-num">5</div>
-        <div class="cal-day-name">Mon</div>
+        <div class="cal-day-name">Lun</div>
         <div class="cal-dots">
           <div class="cal-dot" style="background:var(--sight)"></div>
           <div class="cal-dot" style="background:var(--food)"></div>
@@ -415,7 +698,7 @@
       <!-- May 6 — Trip Day 3 -->
       <div class="cal-cell trip-day" data-day="day3" onclick="selectDay('day3')">
         <div class="cal-num">6</div>
-        <div class="cal-day-name">Tue</div>
+        <div class="cal-day-name">Mar</div>
         <div class="cal-dots">
           <div class="cal-dot" style="background:var(--arch)"></div>
           <div class="cal-dot" style="background:var(--sight)"></div>
@@ -452,7 +735,7 @@
       <!-- May 26 — Trip Day 4 -->
       <div class="cal-cell trip-day" data-day="day4" onclick="selectDay('day4')">
         <div class="cal-num">26</div>
-        <div class="cal-day-name">Mon</div>
+        <div class="cal-day-name">Lun</div>
         <div class="cal-dots">
           <div class="cal-dot" style="background:var(--accom)"></div>
           <div class="cal-dot" style="background:var(--arch)"></div>
@@ -464,7 +747,7 @@
       <!-- May 27 — Trip Day 5, Last day -->
       <div class="cal-cell trip-day" data-day="day5" onclick="selectDay('day5')">
         <div class="cal-num">27</div>
-        <div class="cal-day-name">Tue</div>
+        <div class="cal-day-name">Mar</div>
         <div class="cal-dots">
           <div class="cal-dot" style="background:var(--arch)"></div>
           <div class="cal-dot" style="background:var(--sight)"></div>
@@ -483,7 +766,7 @@
 
     <div class="cal-footer">
       <div class="cal-footer-swatch"></div>
-      <span>May 7–25 · Kumano Kodo &amp; other destinations</span>
+      <span>7–25 de mayo · Kumano Kodo y otros destinos</span>
     </div>
   </div>
 
@@ -496,83 +779,654 @@
   </div>
 
 </div><!-- /cal-wrap -->
+</section><!-- /sec-calendar -->
+
+<!-- ══════════════ Stays section ══════════════ -->
+<section id="sec-stays" style="display:none">
+  <div class="stays-wrap">
+
+    <!-- Stay 1 — Tokyo AirBnb -->
+    <div class="stay-card">
+      <div class="stay-card-header">
+        <div class="stay-date-box airbnb">
+          <span class="stay-date-mo">Mayo</span>
+          <span class="stay-date-num">3</span>
+          <span class="stay-date-thru">— 9</span>
+        </div>
+        <div class="stay-info">
+          <div class="stay-name">AirBnb · Minamiōtsuka</div>
+          <div class="stay-location">Toshima, Tokyo</div>
+          <hr class="stay-divider">
+          <div class="stay-meta">
+            <div class="stay-meta-group">
+              <span class="stay-meta-label">Check-in</span>
+              <span class="stay-meta-val">3:00 PM</span>
+            </div>
+            <div class="stay-meta-group">
+              <span class="stay-meta-label">Check-out</span>
+              <span class="stay-meta-val">11:00 AM</span>
+            </div>
+            <div class="stay-meta-group">
+              <span class="stay-meta-label">Noches</span>
+              <span class="stay-meta-val">6</span>
+            </div>
+          </div>
+          <div class="stay-address">1-chōme-35-12 Minamiōtsuka, Toshima City, Tokyo 170-0005</div>
+          <div class="stay-badges">
+            <span class="badge-type">AirBnb</span>
+            <span class="badge-paid">Pagado</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stay 2 — Kyoto Hotel -->
+    <div class="stay-card">
+      <div class="stay-card-header">
+        <div class="stay-date-box hotel">
+          <span class="stay-date-mo">Mayo</span>
+          <span class="stay-date-num">9</span>
+          <span class="stay-date-thru">— 15</span>
+        </div>
+        <div class="stay-info">
+          <div class="stay-name">Hotel · Shimogyo</div>
+          <div class="stay-location">Shimogyo-ku, Kyoto</div>
+          <hr class="stay-divider">
+          <div class="stay-meta">
+            <div class="stay-meta-group">
+              <span class="stay-meta-label">Check-in</span>
+              <span class="stay-meta-val">4:00 PM</span>
+            </div>
+            <div class="stay-meta-group">
+              <span class="stay-meta-label">Check-out</span>
+              <span class="stay-meta-val">11:00 AM</span>
+            </div>
+            <div class="stay-meta-group">
+              <span class="stay-meta-label">Noches</span>
+              <span class="stay-meta-val">6</span>
+            </div>
+          </div>
+          <div class="stay-address">359-1 Tameike-cho, Shomen-agaru, Dotemachi-dori, Shimogyo-ku, Kyoto</div>
+          <div class="stay-badges">
+            <span class="badge-type">Hotel · Agoda</span>
+            <span class="badge-paid">Pagado</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stay 3 — Osaka AirBnb -->
+    <div class="stay-card">
+      <div class="stay-card-header">
+        <div class="stay-date-box airbnb">
+          <span class="stay-date-mo">Mayo</span>
+          <span class="stay-date-num">15</span>
+          <span class="stay-date-thru">— 17</span>
+        </div>
+        <div class="stay-info">
+          <div class="stay-name">AirBnb · Shimanouchi</div>
+          <div class="stay-location">Chūō-ku, Osaka</div>
+          <hr class="stay-divider">
+          <div class="stay-meta">
+            <div class="stay-meta-group">
+              <span class="stay-meta-label">Check-in</span>
+              <span class="stay-meta-val">3:00 PM</span>
+            </div>
+            <div class="stay-meta-group">
+              <span class="stay-meta-label">Check-out</span>
+              <span class="stay-meta-val">10:00 AM</span>
+            </div>
+            <div class="stay-meta-group">
+              <span class="stay-meta-label">Noches</span>
+              <span class="stay-meta-val">2</span>
+            </div>
+          </div>
+          <div class="stay-address">2 Chome-5-26 Shimanouchi, Chūō-ku, Ōsaka-shi, Ōsaka-fu 542-0082</div>
+          <div class="stay-badges">
+            <span class="badge-type">AirBnb</span>
+            <span class="badge-partial">⚠ Pago parcial</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stay 4 — Kumano Kodo -->
+    <div class="stay-card">
+      <div class="stay-card-header">
+        <div class="stay-date-box nature">
+          <span class="stay-date-mo">Mayo</span>
+          <span class="stay-date-num">17</span>
+          <span class="stay-date-thru">— 22</span>
+        </div>
+        <div class="stay-info">
+          <div class="stay-name">Kumano Kodo</div>
+          <div class="stay-location">Nachi Katsuura, Wakayama</div>
+          <hr class="stay-divider">
+          <div class="stay-meta">
+            <div class="stay-meta-group">
+              <span class="stay-meta-label">Check-in</span>
+              <span class="stay-meta-val">3:00 – 6:00 PM</span>
+            </div>
+            <div class="stay-meta-group">
+              <span class="stay-meta-label">Check-out</span>
+              <span class="stay-meta-val">10:00 AM</span>
+            </div>
+            <div class="stay-meta-group">
+              <span class="stay-meta-label">Noches</span>
+              <span class="stay-meta-val">5</span>
+            </div>
+          </div>
+          <div class="stay-address">Kamenoi Hotel Nachi Katsuura · 216-19 Katsuura, Nachikatsuura, Higashimuro District, Wakayama 649-5334</div>
+          <div class="stay-badges">
+            <span class="badge-type">Multi-parada · Hotel</span>
+            <span class="badge-paid">Pagado</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stay 5 — Tokyo Hotel (2nd) -->
+    <div class="stay-card">
+      <div class="stay-card-header">
+        <div class="stay-date-box hotel">
+          <span class="stay-date-mo">Mayo</span>
+          <span class="stay-date-num">22</span>
+          <span class="stay-date-thru">— 28</span>
+        </div>
+        <div class="stay-info">
+          <div class="stay-name">Lang Hotel · Kameido</div>
+          <div class="stay-location">Koto, Tokyo</div>
+          <hr class="stay-divider">
+          <div class="stay-meta">
+            <div class="stay-meta-group">
+              <span class="stay-meta-label">Check-in</span>
+              <span class="stay-meta-val">4:00 PM</span>
+            </div>
+            <div class="stay-meta-group">
+              <span class="stay-meta-label">Check-out</span>
+              <span class="stay-meta-val">11:00 AM</span>
+            </div>
+            <div class="stay-meta-group">
+              <span class="stay-meta-label">Noches</span>
+              <span class="stay-meta-val">6</span>
+            </div>
+          </div>
+          <div class="stay-address">6 Chome-13-2 Kameido, Koto City, Tokyo 136-0071</div>
+          <div class="stay-badges">
+            <span class="badge-type">Hotel · Agoda</span>
+            <span class="badge-paid">Pagado</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section><!-- /sec-stays -->
+
+<!-- ══════════════ Trains section ══════════════ -->
+<section id="sec-trenes" style="display:none">
+  <div class="trains-wrap">
+
+    <!-- Train 1: Tokyo → Kyoto (May 9) -->
+    <div class="train-card">
+      <div class="train-card-header">
+        <div class="train-date-box shinkansen">
+          <span class="stay-date-mo">Mayo</span>
+          <span class="stay-date-num">9</span>
+        </div>
+        <div class="train-info">
+          <div class="train-route">TOKYO → KYOTO</div>
+          <div class="train-leg">
+            <div class="train-type">NOZOMI 107 · Tren Bala Asiento Reservado</div>
+            <div class="train-schedule">07:00 → 09:12 <span class="train-duration">· 2h 12min</span></div>
+            <div class="train-stations">Tokyo Station → Kyoto Station</div>
+          </div>
+          <div class="train-prices">
+            <span class="train-price-jpy">¥33,800</span>
+            <span class="train-price-usd">$219.70 USD</span>
+          </div>
+          <hr class="stay-divider">
+          <div class="stay-meta">
+            <div class="stay-meta-group">
+              <span class="stay-meta-label">Check-out hotel</span>
+              <span class="stay-meta-val">11:00 AM</span>
+            </div>
+            <div class="stay-meta-group">
+              <span class="stay-meta-label">Check-in destino</span>
+              <span class="stay-meta-val">4:00 PM</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Train 2: Osaka → Kii-Tanabe (May 17) -->
+    <div class="train-card">
+      <div class="train-card-header">
+        <div class="train-date-box express">
+          <span class="stay-date-mo">Mayo</span>
+          <span class="stay-date-num">17</span>
+        </div>
+        <div class="train-info">
+          <div class="train-route">OSAKA → KII-TANABE</div>
+          <div class="train-leg">
+            <div class="train-type">KUROSHIO 01 · Tren Rápido Reservado</div>
+            <div class="train-schedule">07:34 → 09:58 <span class="train-duration">· 2h 24min</span></div>
+            <div class="train-stations">Shin Osaka Station → Kii Tanabe Station</div>
+          </div>
+          <div class="train-prices">
+            <span class="train-price-jpy">¥11,620</span>
+            <span class="train-price-usd">$75.53 USD</span>
+          </div>
+          <hr class="stay-divider">
+          <div class="stay-meta">
+            <div class="stay-meta-group">
+              <span class="stay-meta-label">Check-out hotel</span>
+              <span class="stay-meta-val">10:00 AM</span>
+            </div>
+            <div class="stay-meta-group">
+              <span class="stay-meta-label">Check-in destino</span>
+              <span class="stay-meta-val">—</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Train 3: Kii-Katsuura → Tokyo (May 22, combination) -->
+    <div class="train-card">
+      <div class="train-card-header">
+        <div class="train-date-box combo">
+          <span class="stay-date-mo">Mayo</span>
+          <span class="stay-date-num">22</span>
+        </div>
+        <div class="train-info">
+          <div class="train-route">KII-KATSUURA → TOKYO</div>
+          <div class="train-leg">
+            <div class="train-type">KUROSHIO 12 · Tren Rápido Reservado</div>
+            <div class="train-schedule">06:46 → 10:51 <span class="train-duration">· 4h 05min</span></div>
+            <div class="train-stations">Kii Katsuura Station → Shin Osaka Station</div>
+          </div>
+          <div class="train-connector">Combinación · 15 min en Shin Osaka</div>
+          <div class="train-leg">
+            <div class="train-type">NOZOMI 14 · Tren Bala Asiento Reservado</div>
+            <div class="train-schedule">11:06 → 13:33 <span class="train-duration">· 2h 27min</span></div>
+            <div class="train-stations">Shin Osaka Station → Tokyo Station</div>
+          </div>
+          <div class="train-prices">
+            <span class="train-price-jpy">¥41,800</span>
+            <span class="train-price-usd">$271.70 USD</span>
+          </div>
+          <hr class="stay-divider">
+          <div class="stay-meta">
+            <div class="stay-meta-group">
+              <span class="stay-meta-label">Check-out hotel</span>
+              <span class="stay-meta-val">10:00 AM</span>
+            </div>
+            <div class="stay-meta-group">
+              <span class="stay-meta-label">Check-in destino</span>
+              <span class="stay-meta-val">4:00 PM</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section><!-- /sec-trenes -->
+
+<!-- ══════════════ Language section ══════════════ -->
+<section id="sec-lenguaje" style="display:none">
+  <div class="lang-filter-bar">
+    <div class="lang-filters">
+      <button class="lang-filter active" data-cat="all">Todo</button>
+      <button class="lang-filter" data-cat="saludos">Saludos</button>
+      <button class="lang-filter" data-cat="cortesia">Cortesía</button>
+      <button class="lang-filter" data-cat="respuestas">Respuestas</button>
+      <button class="lang-filter" data-cat="frases">Frases útiles</button>
+    </div>
+  </div>
+  <div class="lang-wrap">
+
+    <!-- Saludos y despedidas -->
+    <div class="phrase-group" data-cat="saludos">
+      <div class="phrase-group-label">Saludos y despedidas</div>
+
+      <div class="phrase-card">
+        <div class="phrase-main">
+          <div class="phrase-text">
+            <div class="phrase-name">Konnichiwa</div>
+            <div class="phrase-pronunciation">kon-ni-chi-WA</div>
+            <div class="phrase-when">"Hola" / "Buenas tardes"</div>
+          </div>
+          <div class="phrase-chevron">▾</div>
+        </div>
+        <div class="phrase-tip">Saludo neutro de día. No se usa para entrar a tiendas — en ese caso, decí <em>sumimasen</em>.</div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-main">
+          <div class="phrase-text">
+            <div class="phrase-name">Ohayou gozaimasu</div>
+            <div class="phrase-pronunciation">o-ha-YOU go-ZAI-mas(ɯ)</div>
+            <div class="phrase-when">"Buenos días"</div>
+          </div>
+          <div class="phrase-chevron">▾</div>
+        </div>
+        <div class="phrase-tip">Hasta las 10–11 a.m. La versión con <em>gozaimasu</em> es más formal y siempre es bienvenida.</div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-main">
+          <div class="phrase-text">
+            <div class="phrase-name">Konbanwa</div>
+            <div class="phrase-pronunciation">kon-ban-WA</div>
+            <div class="phrase-when">"Buenas noches" (saludo)</div>
+          </div>
+          <div class="phrase-chevron">▾</div>
+        </div>
+        <div class="phrase-tip">Solo como saludo al encontrarse, no para despedirse.</div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-main">
+          <div class="phrase-text">
+            <div class="phrase-name">Sayounara</div>
+            <div class="phrase-pronunciation">sa-yo-u-na-RA</div>
+            <div class="phrase-when">"Adiós"</div>
+          </div>
+          <div class="phrase-chevron">▾</div>
+        </div>
+        <div class="phrase-tip">Muy final — se usa si no vas a ver a la persona por un tiempo largo. Para despedidas cotidianas, preferí <em>ja mata</em>.</div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-main">
+          <div class="phrase-text">
+            <div class="phrase-name">Ja mata / Mata ne</div>
+            <div class="phrase-pronunciation">ja MA-ta / MA-ta ne</div>
+            <div class="phrase-when">"Nos vemos" / "Hasta luego"</div>
+          </div>
+          <div class="phrase-chevron">▾</div>
+        </div>
+        <div class="phrase-tip">Informal, entre amigos o personas conocidas. No usar con empleados o en contextos formales.</div>
+      </div>
+    </div>
+
+    <!-- Cortesía -->
+    <div class="phrase-group" data-cat="cortesia">
+      <div class="phrase-group-label">Cortesía</div>
+
+      <div class="phrase-card">
+        <div class="phrase-main">
+          <div class="phrase-text">
+            <div class="phrase-name">Arigatou gozaimasu</div>
+            <div class="phrase-pronunciation">a-ri-GA-tou go-ZAI-mas(ɯ)</div>
+            <div class="phrase-when">Para agradecer — formal, uso general</div>
+          </div>
+          <div class="phrase-chevron">▾</div>
+        </div>
+        <div class="phrase-tip">El "su" final casi no se pronuncia (no digas "soo"). Es la forma más segura y educada de dar las gracias.</div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-main">
+          <div class="phrase-text">
+            <div class="phrase-name">Gochisousama deshita</div>
+            <div class="phrase-pronunciation">go-chi-SOU-sa-ma DE-shi-ta</div>
+            <div class="phrase-when">Al terminar de comer</div>
+          </div>
+          <div class="phrase-chevron">▾</div>
+        </div>
+        <div class="phrase-tip">Se dice solo después de comer. Agradece al cocinero o al personal — lo van a apreciar mucho.</div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-main">
+          <div class="phrase-text">
+            <div class="phrase-name">Sumimasen</div>
+            <div class="phrase-pronunciation">su-mi-ma-SEN</div>
+            <div class="phrase-when">"Perdón" / "Disculpe" / Llamar la atención</div>
+          </div>
+          <div class="phrase-chevron">▾</div>
+        </div>
+        <div class="phrase-tip">Muy común. Usala para pedir permiso, disculparte o llamar a un empleado. Es la frase más versátil del viaje.</div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-main">
+          <div class="phrase-text">
+            <div class="phrase-name">Shitsurei shimasu</div>
+            <div class="phrase-pronunciation">SHI-tsu-REI shi-MA-su</div>
+            <div class="phrase-when">"Con permiso" — al entrar o salir educadamente</div>
+          </div>
+          <div class="phrase-chevron">▾</div>
+        </div>
+        <div class="phrase-tip">Más formal y suave que <em>sumimasen</em>. Ideal al entrar o salir de lugares pequeños, oficinas o espacios privados.</div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-main">
+          <div class="phrase-text">
+            <div class="phrase-name">Onegaishimasu</div>
+            <div class="phrase-pronunciation">o-ne-GAI-shi-ma-su</div>
+            <div class="phrase-when">"Por favor" — al pedir algo</div>
+          </div>
+          <div class="phrase-chevron">▾</div>
+        </div>
+        <div class="phrase-tip">Añadilo al final de pedidos: <em>Kōhī onegaishimasu</em> = "Un café, por favor." Funciona con señalar también.</div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-main">
+          <div class="phrase-text">
+            <div class="phrase-name">Yoroshiku onegaishimasu</div>
+            <div class="phrase-pronunciation">yo-RO-shi-ku o-ne-GAI-shi-ma-su</div>
+            <div class="phrase-when">"Encantado" / "Quedo a su disposición"</div>
+          </div>
+          <div class="phrase-chevron">▾</div>
+        </div>
+        <div class="phrase-tip">Muy educado; se usa al iniciar una relación o al pedir un favor importante. Transmite respeto y buena disposición.</div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-main">
+          <div class="phrase-text">
+            <div class="phrase-name">Sumimasen, chotto…</div>
+            <div class="phrase-pronunciation">su-mi-ma-SEN, CHO-tto…</div>
+            <div class="phrase-when">Rechazo suave — "Perdón, eh…"</div>
+          </div>
+          <div class="phrase-chevron">▾</div>
+        </div>
+        <div class="phrase-tip">Muy japonés: <em>chotto</em> ("un poco") suaviza la negativa sin decir "no" directamente. Dejá la frase incompleta — se entiende.</div>
+      </div>
+    </div>
+
+    <!-- Respuestas -->
+    <div class="phrase-group" data-cat="respuestas">
+      <div class="phrase-group-label">Respuestas y comprensión</div>
+
+      <div class="phrase-card">
+        <div class="phrase-main">
+          <div class="phrase-text">
+            <div class="phrase-name">Hai</div>
+            <div class="phrase-pronunciation">ha-i</div>
+            <div class="phrase-when">"Sí" / "Entendido"</div>
+          </div>
+          <div class="phrase-chevron">▾</div>
+        </div>
+        <div class="phrase-tip">Se usa para mostrar atención o acuerdo, no solo para decir "sí". Es cortés asentir con <em>hai</em> mientras alguien habla.</div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-main">
+          <div class="phrase-text">
+            <div class="phrase-name">Iie</div>
+            <div class="phrase-pronunciation">i-i-E</div>
+            <div class="phrase-when">"No" / "No realmente"</div>
+          </div>
+          <div class="phrase-chevron">▾</div>
+        </div>
+        <div class="phrase-tip">Es una negación suave. Muchas veces los japoneses evitan decir "no" directo — usarán <em>chotto</em> en su lugar.</div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-main">
+          <div class="phrase-text">
+            <div class="phrase-name">Daijoubu desu</div>
+            <div class="phrase-pronunciation">DAI-jou-bu des(ɯ)</div>
+            <div class="phrase-when">"Está bien" / "No, gracias" / "Todo bien"</div>
+          </div>
+          <div class="phrase-chevron">▾</div>
+        </div>
+        <div class="phrase-tip">Muy útil para rechazar con cortesía o tranquilizar a alguien. El tono lo hace todo: puede ser afirmativo o negativo.</div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-main">
+          <div class="phrase-text">
+            <div class="phrase-name">Wakarimasen</div>
+            <div class="phrase-pronunciation">wa-ka-ri-ma-SEN</div>
+            <div class="phrase-when">"No entiendo"</div>
+          </div>
+          <div class="phrase-chevron">▾</div>
+        </div>
+        <div class="phrase-tip">Educado y claro. Usalo si te hablan y no entendés — mejor que fingir que sí.</div>
+      </div>
+    </div>
+
+    <!-- Frases útiles -->
+    <div class="phrase-group" data-cat="frases">
+      <div class="phrase-group-label">Frases útiles</div>
+
+      <div class="phrase-card">
+        <div class="phrase-main">
+          <div class="phrase-text">
+            <div class="phrase-name">Eigo wakarimasu ka?</div>
+            <div class="phrase-pronunciation">E-go wa-ka-ri-ma-S(ɯ) ka?</div>
+            <div class="phrase-when">"¿Habla inglés?"</div>
+          </div>
+          <div class="phrase-chevron">▾</div>
+        </div>
+        <div class="phrase-tip">Cortés y fácil de entender para cualquiera. Abrí con esto si necesitás comunicarte en inglés.</div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-main">
+          <div class="phrase-text">
+            <div class="phrase-name">Doko desu ka?</div>
+            <div class="phrase-pronunciation">DO-ko des(ɯ) ka?</div>
+            <div class="phrase-when">"¿Dónde está…?"</div>
+          </div>
+          <div class="phrase-chevron">▾</div>
+        </div>
+        <div class="phrase-tip">Añadí el lugar antes: <em>Toire wa doko desu ka?</em> = "¿Dónde está el baño?" Funciona señalando un mapa también.</div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-main">
+          <div class="phrase-text">
+            <div class="phrase-name">Ikura desu ka?</div>
+            <div class="phrase-pronunciation">I-ku-ra des(ɯ) ka?</div>
+            <div class="phrase-when">"¿Cuánto cuesta?"</div>
+          </div>
+          <div class="phrase-chevron">▾</div>
+        </div>
+        <div class="phrase-tip">Se usa al mostrar o señalar un producto. En muchos lugares también te muestran el precio en una calculadora.</div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-main">
+          <div class="phrase-text">
+            <div class="phrase-name">Kore kudasai</div>
+            <div class="phrase-pronunciation">KO-re ku-da-SAI</div>
+            <div class="phrase-when">"Esto, por favor"</div>
+          </div>
+          <div class="phrase-chevron">▾</div>
+        </div>
+        <div class="phrase-tip">Frase ideal para comprar o pedir algo señalando. Cortés y directa — funciona en restaurantes, tiendas y kioscos.</div>
+      </div>
+    </div>
+
+  </div>
+</section><!-- /sec-lenguaje -->
 
 
 <!-- ══════════════ Day content templates ══════════════ -->
 
 <div id="tpl-day1" style="display:none">
   <div class="time-slot">
-    <div class="time-label">Morning — settle in</div>
+    <div class="time-label">Mañana — llegada</div>
     <div class="act c-accom">
       <div class="act-content">
         <div class="act-name">Check in — AirBnb</div>
-        <div class="act-note">Ikebukuro / Sugamo area</div>
+        <div class="act-note">Zona Ikebukuro / Sugamo</div>
       </div>
     </div>
     <div class="act c-food">
       <div class="act-content">
         <div class="act-name">Bozu 'n Coffee</div>
-        <div class="act-note">Buddhist monk-run café — calm start to the trip</div>
+        <div class="act-note">Café de monjes budistas — comienzo tranquilo del viaje</div>
       </div>
     </div>
     <div class="act c-sight">
       <div class="act-content">
         <div class="act-name">Jardín de Mejiro</div>
-        <div class="act-note">Traditional garden, ~45 min. Good to decompress after travel</div>
+        <div class="act-note">Jardín tradicional, ~45 min. Ideal para descomprimir después del viaje</div>
       </div>
     </div>
   </div>
   <div class="time-slot">
-    <div class="time-label">Afternoon — Ikebukuro</div>
+    <div class="time-label">Tarde — Ikebukuro</div>
     <div class="act c-sight">
       <div class="act-content">
         <div class="act-name">Sunshine 60</div>
-        <div class="act-note">Observation deck, city views</div>
+        <div class="act-note">Mirador, vistas a la ciudad</div>
       </div>
     </div>
     <div class="act c-anime">
       <div class="act-content">
         <div class="act-name">Anime Tokyo Station</div>
-        <div class="act-note">Next door to Sunshine 60</div>
+        <div class="act-note">Al lado de Sunshine 60</div>
       </div>
     </div>
     <div class="act c-anime">
       <div class="act-content">
         <div class="act-name">Gashapon Ikebukuro Main Store</div>
-        <div class="act-note">Capsule toy heaven — budget some time here</div>
+        <div class="act-note">El paraíso de los gashapon — reservar tiempo</div>
       </div>
     </div>
     <div class="act c-anime closed">
       <div class="act-content">
-        <div class="act-name">Centro Pokémon Mega Tokio</div>
-        <div class="act-note">Temporarily closed</div>
+        <div class="act-name">Centro Pokémon Mega Tokyo</div>
+        <div class="act-note">Temporalmente cerrado</div>
       </div>
     </div>
     <div class="act c-anime">
       <div class="act-content">
         <div class="act-name">Plaza Capcom Ikebukuro</div>
-        <div class="act-note">Arcade, ~1 hour</div>
+        <div class="act-note">Arcade, ~1 hora</div>
       </div>
     </div>
   </div>
   <div class="time-slot">
-    <div class="time-label">Evening</div>
+    <div class="time-label">Noche</div>
     <div class="act c-shopping">
       <div class="act-content">
         <div class="act-name">BIC Camera · LABI1 · GU · OWNDAYS</div>
-        <div class="act-note">Electronics + fashion — all within a few blocks</div>
+        <div class="act-note">Electrónica y moda — todo en pocas cuadras</div>
       </div>
     </div>
     <div class="act c-food">
       <div class="act-content">
-        <div class="act-name">Dinner: Kailaku or Misaki Hogyo</div>
+        <div class="act-name">Cena: Kailaku o Misaki Hogyo</div>
         <div class="act-note"><span class="rec">⭐ Rec. Agus &amp; Joni</span></div>
       </div>
     </div>
     <div class="act c-night">
       <div class="act-content">
         <div class="act-name">Karaoke Hundred Ikebukuro</div>
-        <div class="act-note">Karaoke &amp; Darts bar</div>
+        <div class="act-note">Bar de karaoke y dardos</div>
       </div>
     </div>
   </div>
@@ -580,74 +1434,74 @@
 
 <div id="tpl-day2" style="display:none">
   <div class="time-slot">
-    <div class="time-label">Morning — Shinjuku</div>
+    <div class="time-label">Mañana — Shinjuku</div>
     <div class="act c-sight">
       <div class="act-content">
-        <div class="act-name">Tokyo Metropolitan Gov. Building</div>
-        <div class="act-note">Free observatory — go early before queues build</div>
+        <div class="act-name">Edificio Metropolitano de Tokyo</div>
+        <div class="act-note">Mirador gratuito — ir temprano antes de que se forme fila</div>
       </div>
     </div>
     <div class="act c-sight">
       <div class="act-content">
         <div class="act-name">3D Cat Cross Shinjuku Space + Godzilla Head</div>
-        <div class="act-note">Near east exit, ~10 min walk</div>
+        <div class="act-note">Cerca de la salida este, ~10 min a pie</div>
       </div>
     </div>
     <div class="act c-shopping">
       <div class="act-content">
         <div class="act-name">OWNDAYS 新宿東口店</div>
-        <div class="act-note">Quick stop if needed</div>
+        <div class="act-note">Parada rápida si hace falta</div>
       </div>
     </div>
   </div>
   <div class="time-slot">
-    <div class="time-label">Midday — Shinjuku streets</div>
+    <div class="time-label">Mediodía — calles de Shinjuku</div>
     <div class="act c-food">
       <div class="act-content">
         <div class="act-name">Uogashi Nihon-Ichi</div>
-        <div class="act-note"><span class="rec">⭐ Rec. Agus &amp; Joni</span> — Standing sushi, no wait</div>
+        <div class="act-note"><span class="rec">⭐ Rec. Agus &amp; Joni</span> — Sushi de pie, sin espera</div>
       </div>
     </div>
     <div class="act c-sight">
       <div class="act-content">
         <div class="act-name">Omoide Yokochō (Memory Lane)</div>
-        <div class="act-note">Tiny yakitori alleyway, very atmospheric</div>
+        <div class="act-note">Callejón de yakitori, muy pintoresco</div>
       </div>
     </div>
     <div class="act c-night">
       <div class="act-content">
         <div class="act-name">Shinjuku Golden-Gai</div>
-        <div class="act-note">200+ tiny bars across 6 alleys — wander even just for photos</div>
+        <div class="act-note">200+ bares pequeños en 6 callejones — ideal para fotos aunque sea</div>
       </div>
     </div>
   </div>
   <div class="time-slot">
-    <div class="time-label">Afternoon — Harajuku</div>
+    <div class="time-label">Tarde — Harajuku</div>
     <div class="act c-sight">
       <div class="act-content">
         <div class="act-name">Santuario Meiji</div>
-        <div class="act-note">Arrive by 3–4pm, ~1 hour. Forest walk is worth it</div>
+        <div class="act-note">Llegar antes de las 3–4pm, ~1 hora. El paseo por el bosque vale la pena</div>
       </div>
     </div>
     <div class="act c-sight">
       <div class="act-content">
         <div class="act-name">Calle Takeshita</div>
-        <div class="act-note">Chaotic and fun, ~30–45 min</div>
+        <div class="act-note">Caótica y divertida, ~30–45 min</div>
       </div>
     </div>
     <div class="act c-sight">
       <div class="act-content">
         <div class="act-name">Tokyu Plaza Harajuku "HARAKADO"</div>
-        <div class="act-note">Rooftop garden + shops</div>
+        <div class="act-note">Jardín en terraza + tiendas</div>
       </div>
     </div>
   </div>
   <div class="time-slot">
-    <div class="time-label">Evening</div>
+    <div class="time-label">Noche</div>
     <div class="act c-food">
       <div class="act-content">
         <div class="act-name">Shinjuku Kabuki Hall / Kabuki Yokocho</div>
-        <div class="act-note"><span class="rec">⭐ Rec. Agus &amp; Joni</span> — Lively food alley, long dinner</div>
+        <div class="act-note"><span class="rec">⭐ Rec. Agus &amp; Joni</span> — Pasaje de comida animado, cena larga</div>
       </div>
     </div>
   </div>
@@ -655,17 +1509,17 @@
 
 <div id="tpl-day3" style="display:none">
   <div class="time-slot">
-    <div class="time-label">Morning — Omotesando architecture walk</div>
+    <div class="time-label">Mañana — paseo arquitectónico por Omotesando</div>
     <div class="act c-sight">
       <div class="act-content">
         <div class="act-name">BLUE ELEPHANT HARAJUKU + Japanime Art Gallery</div>
-        <div class="act-note">Opens 11am — warm up on Takeshita side streets</div>
+        <div class="act-note">Abre a las 11am — recorrer las calles laterales de Takeshita</div>
       </div>
     </div>
     <div class="act c-sight">
       <div class="act-content">
         <div class="act-name">Cat Street + 3-chōme-18 Jingūmae</div>
-        <div class="act-note">Indie shops, less touristy</div>
+        <div class="act-note">Tiendas indie, menos turístico</div>
       </div>
     </div>
     <div class="act c-arch">
@@ -705,38 +1559,38 @@
     </div>
   </div>
   <div class="time-slot">
-    <div class="time-label">Midday — Shibuya</div>
+    <div class="time-label">Mediodía — Shibuya</div>
     <div class="act c-food">
       <div class="act-content">
-        <div class="act-name">Miyashita Park lunch</div>
-        <div class="act-note">Rooftop park with food options (11am–9pm)</div>
+        <div class="act-name">Almuerzo en Miyashita Park</div>
+        <div class="act-note">Parque en terraza con opciones de comida (11am–9pm)</div>
       </div>
     </div>
     <div class="act c-sight">
       <div class="act-content">
         <div class="act-name">Shibuya Crossing</div>
-        <div class="act-note">Late afternoon is most photogenic</div>
+        <div class="act-note">A última hora de la tarde es lo más fotogénico</div>
       </div>
     </div>
     <div class="act c-arch">
       <div class="act-content">
         <div class="act-name">Tokyo Toilet Project</div>
-        <div class="act-note">4 designer bathrooms within ~1km — Tadao Ando, Kengo Kuma, Nigo</div>
+        <div class="act-note">4 baños de diseño en ~1km — Tadao Ando, Kengo Kuma, Nigo</div>
       </div>
     </div>
   </div>
   <div class="time-slot">
-    <div class="time-label">Afternoon</div>
+    <div class="time-label">Tarde</div>
     <div class="act c-volley">
       <div class="act-content">
         <div class="act-name">Sports Shop Gallery 2 Shibuya</div>
-        <div class="act-note">Volleyball gear</div>
+        <div class="act-note">Equipamiento de volleyball</div>
       </div>
     </div>
     <div class="act c-sight">
       <div class="act-content">
         <div class="act-name">Nakameguro <span class="opt">optional</span></div>
-        <div class="act-note">Canal walk + coffee shops — 1 stop Tokyu Toyoko line</div>
+        <div class="act-note">Paseo por el canal + cafeterías — 1 parada en línea Tokyu Toyoko</div>
       </div>
     </div>
   </div>
@@ -744,61 +1598,61 @@
 
 <div id="tpl-day4" style="display:none">
   <div class="time-slot">
-    <div class="time-label">Morning — East Tokyo</div>
+    <div class="time-label">Mañana — Tokyo Este</div>
     <div class="act c-accom">
       <div class="act-content">
         <div class="act-name">Check in — Lang Hotel</div>
-        <div class="act-note">Kameido area · drop bags and go</div>
+        <div class="act-note">Zona Kameido · dejar las bolsas y salir</div>
       </div>
     </div>
     <div class="act c-sight">
       <div class="act-content">
         <div class="act-name">Age.3 Asakusa</div>
-        <div class="act-note">~20–25 min by train. Explore the area on foot</div>
+        <div class="act-note">~20–25 min en tren. Explorar la zona a pie</div>
       </div>
     </div>
     <div class="act c-sight">
       <div class="act-content">
         <div class="act-name">Anegawa Bookstores Nyankodo + Tokyo Dome City</div>
-        <div class="act-note">Near Korakuen station (~25 min from Asakusa)</div>
+        <div class="act-note">Cerca de la estación Korakuen (~25 min desde Asakusa)</div>
       </div>
     </div>
     <div class="act c-arch">
       <div class="act-content">
-        <div class="act-name">Catedral de Santa María de Tokio</div>
-        <div class="act-note">10 min walk from Tokyo Dome</div>
+        <div class="act-name">Catedral de Santa María de Tokyo</div>
+        <div class="act-note">10 min a pie desde Tokyo Dome</div>
         <div class="act-arch">Kenzo Tange</div>
       </div>
     </div>
   </div>
   <div class="time-slot">
-    <div class="time-label">Afternoon — Ginza architecture</div>
+    <div class="time-label">Tarde — arquitectura en Ginza</div>
     <div class="act c-arch">
       <div class="act-content">
         <div class="act-name">Tokyo International Forum</div>
-        <div class="act-note">Free atrium entry. Stunning space</div>
+        <div class="act-note">Entrada gratuita al atrio. Espacio impresionante</div>
         <div class="act-arch">Rafael Viñoly</div>
       </div>
     </div>
     <div class="act c-arch">
       <div class="act-content">
         <div class="act-name">Maison Hermès Le Forum</div>
-        <div class="act-note">Glowing glass brick tower</div>
+        <div class="act-note">Torre de ladrillos de vidrio iluminada</div>
         <div class="act-arch">Renzo Piano</div>
       </div>
     </div>
   </div>
   <div class="time-slot">
-    <div class="time-label">Evening</div>
+    <div class="time-label">Noche</div>
     <div class="act c-volley">
       <div class="act-content">
         <div class="act-name">MIZUNO TOKYO</div>
-        <div class="act-note">Ginza flagship — allow 30–60 min</div>
+        <div class="act-note">Local insignia en Ginza — reservar 30–60 min</div>
       </div>
     </div>
     <div class="act c-food">
       <div class="act-content">
-        <div class="act-name">Dinner in Ginza</div>
+        <div class="act-name">Cena en Ginza</div>
       </div>
     </div>
   </div>
@@ -806,60 +1660,60 @@
 
 <div id="tpl-day5" style="display:none">
   <div class="time-slot">
-    <div class="time-label">Morning — Roppongi / Minato</div>
+    <div class="time-label">Mañana — Roppongi / Minato</div>
     <div class="act c-arch">
       <div class="act-content">
-        <div class="act-name">National Art Center, Tokyo</div>
-        <div class="act-note">Free building entry. Undulating glass facade (~30 min via Oedo line)</div>
+        <div class="act-name">Centro Nacional de Arte, Tokyo</div>
+        <div class="act-note">Entrada gratuita. Fachada ondulante de vidrio (~30 min por línea Oedo)</div>
         <div class="act-arch">Kisho Kurokawa</div>
       </div>
     </div>
     <div class="act c-arch">
       <div class="act-content">
         <div class="act-name">21-21 Design Sight</div>
-        <div class="act-note">Check current exhibition before going</div>
+        <div class="act-note">Verificar la exposición actual antes de ir</div>
         <div class="act-arch">Tadao Ando</div>
       </div>
     </div>
     <div class="act c-sight">
       <div class="act-content">
         <div class="act-name">Azabudai Hills</div>
-        <div class="act-note">Newest mega-complex (2023) — worth walking through</div>
+        <div class="act-note">Complejo más nuevo (2023) — vale la pena recorrerlo</div>
       </div>
     </div>
   </div>
   <div class="time-slot">
-    <div class="time-label">Midday — Tokyo Tower</div>
+    <div class="time-label">Mediodía — Tokyo Tower</div>
     <div class="act c-sight">
       <div class="act-content">
         <div class="act-name">RED° TOKYO TOWER</div>
-        <div class="act-note">Entertainment complex at the tower base</div>
+        <div class="act-note">Complejo de entretenimiento en la base de la torre</div>
       </div>
     </div>
     <div class="act c-food">
       <div class="act-content">
-        <div class="act-name">Lunch near Tokyo Tower</div>
+        <div class="act-name">Almuerzo cerca de la Tokyo Tower</div>
       </div>
     </div>
   </div>
   <div class="time-slot">
-    <div class="time-label">Afternoon — choose one</div>
+    <div class="time-label">Tarde — elegir una opción</div>
     <div class="act c-anime">
       <div class="act-content">
-        <div class="act-name">Option A · Nakano Broadway</div>
-        <div class="act-note">Mandarake, figures, vintage anime — Chuo line from Shinjuku (~5 min)</div>
+        <div class="act-name">Opción A · Nakano Broadway</div>
+        <div class="act-note">Mandarake, figuras, anime vintage — línea Chuo desde Shinjuku (~5 min)</div>
       </div>
     </div>
     <div class="act c-sight">
       <div class="act-content">
-        <div class="act-name">Option B · SKWAT / twelvebooks</div>
-        <div class="act-note">Near the hotel — quiet final afternoon</div>
+        <div class="act-name">Opción B · SKWAT / twelvebooks</div>
+        <div class="act-note">Cerca del hotel — tarde final tranquila</div>
       </div>
     </div>
     <div class="act c-volley">
       <div class="act-content">
-        <div class="act-name">Option C · Gallery 2 Shinjuku + Sports Zyuen</div>
-        <div class="act-note">Last volleyball gear run</div>
+        <div class="act-name">Opción C · Gallery 2 Shinjuku + Sports Zyuen</div>
+        <div class="act-note">Última vuelta de compras de volleyball</div>
       </div>
     </div>
   </div>
@@ -869,36 +1723,89 @@
 <script>
   const META = {
     day1: {
-      dateNum: '4', dateMo: 'May',
-      title: 'Day 1 — Arrival + Ikebukuro',
-      sub: 'Sunday · Check in, explore Ikebukuro, karaoke',
+      dateNum: '4', dateMo: 'Mayo',
+      title: 'Día 1 — Llegada + Ikebukuro',
+      sub: 'Domingo · Check in, explorar Ikebukuro, karaoke',
       badge: 'holiday', badgeText: 'Golden Week', holiday: true
     },
     day2: {
-      dateNum: '5', dateMo: 'May',
-      title: 'Day 2 — Shinjuku + Harajuku',
-      sub: "Monday · Children's Day · Start early",
+      dateNum: '5', dateMo: 'Mayo',
+      title: 'Día 2 — Shinjuku + Harajuku',
+      sub: 'Lunes · Día del Niño · Salir temprano',
       badge: 'holiday', badgeText: 'Golden Week', holiday: true
     },
     day3: {
-      dateNum: '6', dateMo: 'May',
-      title: 'Day 3 — Omotesando + Shibuya',
-      sub: 'Tuesday · Regular weekday · Best day for sightseeing',
+      dateNum: '6', dateMo: 'Mayo',
+      title: 'Día 3 — Omotesando + Shibuya',
+      sub: 'Martes · Día laborable normal · Mejor día para el turismo',
       badge: null, holiday: false
     },
     day4: {
-      dateNum: '26', dateMo: 'May',
-      title: 'Day 4 — Asakusa + Ginza',
-      sub: 'Monday · Check-in day · East Tokyo loop',
+      dateNum: '26', dateMo: 'Mayo',
+      title: 'Día 4 — Asakusa + Ginza',
+      sub: 'Lunes · Día de check-in · Circuito por Tokyo Este',
       badge: null, holiday: false
     },
     day5: {
-      dateNum: '27', dateMo: 'May',
-      title: 'Day 5 — Roppongi + Tokyo Tower',
-      sub: 'Tuesday · Architecture morning · Choose your afternoon',
-      badge: 'last', badgeText: 'Last day', holiday: false
+      dateNum: '27', dateMo: 'Mayo',
+      title: 'Día 5 — Roppongi + Tokyo Tower',
+      sub: 'Martes · Mañana de arquitectura · Elige tu tarde',
+      badge: 'last', badgeText: 'Último día', holiday: false
     }
   };
+
+  const header = document.querySelector('.header');
+  const navBar = document.querySelector('.nav-bar');
+
+  function setHeaderVisible(visible) {
+    header.classList.toggle('scroll-hidden', !visible);
+    navBar.classList.toggle('scroll-hidden', !visible);
+  }
+
+  function updateSectionPadding() {
+    const pad = (header.offsetHeight + navBar.offsetHeight) + 'px';
+    document.querySelectorAll('section[id^="sec-"]').forEach(s => s.style.paddingTop = pad);
+  }
+  updateSectionPadding();
+  window.addEventListener('resize', updateSectionPadding);
+
+  document.querySelectorAll('section[id^="sec-"]').forEach(sec => {
+    sec.addEventListener('scroll', function () {
+      setHeaderVisible(this.scrollTop < 20);
+    }, { passive: true });
+  });
+
+  const navSlider = document.getElementById('nav-slider');
+
+  function moveSlider(tab) {
+    const pill = tab.closest('.nav-pill');
+    const pillRect = pill.getBoundingClientRect();
+    const tabRect  = tab.getBoundingClientRect();
+    navSlider.style.width = tabRect.width + 'px';
+    navSlider.style.transform = `translateX(${tabRect.left - pillRect.left - 3}px)`;
+  }
+
+  function switchSection(id) {
+    document.querySelectorAll('section[id^="sec-"]')
+      .forEach(s => s.style.display = 'none');
+    const sec = document.getElementById('sec-' + id);
+    sec.style.display = '';
+    sec.scrollTop = 0;
+    document.querySelectorAll('.nav-tab')
+      .forEach(t => t.classList.remove('active'));
+    const activeTab = document.querySelector(`[onclick="switchSection('${id}')"]`);
+    activeTab.classList.add('active');
+    moveSlider(activeTab);
+    setHeaderVisible(true);
+  }
+
+  // Position slider on load without animation
+  (function () {
+    const first = document.querySelector('.nav-tab.active');
+    navSlider.style.transition = 'none';
+    moveSlider(first);
+    requestAnimationFrame(() => { navSlider.style.transition = ''; });
+  })();
 
   let current = null;
 
@@ -947,9 +1854,29 @@
 
     requestAnimationFrame(() => requestAnimationFrame(() => {
       panel.classList.add('open');
-      setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'center' }), 40);
+      setTimeout(() => document.getElementById('sec-calendar').scrollTo({ top: 0, behavior: 'smooth' }), 40);
     }));
   }
+
+  function initLang() {
+    document.querySelectorAll('.lang-filter').forEach(btn => {
+      btn.addEventListener('click', function () {
+        document.querySelectorAll('.lang-filter').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        const cat = this.dataset.cat;
+        document.querySelectorAll('.phrase-group').forEach(g => {
+          g.style.display = (cat === 'all' || g.dataset.cat === cat) ? '' : 'none';
+        });
+      });
+    });
+    document.querySelectorAll('.phrase-card').forEach(card => {
+      card.addEventListener('click', function () {
+        card.classList.toggle('open');
+        card.querySelector('.phrase-tip').classList.toggle('visible');
+      });
+    });
+  }
+  initLang();
 </script>
 
 </body>
