@@ -152,10 +152,25 @@
       overflow-y: auto;
       z-index: 5;
     }
-    #sec-stays, #sec-trenes, #sec-lenguaje {
+    #sec-stays, #sec-trenes, #sec-lenguaje, #sec-atracciones {
       position: absolute; top: 0; left: 0; right: 0; bottom: 0;
       overflow-y: auto;
       z-index: 5;
+    }
+    #sec-mapa {
+      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      display: flex; flex-direction: column;
+      overflow: hidden; z-index: 5;
+    }
+    .mapa-wrap {
+      flex: 1; min-height: 0;
+      display: flex; flex-direction: column;
+      padding: 16px 20px 20px;
+    }
+    #sec-mapa iframe {
+      flex: 1; width: 100%; border: none; display: block;
+      border-radius: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07), 0 3px 12px rgba(0,0,0,0.06);
     }
 
     /* ── Content ── */
@@ -246,6 +261,46 @@
     .train-prices { display: flex; align-items: baseline; gap: 8px; margin-top: 12px; }
     .train-price-jpy { font-size: 12px; font-weight: 600; color: var(--muted); }
     .train-price-usd { font-size: 11px; color: var(--muted); font-weight: 400; }
+
+    /* ── Atracciones section ── */
+    .atrac-wrap { max-width: 700px; margin: 0 auto; padding: 24px 16px 60px; }
+    .atrac-card {
+      background: var(--card);
+      border-radius: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07), 0 3px 12px rgba(0,0,0,0.06);
+      overflow: hidden;
+      margin-bottom: 12px;
+      display: flex;
+    }
+    .atrac-date-box {
+      flex-shrink: 0; width: 68px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      color: #fff; text-align: center; padding: 16px 6px;
+    }
+    .atrac-day   { font-size: 30px; font-weight: 800; line-height: 1; }
+    .atrac-month { font-size: 10px; font-weight: 700; letter-spacing: 1px; margin-top: 4px; opacity: 0.85; text-transform: uppercase; }
+    .atrac-body  { flex: 1; min-width: 0; padding: 14px 16px 14px; }
+    .atrac-name  { font-size: 15px; font-weight: 800; color: var(--navy); line-height: 1.2; }
+    .atrac-meta  { display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: 5px; }
+    .atrac-meta-item { font-size: 11.5px; color: var(--muted); display: flex; align-items: center; gap: 4px; }
+    .atrac-divider { height: 1px; background: var(--border); margin: 10px 0; }
+    .atrac-status {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 10.5px; font-weight: 700;
+      padding: 2px 9px; border-radius: 10px; margin-bottom: 8px;
+    }
+    .atrac-status.paid { background: #D1FAE5; color: #065F46; }
+    .atrac-comment { font-size: 11.5px; color: var(--muted); line-height: 1.55; }
+    .atrac-address { font-size: 11px; color: var(--muted); margin-top: 5px; font-style: italic; }
+    .atrac-link {
+      display: inline-flex; align-items: center; gap: 4px;
+      margin-top: 10px; font-size: 11.5px; font-weight: 600;
+      color: var(--navy); text-decoration: none;
+      border: 1.5px solid var(--border); border-radius: 8px;
+      padding: 4px 10px; transition: background 0.15s;
+    }
+    .atrac-link:hover { background: var(--border); }
 
     /* ── Language section ── */
     .lang-filter-bar {
@@ -628,6 +683,8 @@
     <button class="nav-tab" onclick="switchSection('stays')">Alojamientos</button>
     <button class="nav-tab" onclick="switchSection('trenes')">Trenes</button>
     <button class="nav-tab" onclick="switchSection('lenguaje')">Lenguaje</button>
+    <button class="nav-tab" onclick="switchSection('atracciones')">Atracciones</button>
+    <button class="nav-tab" onclick="switchSection('mapa')">Mapa</button>
   </div>
 </nav>
 
@@ -1351,6 +1408,122 @@
 
   </div>
 </section><!-- /sec-lenguaje -->
+
+<!-- ══════════════ Atracciones section ══════════════ -->
+<section id="sec-atracciones" style="display:none">
+  <div class="atrac-wrap">
+
+    <!-- 1 · Fuji-Q · 7 mayo -->
+    <div class="atrac-card">
+      <div class="atrac-date-box" style="background:var(--shopping)">
+        <span class="atrac-day">7</span>
+        <span class="atrac-month">Mayo</span>
+      </div>
+      <div class="atrac-body">
+        <div class="atrac-name">Fuji-Q Highland</div>
+        <div class="atrac-meta">
+          <span class="atrac-meta-item">📍 Fuji, Yamanashi</span>
+          <span class="atrac-meta-item">🕐 Todo el día</span>
+        </div>
+        <div class="atrac-divider"></div>
+        <span class="atrac-status paid">✓ Pagado</span>
+        <div class="atrac-comment">OneDay Pass con viajes en bus incluidos. Queda sacar los tickets Scream de prioridad. Checkear horarios de buses en la página del ticket.</div>
+        <a class="atrac-link" href="https://membersclub.fujiq.jp/myticket" target="_blank">Ver ticket ↗</a>
+      </div>
+    </div>
+
+    <!-- 2 · Osaka Büuteon · 10 mayo -->
+    <div class="atrac-card">
+      <div class="atrac-date-box" style="background:var(--volley)">
+        <span class="atrac-day">10</span>
+        <span class="atrac-month">Mayo</span>
+      </div>
+      <div class="atrac-body">
+        <div class="atrac-name">Osaka Büuteon</div>
+        <div class="atrac-meta">
+          <span class="atrac-meta-item">📍 Minato, Osaka</span>
+          <span class="atrac-meta-item">🕕 6:00 PM</span>
+        </div>
+        <div class="atrac-divider"></div>
+        <span class="atrac-status paid">✓ Pagado</span>
+        <div class="atrac-comment">Info sobre tickets en la app de SV.</div>
+        <div class="atrac-address">Asue Arena — 3 Chome-1-40 Tanaka, Minato Ward, Osaka</div>
+      </div>
+    </div>
+
+    <!-- 3 · Nintendo Museum · 11 mayo -->
+    <div class="atrac-card">
+      <div class="atrac-date-box" style="background:var(--anime)">
+        <span class="atrac-day">11</span>
+        <span class="atrac-month">Mayo</span>
+      </div>
+      <div class="atrac-body">
+        <div class="atrac-name">Nintendo Museum</div>
+        <div class="atrac-meta">
+          <span class="atrac-meta-item">📍 Uji, Kyoto</span>
+          <span class="atrac-meta-item">🕑 2:00 PM</span>
+        </div>
+        <div class="atrac-divider"></div>
+        <span class="atrac-status paid">✓ Pagado</span>
+        <div class="atrac-comment">OneDay Pass. Queda sacar los tickets de prioridad.</div>
+        <a class="atrac-link" href="https://check.museum-tickets.nintendo.com/myticket" target="_blank">Ver ticket ↗</a>
+      </div>
+    </div>
+
+    <!-- 4 · TeamLab Biovortex · 13 mayo -->
+    <div class="atrac-card">
+      <div class="atrac-date-box" style="background:var(--sight)">
+        <span class="atrac-day">13</span>
+        <span class="atrac-month">Mayo</span>
+      </div>
+      <div class="atrac-body">
+        <div class="atrac-name">TeamLab Biovortex</div>
+        <div class="atrac-meta">
+          <span class="atrac-meta-item">📍 Minami, Kyoto</span>
+          <span class="atrac-meta-item">🕕 6:00 PM</span>
+        </div>
+        <div class="atrac-divider"></div>
+        <span class="atrac-status paid">✓ Pagado</span>
+        <div class="atrac-address">21-5 Higashikujo Higashiiwamotocho, Minami Ward, Kyoto</div>
+        <a class="atrac-link" href="https://www.klook.com/experiences/booking_detail/?guid=5418465406&bookingNo=GRT140391&sub_category_id=1" target="_blank">Ver ticket ↗</a>
+      </div>
+    </div>
+
+    <!-- 5 · Sumo · 23 mayo -->
+    <div class="atrac-card">
+      <div class="atrac-date-box" style="background:var(--crimson)">
+        <span class="atrac-day">23</span>
+        <span class="atrac-month">Mayo</span>
+      </div>
+      <div class="atrac-body">
+        <div class="atrac-name">Experiencia de Sumo</div>
+        <div class="atrac-meta">
+          <span class="atrac-meta-item">📍 Asakusa, Tokyo</span>
+          <span class="atrac-meta-item">🕛 12:00 PM</span>
+        </div>
+        <div class="atrac-divider"></div>
+        <span class="atrac-status paid">✓ Pagado</span>
+        <div class="atrac-comment">Experiencia turística: explicación de la tradición, demostración de combate y almuerzo tradicional de sumo (chanko nabe) con barra libre.</div>
+        <div class="atrac-address">2 Chome-10-12 Asakusa, Taito City, Tokyo</div>
+        <a class="atrac-link" href="https://bookings.bokun.io/MjA2NDg1YzItMTQ2OC00ZmU0LTgzYjMtZTQxM2UxZDliNmEw?lng=en" target="_blank">Ver ticket ↗</a>
+      </div>
+    </div>
+
+  </div>
+</section><!-- /sec-atracciones -->
+
+<!-- ══════════════ Mapa section ══════════════ -->
+<section id="sec-mapa" style="display:none">
+  <div class="mapa-wrap">
+    <iframe
+      src="https://www.google.com/maps/d/embed?mid=1vH9DCbL6-fVWA_SZ_5-0iTRKQYT2rzU&ehbc=2E312F"
+      allowfullscreen
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"
+      title="Mapa del viaje — Japón 2025">
+    </iframe>
+  </div>
+</section><!-- /sec-mapa -->
 
 
 <!-- ══════════════ Day content templates ══════════════ -->
