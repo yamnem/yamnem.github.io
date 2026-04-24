@@ -420,20 +420,30 @@
     .cal-dow.wknd { color: #B8A8A8; }
 
     .cal-cell {
+      position: relative;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      padding: clamp(5px, 1.2vh, 13px) 3px;
+      align-items: flex-start;
+      justify-content: flex-start;
+      padding: 6px 3px 3px 16px;
       min-height: 0;
       border-bottom: 1px solid #F0F0E8;
     }
+    .cal-emoji {
+      position: absolute;
+      top: 6px; right: 16px;
+      font-size: 13px;
+      line-height: clamp(22px, 3vh, 28px);
+      pointer-events: none;
+      user-select: none;
+    }
     .cal-num {
-      width: clamp(28px, 4vh, 40px); height: clamp(28px, 4vh, 40px);
+      width: clamp(22px, 3vh, 28px); height: clamp(22px, 3vh, 28px);
       display: flex;
       align-items: center;
       justify-content: center;
       border-radius: 50%;
-      font-size: clamp(11px, 1.7vh, 15px);
+      font-size: clamp(10px, 1.5vh, 13px);
       font-weight: 500;
       color: #AAAAAA;
       transition: background 0.15s, color 0.15s, transform 0.13s, box-shadow 0.15s;
@@ -442,6 +452,16 @@
 
     /* empty */
     .cal-cell.empty .cal-num { visibility: hidden; }
+    .cal-cell.today { background: rgba(59,130,246,0.06); }
+    .cal-cell.today::after {
+      content: ''; position: absolute; inset: 0;
+      border-top: 2px solid #3B82F6; pointer-events: none;
+    }
+
+    .cal-cell.past .cal-num,
+    .cal-cell.past .cal-day-name,
+    .cal-cell.past .cal-trip-name,
+    .cal-cell.past .cal-emoji { opacity: 0.32; filter: saturate(0.15); }
 
     /* regular non-trip May day */
     .cal-cell.regular .cal-num { color: #C0BEB8; font-weight: 400; }
@@ -486,13 +506,16 @@
     }
 
     .cal-day-name {
-      font-size: 10px;
+      font-size: 9px;
       font-weight: 500;
       text-transform: uppercase;
       letter-spacing: 0.3px;
       color: var(--muted);
-      margin-top: 3px;
+      margin-top: 2px;
+      margin-left: 0;
       opacity: 0.7;
+      width: clamp(22px, 3vh, 28px);
+      text-align: center;
     }
     .cal-dots {
       display: flex;
@@ -508,37 +531,81 @@
     .cal-footer {
       padding: 7px 18px 9px;
       display: flex;
-      align-items: center;
-      gap: 7px;
+      flex-direction: column;
+      gap: 6px;
       border-top: 1px solid var(--border);
       flex-shrink: 0;
     }
-    .cal-footer-swatch {
-      width: 10px; height: 10px;
-      border-radius: 2px;
-      background: #ECEAE4;
-      flex-shrink: 0;
+    .cal-footer > span { font-size: 10.5px; color: var(--muted); font-style: italic; }
+    .emoji-index {
+      display: flex; gap: 6px 16px; flex-wrap: wrap;
     }
-    .cal-footer span { font-size: 10.5px; color: var(--muted); font-style: italic; }
+    .emoji-index span {
+      font-size: 10px; color: var(--muted);
+      display: flex; align-items: center; gap: 3px;
+    }
 
-    /* ── Detail panel ── */
-    .detail-outer { margin-top: 8px; flex-shrink: 0; }
-    .detail-panel {
-      background: var(--card);
-      border-radius: 16px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.13), 0 1px 5px rgba(0,0,0,0.07);
-      overflow: hidden;
-      opacity: 0;
-      transform: translateY(-8px) scaleY(0.97);
-      transform-origin: top center;
-      transition: opacity 0.22s ease, transform 0.26s cubic-bezier(0.34, 1.25, 0.64, 1);
+    /* ── Detail panel overlay ── */
+    .detail-outer {
+      position: fixed;
+      inset: 0;
+      z-index: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(16px, 4vw, 40px);
       pointer-events: none;
     }
-    .detail-panel.open {
-      opacity: 1;
-      transform: translateY(0) scaleY(1);
-      pointer-events: auto;
+    .detail-outer.open { pointer-events: auto; }
+    .detail-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.40);
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      cursor: pointer;
     }
+
+    .detail-panel {
+      position: relative;
+      z-index: 1;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 16px 56px rgba(0,0,0,0.28), 0 2px 8px rgba(0,0,0,0.10);
+      width: 100%;
+      max-width: 480px;
+      overflow: hidden;
+      opacity: 0;
+      pointer-events: none;
+      will-change: transform, opacity;
+    }
+    .detail-scroll {
+      overflow-y: auto;
+      max-height: 82vh;
+      scrollbar-width: none;
+    }
+    .detail-scroll::-webkit-scrollbar { display: none; }
+    .detail-fade-top,
+    .detail-fade-bottom {
+      position: absolute;
+      left: 0; right: 0;
+      height: 52px;
+      pointer-events: none;
+      z-index: 10;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+    .detail-fade-top {
+      top: 0;
+      background: linear-gradient(to bottom, #fff 0%, rgba(255,255,255,0) 100%);
+    }
+    .detail-fade-bottom {
+      bottom: 0;
+      background: linear-gradient(to top, #fff 0%, rgba(255,255,255,0) 100%);
+    }
+    .detail-panel.fade-top    .detail-fade-top    { opacity: 1; }
+    .detail-panel.fade-bottom .detail-fade-bottom { opacity: 1; }
+    .detail-outer.open .detail-backdrop { opacity: 1; pointer-events: auto; }
 
     /* detail header */
     .detail-header {
@@ -618,6 +685,21 @@
     .act-note { font-size: 11.5px; color: var(--muted); margin-top: 2px; line-height: 1.3; }
     .act-arch { font-size: 10.5px; font-style: italic; margin-top: 2px; }
     .rec { color: #B7770D; font-weight: 700; }
+    .act-time {
+      font-size: 9.5px; font-weight: 700;
+      color: var(--muted); margin-right: 5px;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.2px;
+      font-family: 'Courier New', Courier, monospace;
+    }
+    .deadline { color: #B7370D; font-weight: 700; }
+    .cal-trip-name {
+      font-size: 7px; font-weight: 700;
+      color: var(--muted); text-transform: uppercase;
+      letter-spacing: 0.3px; margin-top: 2px;
+      white-space: nowrap; overflow: hidden;
+      max-width: calc(100% - 24px); line-height: 1.3;
+    }
     .opt {
       font-size: 9.5px; font-weight: 600; text-transform: uppercase;
       letter-spacing: 0.4px; color: var(--muted);
@@ -634,6 +716,78 @@
     .c-accom    { border-left-color: var(--accom); }
     .c-arch .act-arch { color: var(--arch); }
 
+    /* ── City color coding — ring around day number ── */
+    .cal-cell.city-tokyo .cal-num  { border: 2.5px solid #FF7043; }
+    .cal-cell.city-kyoto .cal-num  { border: 2.5px solid #7B1FA2; }
+    .cal-cell.city-osaka .cal-num  { border: 2.5px solid #FFA000; }
+    .cal-cell.city-kumano .cal-num { border: 2.5px solid #00796B; }
+
+    /* Selected: fill with city color instead of navy */
+    .cal-cell.city-tokyo.trip-day.selected .cal-num  { background: #E64A19 !important; border-color: #E64A19 !important; box-shadow: 0 2px 10px rgba(230,74,25,0.45) !important; }
+    .cal-cell.city-kyoto.trip-day.selected .cal-num  { background: #6A1B9A !important; border-color: #6A1B9A !important; box-shadow: 0 2px 10px rgba(106,27,154,0.45) !important; }
+    .cal-cell.city-osaka.trip-day.selected .cal-num  { background: #F57C00 !important; border-color: #F57C00 !important; box-shadow: 0 2px 10px rgba(245,124,0,0.45) !important; }
+    .cal-cell.city-kumano.trip-day.selected .cal-num { background: #00695C !important; border-color: #00695C !important; box-shadow: 0 2px 10px rgba(0,105,92,0.45) !important; }
+
+    .detail-date-box.city-tokyo  { background: #E64A19; }
+    .detail-date-box.city-kyoto  { background: #6A1B9A; }
+    .detail-date-box.city-osaka  { background: #F57C00; }
+    .detail-date-box.city-kumano { background: #00695C; }
+
+    .city-legend-strip {
+      display: flex; gap: 8px; flex-wrap: wrap;
+      padding: 4px 18px 10px;
+    }
+    .city-pill {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 10.5px; font-weight: 600;
+      padding: 3px 10px; border-radius: 10px;
+      letter-spacing: 0.2px;
+    }
+    .city-pill::before {
+      content: ''; width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+    }
+    .city-pill.pill-tokyo  { background: rgba(255,138,80,0.18); color: #BF360C; }
+    .city-pill.pill-tokyo::before  { background: #FF7043; }
+    .city-pill.pill-kyoto  { background: rgba(106,27,154,0.14); color: #4A148C; }
+    .city-pill.pill-kyoto::before  { background: #6A1B9A; }
+    .city-pill.pill-osaka  { background: rgba(255,160,0,0.18); color: #E65100; }
+    .city-pill.pill-osaka::before  { background: #FF8F00; }
+    .city-pill.pill-kumano { background: rgba(0,105,92,0.14); color: #004D40; }
+    .city-pill.pill-kumano::before { background: #00695C; }
+
+    .tpl-placeholder {
+      text-align: center; padding: 36px 20px;
+      color: var(--muted); font-size: 13px; font-style: italic;
+    }
+    .plan-b-divider {
+      display: flex; align-items: center; gap: 10px;
+      padding: 4px 18px 6px;
+    }
+    .plan-b-divider-line { flex: 1; height: 1px; background: #D8CEF0; }
+    .plan-b-divider-label {
+      font-size: 9.5px; font-weight: 700; color: #6B47B8;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      white-space: nowrap; background: #F3EFFC;
+      padding: 4px 10px; border-radius: 20px;
+      border: 1px solid #D8CEF0;
+    }
+    .plan-b-block {
+      margin: 0 12px 4px; border-radius: 10px;
+      border: 1px solid #D8CEF0; background: #FAF8FE;
+      overflow: hidden;
+    }
+    .plan-b-block .act { border-left-color: #9B72CF; }
+    .plan-b-note {
+      font-size: 11px; color: #6B47B8; line-height: 1.4;
+      padding: 8px 14px; border-bottom: 1px solid #D8CEF0;
+      background: #F3EFFC;
+    }
+    .plan-b-merge {
+      font-size: 10.5px; font-weight: 600; color: #6B47B8;
+      padding: 8px 14px; text-align: center;
+      border-top: 1px dashed #D8CEF0; background: #F3EFFC;
+    }
+
     @media (max-width: 600px) {
       .header { padding: 12px 20px 10px; }
       .header h1 { font-size: 24px; letter-spacing: -0.5px; }
@@ -648,8 +802,8 @@
       .stay-name { font-size: 14px; }
       .cal-wrap { padding: 0 8px 14px; }
       .legend-wrap { padding: 10px 14px 8px; }
-      .cal-num { width: 28px; height: 28px; font-size: 11px; }
-      .cal-day-name { font-size: 8px; margin-top: 1px; }
+      .cal-num { width: 22px; height: 22px; font-size: 10px; }
+      .cal-day-name { font-size: 8px; height: 22px; }
       .cal-dots { gap: 2px; max-width: 24px; margin-top: 3px; }
       .cal-dot { width: 3.5px; height: 3.5px; }
       .detail-date-box { width: 56px; }
@@ -708,7 +862,13 @@
   <div class="calendar-card">
     <div class="cal-month-header">
       <span class="cal-month-title">Mayo 2025</span>
-      <span class="cal-month-hint">Toca un día del viaje para expandir</span>
+      <span class="cal-month-hint">Toca un día para ver el plan</span>
+    </div>
+    <div class="city-legend-strip">
+      <span class="city-pill pill-tokyo">Tokyo</span>
+      <span class="city-pill pill-kyoto">Kyoto</span>
+      <span class="city-pill pill-osaka">Osaka</span>
+      <span class="city-pill pill-kumano">Kumano Kodo</span>
     </div>
 
     <div class="cal-grid">
@@ -721,118 +881,166 @@
       <div class="cal-dow wknd">Sáb</div>
       <div class="cal-dow wknd">Dom</div>
 
-      <!-- Row 1: May 1 starts on Thursday (offset 3) -->
+      <!-- Row 1: May 1 starts on Friday -->
+      <div class="cal-cell empty"><div class="cal-num"></div></div>
       <div class="cal-cell empty"><div class="cal-num"></div></div>
       <div class="cal-cell empty"><div class="cal-num"></div></div>
       <div class="cal-cell empty"><div class="cal-num"></div></div>
       <div class="cal-cell regular"><div class="cal-num">1</div></div>
       <div class="cal-cell regular"><div class="cal-num">2</div></div>
-      <div class="cal-cell regular"><div class="cal-num">3</div></div>
-      <!-- May 4 — Trip Day 1, Golden Week -->
-      <div class="cal-cell trip-day holiday" data-day="day1" onclick="selectDay('day1')">
-        <div class="cal-num">4</div>
+      <!-- May 3 — Llegada (Dom · Constitución) -->
+      <div class="cal-cell trip-day holiday city-tokyo" data-day="day03" onclick="selectDay('day03')">
+        <div class="cal-emoji">✈️</div>
+        <div class="cal-num">3</div>
         <div class="cal-day-name">Dom</div>
-        <div class="cal-dots">
-          <div class="cal-dot" style="background:var(--accom)"></div>
-          <div class="cal-dot" style="background:var(--food)"></div>
-          <div class="cal-dot" style="background:var(--sight)"></div>
-          <div class="cal-dot" style="background:var(--anime)"></div>
-          <div class="cal-dot" style="background:var(--night)"></div>
-        </div>
       </div>
 
       <!-- Row 2 -->
-      <!-- May 5 — Trip Day 2, Golden Week -->
-      <div class="cal-cell trip-day holiday" data-day="day2" onclick="selectDay('day2')">
-        <div class="cal-num">5</div>
+      <!-- May 4–6 — Golden Week -->
+      <div class="cal-cell trip-day holiday city-tokyo" data-day="day04" onclick="selectDay('day04')">
+        <div class="cal-emoji">✨</div>
+        <div class="cal-num">4</div>
         <div class="cal-day-name">Lun</div>
-        <div class="cal-dots">
-          <div class="cal-dot" style="background:var(--sight)"></div>
-          <div class="cal-dot" style="background:var(--food)"></div>
-          <div class="cal-dot" style="background:var(--shopping)"></div>
-          <div class="cal-dot" style="background:var(--night)"></div>
-        </div>
       </div>
-      <!-- May 6 — Trip Day 3 -->
-      <div class="cal-cell trip-day" data-day="day3" onclick="selectDay('day3')">
-        <div class="cal-num">6</div>
+      <div class="cal-cell trip-day holiday city-tokyo" data-day="day05" onclick="selectDay('day05')">
+        <div class="cal-emoji">✨</div>
+        <div class="cal-num">5</div>
         <div class="cal-day-name">Mar</div>
-        <div class="cal-dots">
-          <div class="cal-dot" style="background:var(--arch)"></div>
-          <div class="cal-dot" style="background:var(--sight)"></div>
-          <div class="cal-dot" style="background:var(--food)"></div>
-          <div class="cal-dot" style="background:var(--volley)"></div>
-        </div>
       </div>
-      <!-- Gap days 7–11 -->
-      <div class="cal-cell gap-day"><div class="cal-num">7</div><div class="gap-icon">✈</div></div>
-      <div class="cal-cell gap-day"><div class="cal-num">8</div></div>
-      <div class="cal-cell gap-day"><div class="cal-num">9</div></div>
-      <div class="cal-cell gap-day"><div class="cal-num">10</div></div>
-      <div class="cal-cell gap-day"><div class="cal-num">11</div></div>
+      <div class="cal-cell trip-day holiday city-tokyo" data-day="day06" onclick="selectDay('day06')">
+        <div class="cal-emoji">✨</div>
+        <div class="cal-num">6</div>
+        <div class="cal-day-name">Mié</div>
+      </div>
+      <div class="cal-cell trip-day city-tokyo" data-day="day07" onclick="selectDay('day07')">
+        <div class="cal-num">7</div>
+        <div class="cal-day-name">Jue</div>
+      </div>
+      <div class="cal-cell trip-day city-tokyo" data-day="day08" onclick="selectDay('day08')">
+        <div class="cal-emoji">🏖️</div>
+        <div class="cal-num">8</div>
+        <div class="cal-day-name">Vie</div>
+        <div class="cal-trip-name">Nikko · 7:00–21:30</div>
+      </div>
+      <!-- May 9 — Tokyo → Kyoto -->
+      <div class="cal-cell trip-day city-kyoto" data-day="day09" onclick="selectDay('day09')">
+        <div class="cal-emoji">🚄</div>
+        <div class="cal-num">9</div>
+        <div class="cal-day-name">Sáb</div>
+      </div>
+      <div class="cal-cell trip-day city-kyoto" data-day="day10" onclick="selectDay('day10')">
+        <div class="cal-num">10</div>
+        <div class="cal-day-name">Dom</div>
+      </div>
 
-      <!-- Row 3: gap days 12–18 -->
-      <div class="cal-cell gap-day"><div class="cal-num">12</div></div>
-      <div class="cal-cell gap-day"><div class="cal-num">13</div></div>
-      <div class="cal-cell gap-day"><div class="cal-num">14</div></div>
-      <div class="cal-cell gap-day"><div class="cal-num">15</div></div>
-      <div class="cal-cell gap-day"><div class="cal-num">16</div></div>
-      <div class="cal-cell gap-day"><div class="cal-num">17</div></div>
-      <div class="cal-cell gap-day"><div class="cal-num">18</div></div>
+      <!-- Row 3 -->
+      <div class="cal-cell trip-day city-kyoto" data-day="day11" onclick="selectDay('day11')">
+        <div class="cal-emoji">🏖️</div>
+        <div class="cal-num">11</div>
+        <div class="cal-day-name">Lun</div>
+        <div class="cal-trip-name">Uji · 8:30–20:00</div>
+      </div>
+      <div class="cal-cell trip-day city-kyoto" data-day="day12" onclick="selectDay('day12')">
+        <div class="cal-emoji">🏖️</div>
+        <div class="cal-num">12</div>
+        <div class="cal-day-name">Mar</div>
+        <div class="cal-trip-name">Naoshima · 6:32–19:00</div>
+      </div>
+      <div class="cal-cell trip-day city-kyoto" data-day="day13" onclick="selectDay('day13')">
+        <div class="cal-num">13</div>
+        <div class="cal-day-name">Mié</div>
+      </div>
+      <div class="cal-cell trip-day city-kyoto" data-day="day14" onclick="selectDay('day14')">
+        <div class="cal-emoji">🏖️</div>
+        <div class="cal-num">14</div>
+        <div class="cal-day-name">Jue</div>
+        <div class="cal-trip-name">La Collina · 7:50–13:00</div>
+      </div>
+      <!-- May 15 — Kyoto → Osaka -->
+      <div class="cal-cell trip-day city-osaka" data-day="day15" onclick="selectDay('day15')">
+        <div class="cal-emoji">🚄</div>
+        <div class="cal-num">15</div>
+        <div class="cal-day-name">Vie</div>
+      </div>
+      <div class="cal-cell trip-day city-osaka" data-day="day16" onclick="selectDay('day16')">
+        <div class="cal-num">16</div>
+        <div class="cal-day-name">Sáb</div>
+      </div>
+      <!-- May 17 — Osaka → Kumano Kodo -->
+      <div class="cal-cell trip-day city-kumano" data-day="day17" onclick="selectDay('day17')">
+        <div class="cal-emoji">🚄</div>
+        <div class="cal-num">17</div>
+        <div class="cal-day-name">Dom</div>
+      </div>
 
-      <!-- Row 4: gap days 19–25 -->
-      <div class="cal-cell gap-day"><div class="cal-num">19</div></div>
-      <div class="cal-cell gap-day"><div class="cal-num">20</div></div>
-      <div class="cal-cell gap-day"><div class="cal-num">21</div></div>
-      <div class="cal-cell gap-day"><div class="cal-num">22</div></div>
-      <div class="cal-cell gap-day"><div class="cal-num">23</div></div>
-      <div class="cal-cell gap-day"><div class="cal-num">24</div></div>
-      <div class="cal-cell gap-day"><div class="cal-num">25</div></div>
+      <!-- Row 4 -->
+      <div class="cal-cell trip-day city-kumano" data-day="day18" onclick="selectDay('day18')">
+        <div class="cal-num">18</div>
+        <div class="cal-day-name">Lun</div>
+      </div>
+      <div class="cal-cell trip-day city-kumano" data-day="day19" onclick="selectDay('day19')">
+        <div class="cal-num">19</div>
+        <div class="cal-day-name">Mar</div>
+      </div>
+      <div class="cal-cell trip-day city-kumano" data-day="day20" onclick="selectDay('day20')">
+        <div class="cal-num">20</div>
+        <div class="cal-day-name">Mié</div>
+      </div>
+      <div class="cal-cell trip-day city-kumano" data-day="day21" onclick="selectDay('day21')">
+        <div class="cal-num">21</div>
+        <div class="cal-day-name">Jue</div>
+      </div>
+      <!-- May 22 — Kumano Kodo → Tokyo -->
+      <div class="cal-cell trip-day city-tokyo" data-day="day22" onclick="selectDay('day22')">
+        <div class="cal-emoji">🚄</div>
+        <div class="cal-num">22</div>
+        <div class="cal-day-name">Vie</div>
+      </div>
+      <div class="cal-cell trip-day city-tokyo" data-day="day23" onclick="selectDay('day23')">
+        <div class="cal-emoji">🎉</div>
+        <div class="cal-num">23</div>
+        <div class="cal-day-name">Sáb</div>
+      </div>
+      <div class="cal-cell trip-day city-tokyo" data-day="day24" onclick="selectDay('day24')">
+        <div class="cal-num">24</div>
+        <div class="cal-day-name">Dom</div>
+      </div>
 
       <!-- Row 5 -->
-      <!-- May 26 — Trip Day 4 -->
-      <div class="cal-cell trip-day" data-day="day4" onclick="selectDay('day4')">
-        <div class="cal-num">26</div>
+      <!-- May 25 — Kamakura + Enoshima -->
+      <div class="cal-cell trip-day city-tokyo" data-day="day25" onclick="selectDay('day25')">
+        <div class="cal-emoji">🏖️</div>
+        <div class="cal-num">25</div>
         <div class="cal-day-name">Lun</div>
-        <div class="cal-dots">
-          <div class="cal-dot" style="background:var(--accom)"></div>
-          <div class="cal-dot" style="background:var(--arch)"></div>
-          <div class="cal-dot" style="background:var(--sight)"></div>
-          <div class="cal-dot" style="background:var(--volley)"></div>
-          <div class="cal-dot" style="background:var(--food)"></div>
-        </div>
+        <div class="cal-trip-name">Kamakura · 7:30–21:10</div>
       </div>
-      <!-- May 27 — Trip Day 5, Last day -->
-      <div class="cal-cell trip-day" data-day="day5" onclick="selectDay('day5')">
-        <div class="cal-num">27</div>
+      <div class="cal-cell trip-day city-tokyo" data-day="day26" onclick="selectDay('day26')">
+        <div class="cal-num">26</div>
         <div class="cal-day-name">Mar</div>
-        <div class="cal-dots">
-          <div class="cal-dot" style="background:var(--arch)"></div>
-          <div class="cal-dot" style="background:var(--sight)"></div>
-          <div class="cal-dot" style="background:var(--food)"></div>
-          <div class="cal-dot" style="background:var(--anime)"></div>
-          <div class="cal-dot" style="background:var(--volley)"></div>
-        </div>
       </div>
-      <!-- Regular non-trip May days -->
-      <div class="cal-cell regular"><div class="cal-num">28</div></div>
+      <div class="cal-cell trip-day city-tokyo" data-day="day27" onclick="selectDay('day27')">
+        <div class="cal-num">27</div>
+        <div class="cal-day-name">Mié</div>
+      </div>
+      <!-- May 28 — Vuelo de regreso -->
+      <div class="cal-cell trip-day city-tokyo" data-day="day28" onclick="selectDay('day28')">
+        <div class="cal-emoji">✈️</div>
+        <div class="cal-num">28</div>
+        <div class="cal-day-name">Jue</div>
+      </div>
       <div class="cal-cell regular"><div class="cal-num">29</div></div>
       <div class="cal-cell regular"><div class="cal-num">30</div></div>
       <div class="cal-cell regular"><div class="cal-num">31</div></div>
-      <div class="cal-cell empty"><div class="cal-num"></div></div>
     </div>
 
     <div class="cal-footer">
-      <div class="cal-footer-swatch"></div>
-      <span>7–25 de mayo · Kumano Kodo y otros destinos</span>
-    </div>
-  </div>
-
-  <!-- ── Detail panel (populated by JS) ── -->
-  <div class="detail-outer" id="detail-outer" style="display:none">
-    <div class="detail-panel" id="detail-panel">
-      <div class="detail-header" id="detail-header"></div>
-      <div id="detail-body"></div>
+<div class="emoji-index">
+        <span>✈️ Vuelos</span>
+        <span>✨ Golden Week</span>
+        <span>🎉 Cumpleaños</span>
+        <span>🏖️ Day-Trip</span>
+        <span>🚄 Tren de distancia</span>
+      </div>
     </div>
   </div>
 
@@ -1527,405 +1735,596 @@
 
 
 <!-- ══════════════ Day content templates ══════════════ -->
+<div id="tpl-day03" style="display:none"><div class="tpl-placeholder">Plan por agregar</div></div>
+<div id="tpl-day04" style="display:none"><div class="tpl-placeholder">Plan por agregar</div></div>
+<div id="tpl-day05" style="display:none"><div class="tpl-placeholder">Plan por agregar</div></div>
+<div id="tpl-day06" style="display:none"><div class="tpl-placeholder">Plan por agregar</div></div>
+<div id="tpl-day07" style="display:none"><div class="tpl-placeholder">Plan por agregar</div></div>
+<div id="tpl-day08" style="display:none">
 
-<div id="tpl-day1" style="display:none">
   <div class="time-slot">
-    <div class="time-label">Mañana — llegada</div>
+    <div class="time-label">Mañana temprana — Tokyo → Nikko 🚄</div>
     <div class="act c-accom">
       <div class="act-content">
-        <div class="act-name">Check in — AirBnb</div>
-        <div class="act-note">Zona Ikebukuro / Sugamo</div>
+        <div class="act-name"><span class="act-time">7:00</span>Salida desde Asakusa Station</div>
+        <div class="act-note">Tren Tobu Limited Express · 1h 50min</div>
+        <div class="act-arch"><span class="deadline">⚠ Salir antes de las 7:30</span> · Activar Nikko Pass All Area</div>
       </div>
     </div>
-    <div class="act c-food">
+    <div class="act c-accom">
       <div class="act-content">
-        <div class="act-name">Bozu 'n Coffee</div>
-        <div class="act-note">Café de monjes budistas — comienzo tranquilo del viaje</div>
+        <div class="act-name"><span class="act-time">8:50</span>Llegada a Tobu-Nikko Station</div>
+        <div class="act-note">Sacar foto al horario de buses hacia Yumoto Onsen</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="time-slot">
+    <div class="time-label">Mañana — Zona de templos ⛩️</div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">9:00</span>Bus hacia zona de templos</div>
+        <div class="act-note">Bus Tobu · hasta Shinkyo / Omotesando · ~10 min · Buses cada 10–15 min</div>
       </div>
     </div>
     <div class="act c-sight">
       <div class="act-content">
-        <div class="act-name">Jardín de Mejiro</div>
-        <div class="act-note">Jardín tradicional, ~45 min. Ideal para descomprimir después del viaje</div>
+        <div class="act-name"><span class="act-time">9:10–11:00</span>Visita a los templos</div>
+        <div class="act-note">Toshogu · Rinnoji · Shinkyo Bridge · 1h 45min</div>
+        <div class="act-arch">Priorizar Toshogu · <span class="deadline">⚠ Cierre a las 16:30</span></div>
       </div>
     </div>
   </div>
+
   <div class="time-slot">
-    <div class="time-label">Tarde — Ikebukuro</div>
+    <div class="time-label">Mediodía — Oku-Nikko & Trekking 🥾</div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">11:15</span>Bus hacia Oku-Nikko</div>
+        <div class="act-note">Bus Tobu · Tobu-Nikko Station → Ryuzu Falls · 1h 05min</div>
+        <div class="act-arch"><span class="deadline">⚠ Salir antes de las 12:00</span></div>
+      </div>
+    </div>
     <div class="act c-sight">
       <div class="act-content">
-        <div class="act-name">Sunshine 60</div>
-        <div class="act-note">Mirador, vistas a la ciudad</div>
+        <div class="act-name"><span class="act-time">12:20</span>Ryuzu Falls</div>
+        <div class="act-note">Baños y restaurante disponibles en parada</div>
       </div>
     </div>
-    <div class="act c-anime">
+    <div class="act c-sight">
       <div class="act-content">
-        <div class="act-name">Anime Tokyo Station</div>
-        <div class="act-note">Al lado de Sunshine 60</div>
-      </div>
-    </div>
-    <div class="act c-anime">
-      <div class="act-content">
-        <div class="act-name">Gashapon Ikebukuro Main Store</div>
-        <div class="act-note">El paraíso de los gashapon — reservar tiempo</div>
-      </div>
-    </div>
-    <div class="act c-anime closed">
-      <div class="act-content">
-        <div class="act-name">Centro Pokémon Mega Tokyo</div>
-        <div class="act-note">Temporalmente cerrado</div>
-      </div>
-    </div>
-    <div class="act c-anime">
-      <div class="act-content">
-        <div class="act-name">Plaza Capcom Ikebukuro</div>
-        <div class="act-note">Arcade, ~1 hora</div>
+        <div class="act-name"><span class="act-time">12:30–14:30</span>Trekking · Senjogahara</div>
+        <div class="act-note">Ryuzu Falls → Senjogahara → Izumiyadoike → Yutaki Iriguchi · 2h · Sendero plano</div>
+        <div class="act-arch"><span class="deadline">⚠ Último inicio a las 13:30</span></div>
       </div>
     </div>
   </div>
+
   <div class="time-slot">
-    <div class="time-label">Noche</div>
-    <div class="act c-shopping">
+    <div class="time-label">Tarde — Onsen & Lago Chuzenji ♨️</div>
+    <div class="act c-sight">
       <div class="act-content">
-        <div class="act-name">BIC Camera · LABI1 · GU · OWNDAYS</div>
-        <div class="act-note">Electrónica y moda — todo en pocas cuadras</div>
+        <div class="act-name"><span class="act-time">14:30</span>Fin del trekking · Yutaki Iriguchi</div>
+        <div class="act-note">Vista de Yudaki Falls desde la parada del bus</div>
       </div>
     </div>
-    <div class="act c-food">
+    <div class="act c-accom">
       <div class="act-content">
-        <div class="act-name">Cena: Kailaku o Misaki Hogyo</div>
-        <div class="act-note"><span class="rec">⭐ Rec. Agus &amp; Joni</span></div>
+        <div class="act-name"><span class="act-time">14:40</span>Bus → Yumoto Onsen</div>
+        <div class="act-note">Bus Tobu · 10–15 min · Buses cada 30–40 min</div>
+        <div class="act-arch"><span class="deadline">⚠ Tomar antes de las 16:30</span></div>
       </div>
     </div>
     <div class="act c-night">
       <div class="act-content">
-        <div class="act-name">Karaoke Hundred Ikebukuro</div>
-        <div class="act-note">Bar de karaoke y dardos</div>
+        <div class="act-name"><span class="act-time">15:00–15:30</span>Footbath · Yumoto Onsen</div>
+        <div class="act-note">Ashiyu gratuito · 30 min de descanso</div>
+        <div class="act-arch"><span class="deadline">⚠ Salir antes de las 17:00</span></div>
       </div>
     </div>
-  </div>
-</div>
-
-<div id="tpl-day2" style="display:none">
-  <div class="time-slot">
-    <div class="time-label">Mañana — Shinjuku</div>
-    <div class="act c-sight">
-      <div class="act-content">
-        <div class="act-name">Edificio Metropolitano de Tokyo</div>
-        <div class="act-note">Mirador gratuito — ir temprano antes de que se forme fila</div>
-      </div>
-    </div>
-    <div class="act c-sight">
-      <div class="act-content">
-        <div class="act-name">3D Cat Cross Shinjuku Space + Godzilla Head</div>
-        <div class="act-note">Cerca de la salida este, ~10 min a pie</div>
-      </div>
-    </div>
-    <div class="act c-shopping">
-      <div class="act-content">
-        <div class="act-name">OWNDAYS 新宿東口店</div>
-        <div class="act-note">Parada rápida si hace falta</div>
-      </div>
-    </div>
-  </div>
-  <div class="time-slot">
-    <div class="time-label">Mediodía — calles de Shinjuku</div>
-    <div class="act c-food">
-      <div class="act-content">
-        <div class="act-name">Uogashi Nihon-Ichi</div>
-        <div class="act-note"><span class="rec">⭐ Rec. Agus &amp; Joni</span> — Sushi de pie, sin espera</div>
-      </div>
-    </div>
-    <div class="act c-sight">
-      <div class="act-content">
-        <div class="act-name">Omoide Yokochō (Memory Lane)</div>
-        <div class="act-note">Callejón de yakitori, muy pintoresco</div>
-      </div>
-    </div>
-    <div class="act c-night">
-      <div class="act-content">
-        <div class="act-name">Shinjuku Golden-Gai</div>
-        <div class="act-note">200+ bares pequeños en 6 callejones — ideal para fotos aunque sea</div>
-      </div>
-    </div>
-  </div>
-  <div class="time-slot">
-    <div class="time-label">Tarde — Harajuku</div>
-    <div class="act c-sight">
-      <div class="act-content">
-        <div class="act-name">Santuario Meiji</div>
-        <div class="act-note">Llegar antes de las 3–4pm, ~1 hora. El paseo por el bosque vale la pena</div>
-      </div>
-    </div>
-    <div class="act c-sight">
-      <div class="act-content">
-        <div class="act-name">Calle Takeshita</div>
-        <div class="act-note">Caótica y divertida, ~30–45 min</div>
-      </div>
-    </div>
-    <div class="act c-sight">
-      <div class="act-content">
-        <div class="act-name">Tokyu Plaza Harajuku "HARAKADO"</div>
-        <div class="act-note">Jardín en terraza + tiendas</div>
-      </div>
-    </div>
-  </div>
-  <div class="time-slot">
-    <div class="time-label">Noche</div>
-    <div class="act c-food">
-      <div class="act-content">
-        <div class="act-name">Shinjuku Kabuki Hall / Kabuki Yokocho</div>
-        <div class="act-note"><span class="rec">⭐ Rec. Agus &amp; Joni</span> — Pasaje de comida animado, cena larga</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div id="tpl-day3" style="display:none">
-  <div class="time-slot">
-    <div class="time-label">Mañana — paseo arquitectónico por Omotesando</div>
-    <div class="act c-sight">
-      <div class="act-content">
-        <div class="act-name">BLUE ELEPHANT HARAJUKU + Japanime Art Gallery</div>
-        <div class="act-note">Abre a las 11am — recorrer las calles laterales de Takeshita</div>
-      </div>
-    </div>
-    <div class="act c-sight">
-      <div class="act-content">
-        <div class="act-name">Cat Street + 3-chōme-18 Jingūmae</div>
-        <div class="act-note">Tiendas indie, menos turístico</div>
-      </div>
-    </div>
-    <div class="act c-arch">
-      <div class="act-content">
-        <div class="act-name">DIOR Tokyo Omotesando</div>
-        <div class="act-arch">SANAA</div>
-      </div>
-    </div>
-    <div class="act c-arch">
-      <div class="act-content">
-        <div class="act-name">Miu Miu Aoyama</div>
-        <div class="act-arch">Herzog &amp; De Meuron</div>
-      </div>
-    </div>
-    <div class="act c-arch">
-      <div class="act-content">
-        <div class="act-name">Prada Tokyo Aoyama</div>
-        <div class="act-arch">Herzog &amp; De Meuron</div>
-      </div>
-    </div>
-    <div class="act c-arch">
-      <div class="act-content">
-        <div class="act-name">Louis Vuitton Omotesando</div>
-        <div class="act-arch">Jun Aoki</div>
-      </div>
-    </div>
-    <div class="act c-arch">
-      <div class="act-content">
-        <div class="act-name">SunnyHills Minamiaoyama</div>
-        <div class="act-arch">Kengo Kuma</div>
-      </div>
-    </div>
-    <div class="act c-sight">
-      <div class="act-content">
-        <div class="act-name">Gentle Monster Aoyama Flagship</div>
-      </div>
-    </div>
-  </div>
-  <div class="time-slot">
-    <div class="time-label">Mediodía — Shibuya</div>
-    <div class="act c-food">
-      <div class="act-content">
-        <div class="act-name">Almuerzo en Miyashita Park</div>
-        <div class="act-note">Parque en terraza con opciones de comida (11am–9pm)</div>
-      </div>
-    </div>
-    <div class="act c-sight">
-      <div class="act-content">
-        <div class="act-name">Shibuya Crossing</div>
-        <div class="act-note">A última hora de la tarde es lo más fotogénico</div>
-      </div>
-    </div>
-    <div class="act c-arch">
-      <div class="act-content">
-        <div class="act-name">Tokyo Toilet Project</div>
-        <div class="act-note">4 baños de diseño en ~1km — Tadao Ando, Kengo Kuma, Nigo</div>
-      </div>
-    </div>
-  </div>
-  <div class="time-slot">
-    <div class="time-label">Tarde</div>
-    <div class="act c-volley">
-      <div class="act-content">
-        <div class="act-name">Sports Shop Gallery 2 Shibuya</div>
-        <div class="act-note">Equipamiento de volleyball</div>
-      </div>
-    </div>
-    <div class="act c-sight">
-      <div class="act-content">
-        <div class="act-name">Nakameguro <span class="opt">optional</span></div>
-        <div class="act-note">Paseo por el canal + cafeterías — 1 parada en línea Tokyu Toyoko</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div id="tpl-day4" style="display:none">
-  <div class="time-slot">
-    <div class="time-label">Mañana — Tokyo Este</div>
     <div class="act c-accom">
       <div class="act-content">
-        <div class="act-name">Check in — Lang Hotel</div>
-        <div class="act-note">Zona Kameido · dejar las bolsas y salir</div>
+        <div class="act-name"><span class="act-time">15:40</span>Bus → Chuzenji Onsen</div>
+        <div class="act-note">Bus Tobu · 35–40 min · Baja la montaña en curvas</div>
+        <div class="act-arch"><span class="deadline">⚠ Tomar antes de las 17:00</span></div>
       </div>
     </div>
     <div class="act c-sight">
       <div class="act-content">
-        <div class="act-name">Age.3 Asakusa</div>
-        <div class="act-note">~20–25 min en tren. Explorar la zona a pie</div>
-      </div>
-    </div>
-    <div class="act c-sight">
-      <div class="act-content">
-        <div class="act-name">Anegawa Bookstores Nyankodo + Tokyo Dome City</div>
-        <div class="act-note">Cerca de la estación Korakuen (~25 min desde Asakusa)</div>
-      </div>
-    </div>
-    <div class="act c-arch">
-      <div class="act-content">
-        <div class="act-name">Catedral de Santa María de Tokyo</div>
-        <div class="act-note">10 min a pie desde Tokyo Dome</div>
-        <div class="act-arch">Kenzo Tange</div>
+        <div class="act-name"><span class="act-time">16:20</span>Kegon Falls & Lake Chuzenji</div>
+        <div class="act-note">~1h · Merienda en los cafés del lago</div>
+        <div class="act-arch"><span class="deadline">⚠ Salir antes de las 18:00</span></div>
       </div>
     </div>
   </div>
-  <div class="time-slot">
-    <div class="time-label">Tarde — arquitectura en Ginza</div>
-    <div class="act c-arch">
-      <div class="act-content">
-        <div class="act-name">Tokyo International Forum</div>
-        <div class="act-note">Entrada gratuita al atrio. Espacio impresionante</div>
-        <div class="act-arch">Rafael Viñoly</div>
-      </div>
-    </div>
-    <div class="act c-arch">
-      <div class="act-content">
-        <div class="act-name">Maison Hermès Le Forum</div>
-        <div class="act-note">Torre de ladrillos de vidrio iluminada</div>
-        <div class="act-arch">Renzo Piano</div>
-      </div>
-    </div>
-  </div>
-  <div class="time-slot">
-    <div class="time-label">Noche</div>
-    <div class="act c-volley">
-      <div class="act-content">
-        <div class="act-name">MIZUNO TOKYO</div>
-        <div class="act-note">Local insignia en Ginza — reservar 30–60 min</div>
-      </div>
-    </div>
-    <div class="act c-food">
-      <div class="act-content">
-        <div class="act-name">Cena en Ginza</div>
-      </div>
-    </div>
-  </div>
-</div>
 
-<div id="tpl-day5" style="display:none">
   <div class="time-slot">
-    <div class="time-label">Mañana — Roppongi / Minato</div>
-    <div class="act c-arch">
+    <div class="time-label">Regreso a Tokyo 🚄</div>
+    <div class="act c-accom">
       <div class="act-content">
-        <div class="act-name">Centro Nacional de Arte, Tokyo</div>
-        <div class="act-note">Entrada gratuita. Fachada ondulante de vidrio (~30 min por línea Oedo)</div>
-        <div class="act-arch">Kisho Kurokawa</div>
+        <div class="act-name"><span class="act-time">18:00</span>Bus → Tobu-Nikko Station</div>
+        <div class="act-note">Bus Tobu · Chuzenji Onsen → Tobu-Nikko Station · ~50 min</div>
+        <div class="act-arch"><span class="deadline">⚠ Último bus seguro: 18:45</span></div>
       </div>
     </div>
-    <div class="act c-arch">
+    <div class="act c-accom">
       <div class="act-content">
-        <div class="act-name">21-21 Design Sight</div>
-        <div class="act-note">Verificar la exposición actual antes de ir</div>
-        <div class="act-arch">Tadao Ando</div>
+        <div class="act-name"><span class="act-time">19:30</span>Tren de regreso a Tokyo</div>
+        <div class="act-note">Tobu Railway · Tobu-Nikko → Asakusa · 1h 50min · Reservar Limited Express</div>
+        <div class="act-arch"><span class="deadline">⚠ Último cómodo: 20:30</span></div>
       </div>
     </div>
-    <div class="act c-sight">
+    <div class="act c-accom">
       <div class="act-content">
-        <div class="act-name">Azabudai Hills</div>
-        <div class="act-note">Complejo más nuevo (2023) — vale la pena recorrerlo</div>
+        <div class="act-name"><span class="act-time">21:30</span>Llegada a Tokyo · Asakusa Station</div>
+        <div class="act-note">Fin del day trip</div>
       </div>
     </div>
   </div>
+
+</div>
+<div id="tpl-day09" style="display:none"><div class="tpl-placeholder">Plan por agregar</div></div>
+<div id="tpl-day10" style="display:none"><div class="tpl-placeholder">Plan por agregar</div></div>
+<div id="tpl-day11" style="display:none">
+
   <div class="time-slot">
-    <div class="time-label">Mediodía — Tokyo Tower</div>
+    <div class="time-label">Mañana — Kyoto → Uji 🚄</div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">8:30</span>Salida desde Kyoto</div>
+        <div class="act-note">JR Nara Line · directo a Uji · ~17 min · ¥240</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="time-slot">
+    <div class="time-label">Mañana — Byōdō-in & Matcha ⛩️</div>
+    <div class="act c-food">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">9:00</span>Byodo-in Omotesando</div>
+        <div class="act-note">Recorrer la calle con locales de matcha · desayunar en uno de los puestos · ~1h</div>
+        <div class="act-arch">Abre 8:30 · Cierra 17:30 · Helados, wagashi y matcha fresco</div>
+      </div>
+    </div>
+    <div class="act c-arch">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">10:00</span>Byōdō-in</div>
+        <div class="act-note">Templo del período Heian · el Pabellón Fénix reflejado en el estanque · 1h · ¥700</div>
+        <div class="act-arch">Abre 8:30 · Cierra 17:30</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="time-slot">
+    <div class="time-label">Mediodía — Experiencia de Matcha & Museo 🍵</div>
     <div class="act c-sight">
       <div class="act-content">
-        <div class="act-name">RED° TOKYO TOWER</div>
-        <div class="act-note">Complejo de entretenimiento en la base de la torre</div>
+        <div class="act-name"><span class="act-time">11:00</span>Grinding Matcha Experience · Museo del Té</div>
+        <div class="act-note">Moler matcha con mano de mortero tradicional · Parque Histórico del Té de Uji · 1h</div>
+        <div class="act-arch">Abre 11:00 · Cierra 12:00</div>
       </div>
     </div>
     <div class="act c-food">
       <div class="act-content">
-        <div class="act-name">Almuerzo cerca de la Tokyo Tower</div>
+        <div class="act-name"><span class="act-time">12:00</span>Zona del museo · más matcha</div>
+        <div class="act-note">Recorrer locales de la zona · probar distintas preparaciones · ~2h</div>
       </div>
     </div>
   </div>
+
   <div class="time-slot">
-    <div class="time-label">Tarde — elegir una opción</div>
-    <div class="act c-anime">
+    <div class="time-label">Tarde — Nintendo Museum 🎮</div>
+    <div class="act c-sight">
       <div class="act-content">
-        <div class="act-name">Opción A · Nakano Broadway</div>
-        <div class="act-note">Mandarake, figuras, anime vintage — línea Chuo desde Shinjuku (~5 min)</div>
+        <div class="act-name"><span class="act-time">14:00</span>Nintendo Museum</div>
+        <div class="act-note">Exposición interactiva de la historia de Nintendo · 2–4h · ¥3,300 · reserva online requerida</div>
+        <div class="act-arch">Tienda exclusiva adentro · también se puede comer ahí si hay hambre</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="time-slot">
+    <div class="time-label">Regreso a Kyoto 🚄</div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">18:00</span>Vuelta a Kyoto</div>
+        <div class="act-note">JR Nara Line · ~17 min · llegar para horario de cena</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div id="tpl-day12" style="display:none">
+
+  <div class="time-slot">
+    <div class="time-label">Mañana — Kyoto → Naoshima 🚄</div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">6:32</span>Shinkansen Kyoto → Okayama</div>
+        <div class="act-note">JR Pass · ~1h</div>
+      </div>
+    </div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">7:32</span>JR Uno Line → Uno</div>
+        <div class="act-note">JR Pass · caminar 5 min al puerto al llegar</div>
+      </div>
+    </div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">9:22</span>Ferry Uno → Naoshima</div>
+        <div class="act-note">¥370 · ~20 min · llega a Miyanoura Port</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="time-slot">
+    <div class="time-label">Mañana — Arte al aire libre 🎨</div>
+    <div class="act c-sight">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">9:45</span>Red Pumpkin · Yayoi Kusama</div>
+        <div class="act-note">Ícono de Miyanoura · fotos · Gratis</div>
+      </div>
+    </div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">10:00</span>Ougiya Rent-a-Cycle · e-bike</div>
+        <div class="act-note">¥1,200 · abre 8:00 · traslado en bici a Honmura</div>
       </div>
     </div>
     <div class="act c-sight">
       <div class="act-content">
-        <div class="act-name">Opción B · SKWAT / twelvebooks</div>
-        <div class="act-note">Cerca del hotel — tarde final tranquila</div>
-      </div>
-    </div>
-    <div class="act c-volley">
-      <div class="act-content">
-        <div class="act-name">Opción C · Gallery 2 Shinjuku + Sports Zyuen</div>
-        <div class="act-note">Última vuelta de compras de volleyball</div>
+        <div class="act-name"><span class="act-time">10:30</span>Honmura Lounge · ticket Art Houses</div>
+        <div class="act-note">Pass para todas las Art Houses · ¥1,200</div>
       </div>
     </div>
   </div>
+
+  <div class="time-slot">
+    <div class="time-label">Mañana — Art Houses 🏘️</div>
+    <div class="act c-arch">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">10:40</span>Recorrido Art Houses · Honmura</div>
+        <div class="act-note">Casas del pueblo convertidas en instalaciones de arte · ~2h · incluido en pass</div>
+        <div class="act-arch">Recorrido a pie · 7 casas distintas por el barrio histórico</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="time-slot">
+    <div class="time-label">Mediodía — Almuerzo 🍽️</div>
+    <div class="act c-food">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">12:30</span>Aisunao</div>
+        <div class="act-note">Almuerzo recomendado en Honmura · cocina local</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="time-slot">
+    <div class="time-label">Tarde — Museos & Calabaza Amarilla 🖼️</div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">13:30</span>Bici a la zona de museos</div>
+        <div class="act-note">Traslado en e-bike hacia el sur de la isla</div>
+      </div>
+    </div>
+    <div class="act c-arch">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">14:00</span>Lee Ufan Museum</div>
+        <div class="act-note">Espacio minimalista diseñado por Tadao Ando · ~40 min · ¥1,050</div>
+      </div>
+    </div>
+    <div class="act c-arch">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">14:40</span>Valley Gallery</div>
+        <div class="act-note">Instalación en el valle · ~20 min · ticket separado</div>
+      </div>
+    </div>
+    <div class="act c-sight">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">15:00</span>Yellow Pumpkin · Yayoi Kusama</div>
+        <div class="act-note">El ícono de Naoshima frente al mar · fotos · Gratis</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="time-slot">
+    <div class="time-label">Regreso a Kyoto 🚄</div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">15:30</span>Devolver e-bike · Miyanoura</div>
+        <div class="act-note">Bici al puerto · devolver en Ougiya antes del ferry</div>
+      </div>
+    </div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">16:35</span>Ferry Naoshima → Uno</div>
+        <div class="act-note">¥370 · ~20 min</div>
+      </div>
+    </div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">16:55</span>Tren Uno → Okayama</div>
+        <div class="act-note">JR Pass</div>
+      </div>
+    </div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">18:00</span>Shinkansen Okayama → Kyoto</div>
+        <div class="act-note">JR Pass · ~1h · llegada 19:00</div>
+      </div>
+    </div>
+  </div>
+
 </div>
+<div id="tpl-day13" style="display:none"><div class="tpl-placeholder">Plan por agregar</div></div>
+<div id="tpl-day14" style="display:none">
+
+  <div class="time-slot">
+    <div class="time-label">Mañana — Kyoto → Ōmihachiman 🚄</div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">7:50</span>JR Biwako Line Special Rapid</div>
+        <div class="act-note">Kyoto → Ōmihachiman · ~35–40 min · ¥990 · IC card o ticket</div>
+      </div>
+    </div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">8:30</span>Llegada · Salida North Exit</div>
+        <div class="act-note">Bus Ōmi · línea Chōmeiji → parada La Collina-mae · 10 min · ¥350</div>
+      </div>
+    </div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">8:55</span>Llegada a La Collina</div>
+        <div class="act-note">Entrada gratuita · abre 9:00 · esperar unos minutos si se llega antes</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="time-slot">
+    <div class="time-label">Mañana — La Collina 🏛️</div>
+    <div class="act c-arch">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">9:00</span>Explorar La Collina Ōmi-Hachiman</div>
+        <div class="act-note">Arquitectura de Terunobu Fujimori · techo cubierto de hierba · fábrica de baumkuchen visible · ~1h15 · Gratis</div>
+        <div class="act-arch">Espacio de campo japonés con tiendas, jardines y taller de repostería</div>
+      </div>
+    </div>
+    <div class="act c-food">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">10:15</span>Club Harie · café</div>
+        <div class="act-note">Baumkuchen recién horneado · la especialidad de la casa · ~25 min · ¥600–900</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="time-slot">
+    <div class="time-label">Mañana — Hachiman-bori & Calles Edo 🛶</div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">10:45</span>Bus de regreso a la estación</div>
+        <div class="act-note">La Collina → Ōmihachiman Station · 10 min · ¥350</div>
+      </div>
+    </div>
+    <div class="act c-sight">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">11:10</span>Canal Hachiman-bori & casco histórico</div>
+        <div class="act-note">Paseo tranquilo por el canal y calles del período Edo · ~1h · Gratis</div>
+        <div class="act-arch">Barrio muy bien conservado · ideal para fotos</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="time-slot">
+    <div class="time-label">Regreso a Kyoto 🚄</div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">12:20</span>JR Biwako Line → Kyoto</div>
+        <div class="act-note">Ōmihachiman → Kyoto Station · ~35–40 min · ¥990 · tren frecuente</div>
+      </div>
+    </div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">13:00</span>Llegada a Kyoto</div>
+        <div class="act-note">Tarde libre en la ciudad</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div id="tpl-day15" style="display:none"><div class="tpl-placeholder">Plan por agregar</div></div>
+<div id="tpl-day16" style="display:none"><div class="tpl-placeholder">Plan por agregar</div></div>
+<div id="tpl-day17" style="display:none"><div class="tpl-placeholder">Plan por agregar</div></div>
+<div id="tpl-day18" style="display:none"><div class="tpl-placeholder">Plan por agregar</div></div>
+<div id="tpl-day19" style="display:none"><div class="tpl-placeholder">Plan por agregar</div></div>
+<div id="tpl-day20" style="display:none"><div class="tpl-placeholder">Plan por agregar</div></div>
+<div id="tpl-day21" style="display:none"><div class="tpl-placeholder">Plan por agregar</div></div>
+<div id="tpl-day22" style="display:none"><div class="tpl-placeholder">Plan por agregar</div></div>
+<div id="tpl-day23" style="display:none"><div class="tpl-placeholder">Plan por agregar</div></div>
+<div id="tpl-day24" style="display:none"><div class="tpl-placeholder">Plan por agregar</div></div>
+<div id="tpl-day25" style="display:none">
+
+  <div class="time-slot">
+    <div class="time-label">Mañana — Tokio → Kamakura 🚄</div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">7:30</span>Salida desde Shinjuku</div>
+        <div class="act-note">JR Shonan-Shinjuku Line · directo a Kamakura · ~1h · ~¥950</div>
+      </div>
+    </div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">8:30</span>Llegada · Alquilar bici</div>
+        <div class="act-note">Comprar agua o snack · ¥1000–1500 · 15 min</div>
+        <div class="act-arch">Opciones: Kamakura Bicycle Rental (8:30–17:00) · HELLO CYCLING (24hs, app) · COGICOGI (24hs, app)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="time-slot">
+    <div class="time-label">Mañana — Templos y el Gran Buda ⛩️</div>
+    <div class="act c-sight">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">9:00</span>Sasuke Inari Shrine</div>
+        <div class="act-note">Santuario con túneles de torii rojos · 40 min · Gratis</div>
+        <div class="act-arch">Abre 9:00 · Cierra 17:00 · Lugar muy tranquilo</div>
+      </div>
+    </div>
+    <div class="act c-sight">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">9:50</span>Kōtoku-in — Gran Buda</div>
+        <div class="act-note">Ícono de Kamakura · 40 min · ¥300</div>
+        <div class="act-arch">Abre 8:00 · <span class="deadline">⚠ Cierra 16:45</span></div>
+      </div>
+    </div>
+    <div class="act c-sight">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">10:30</span>Daibutsu Street Backroad</div>
+        <div class="act-note">Calle tranquila con cafés · casi sin autos · 20 min · en bici</div>
+      </div>
+    </div>
+    <div class="act c-sight">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">10:50</span>Hase-dera Temple</div>
+        <div class="act-note">Jardines y mirador al mar · 1h · ¥400</div>
+        <div class="act-arch">Abre 8:00 · <span class="deadline">⚠ Cierra 17:00</span> · Vistas muy lindas</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="time-slot">
+    <div class="time-label">Mediodía — Playa y almuerzo 🌊</div>
+    <div class="act c-food">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">12:00</span>Yuigahama Beach · Almuerzo</div>
+        <div class="act-note">Shirasu-don · plato local de anchoa fresca · 1h 30min · ¥1500–2000</div>
+      </div>
+    </div>
+    <div class="act c-sight">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">13:30</span>Paseo en bici por la costa</div>
+        <div class="act-note">Ciclovías frente al mar · 1h</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="plan-b-divider">
+    <div class="plan-b-divider-line"></div>
+    <div class="plan-b-divider-label">🔀 Plan B — Enoshima · desde las 14:00</div>
+    <div class="plan-b-divider-line"></div>
+  </div>
+
+  <div class="plan-b-block">
+    <div class="plan-b-note">Alternativa al tiempo libre en playa (reemplaza 15:00–17:00). Se reincorpora en Shichirigahama ~17:20.</div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">14:00</span>Enoshima Electric Railway</div>
+        <div class="act-note">Tren costero pegado al mar · Kamakura → Enoshima · 25 min · ¥260</div>
+      </div>
+    </div>
+    <div class="act c-sight">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">14:30</span>Explorar Enoshima Island</div>
+        <div class="act-note">Paseo tranquilo por la isla · 2h</div>
+      </div>
+    </div>
+    <div class="act c-sight">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">15:30</span>Enoshima Iwaya Caves</div>
+        <div class="act-note">Cuevas marítimas · 40 min · ¥500</div>
+        <div class="act-arch">Abre 9:00 · <span class="deadline">⚠ Última entrada 16:30</span> · Cierra 17:00</div>
+      </div>
+    </div>
+    <div class="act c-sight">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">16:30</span>Enoshima Sea Candle</div>
+        <div class="act-note">Mirador panorámico · 40 min · ¥500</div>
+        <div class="act-arch">Abre 9:00 · Cierra 20:00 · Vistas del Fuji si despeja</div>
+      </div>
+    </div>
+    <div class="plan-b-merge">↩ Regresa desde Enoshima · llega a Shichirigahama ~17:20</div>
+  </div>
+
+  <div class="time-slot">
+    <div class="time-label">Tarde — Atardecer y cena 🌅</div>
+    <div class="act c-sight">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">15:00</span>Tiempo libre · Yuigahama Beach</div>
+        <div class="act-note">Playa · volley · descanso · 2h &nbsp;·&nbsp; <em>Solo si no se hace Plan B</em></div>
+      </div>
+    </div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">17:00</span>Mover hacia Shichirigahama</div>
+        <div class="act-note">Mejor spot para el atardecer · vista al Fuji · 20 min en bici</div>
+      </div>
+    </div>
+    <div class="act c-sight">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">17:20</span>Shichirigahama Beach · Sunset</div>
+        <div class="act-note">Playa · volley · atardecer · 1h 25min · Sunset aprox 18:20–18:30</div>
+      </div>
+    </div>
+    <div class="act c-food">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">18:45</span>Cena frente al mar</div>
+        <div class="act-note">Restaurantes en Shichirigahama area · 1h · ¥2000–3000</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="time-slot">
+    <div class="time-label">Regreso a Tokio 🚄</div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">20:00</span>Tren de regreso</div>
+        <div class="act-note">JR Shonan-Shinjuku Line · Kamakura → Shinjuku · 1h 10min · ~¥950</div>
+      </div>
+    </div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">21:10</span>Llegada a Shinjuku</div>
+        <div class="act-note">Fin del day trip</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div id="tpl-day26" style="display:none"><div class="tpl-placeholder">Plan por agregar</div></div>
+<div id="tpl-day27" style="display:none"><div class="tpl-placeholder">Plan por agregar</div></div>
+<div id="tpl-day28" style="display:none"><div class="tpl-placeholder">Plan por agregar</div></div>
 
 
 <script>
   const META = {
-    day1: {
-      dateNum: '4', dateMo: 'Mayo',
-      title: 'Día 1 — Llegada + Ikebukuro',
-      sub: 'Domingo · Check in, explorar Ikebukuro, karaoke',
-      badge: 'holiday', badgeText: 'Golden Week', holiday: true
-    },
-    day2: {
-      dateNum: '5', dateMo: 'Mayo',
-      title: 'Día 2 — Shinjuku + Harajuku',
-      sub: 'Lunes · Día del Niño · Salir temprano',
-      badge: 'holiday', badgeText: 'Golden Week', holiday: true
-    },
-    day3: {
-      dateNum: '6', dateMo: 'Mayo',
-      title: 'Día 3 — Omotesando + Shibuya',
-      sub: 'Martes · Día laborable normal · Mejor día para el turismo',
-      badge: null, holiday: false
-    },
-    day4: {
-      dateNum: '26', dateMo: 'Mayo',
-      title: 'Día 4 — Asakusa + Ginza',
-      sub: 'Lunes · Día de check-in · Circuito por Tokyo Este',
-      badge: null, holiday: false
-    },
-    day5: {
-      dateNum: '27', dateMo: 'Mayo',
-      title: 'Día 5 — Roppongi + Tokyo Tower',
-      sub: 'Martes · Mañana de arquitectura · Elige tu tarde',
-      badge: 'last', badgeText: 'Último día', holiday: false
-    }
+    day03: { dateNum:'3',  dateMo:'Mayo', city:'tokyo',  title:'Día 1 — Llegada a Tokyo',          sub:'Domingo · Vuelo llega a NRT a las 19:40',                badge:null,      holiday:true  },
+    day04: { dateNum:'4',  dateMo:'Mayo', city:'tokyo',  title:'Día 2 — Tokyo',                    sub:'Lunes · Golden Week',                                    badge:'holiday', badgeText:'Golden Week', holiday:true },
+    day05: { dateNum:'5',  dateMo:'Mayo', city:'tokyo',  title:'Día 3 — Tokyo',                    sub:'Martes · Día del Niño · Golden Week',                    badge:'holiday', badgeText:'Golden Week', holiday:true },
+    day06: { dateNum:'6',  dateMo:'Mayo', city:'tokyo',  title:'Día 4 — Tokyo',                    sub:'Miércoles · Festivo sustituto Golden Week',               badge:'holiday', badgeText:'Golden Week', holiday:true },
+    day07: { dateNum:'7',  dateMo:'Mayo', city:'tokyo',  title:'Día 5 — Tokyo',                    sub:'Jueves',                                                 badge:null,      holiday:false },
+    day08: { dateNum:'8',  dateMo:'Mayo', city:'tokyo',  title:'Día 6 — Nikko Day Trip',            sub:'Viernes · 7:00 → 21:30 · Tobu Limited Express desde Asakusa', badge:null, holiday:false },
+    day09: { dateNum:'9',  dateMo:'Mayo', city:'kyoto',  title:'Día 7 — Tokyo → Kyoto',            sub:'Sábado · Shinkansen NOZOMI 07:00 → 09:12',              badge:null,      holiday:false },
+    day10: { dateNum:'10', dateMo:'Mayo', city:'kyoto',  title:'Día 8 — Kyoto',                    sub:'Domingo',                                                badge:null,      holiday:false },
+    day11: { dateNum:'11', dateMo:'Mayo', city:'kyoto',  title:'Uji',                               sub:'Lunes · 8:30 → ~20:00 · JR Nara Line desde Kyoto',       badge:null,      holiday:false },
+    day12: { dateNum:'12', dateMo:'Mayo', city:'kyoto',  title:'Naoshima',                          sub:'Martes · 6:32 → 19:00 · Shinkansen + ferry desde Kyoto',  badge:null,      holiday:false },
+    day13: { dateNum:'13', dateMo:'Mayo', city:'kyoto',  title:'Día 11 — Kyoto',                   sub:'Miércoles',                                              badge:null,      holiday:false },
+    day14: { dateNum:'14', dateMo:'Mayo', city:'kyoto',  title:'La Collina',                        sub:'Jueves · 7:50 → 13:00 · JR Biwako Line desde Kyoto',     badge:null,      holiday:false },
+    day15: { dateNum:'15', dateMo:'Mayo', city:'osaka',  title:'Día 13 — Kyoto → Osaka',           sub:'Viernes',                                                badge:null,      holiday:false },
+    day16: { dateNum:'16', dateMo:'Mayo', city:'osaka',  title:'Día 14 — Osaka',                   sub:'Sábado',                                                 badge:null,      holiday:false },
+    day17: { dateNum:'17', dateMo:'Mayo', city:'kumano', title:'Día 15 — Osaka → Kumano Kodo',     sub:'Domingo · KUROSHIO 01 07:34 → 09:58',                   badge:null,      holiday:false },
+    day18: { dateNum:'18', dateMo:'Mayo', city:'kumano', title:'Día 16 — Kumano Kodo',             sub:'Lunes',                                                  badge:null,      holiday:false },
+    day19: { dateNum:'19', dateMo:'Mayo', city:'kumano', title:'Día 17 — Kumano Kodo',             sub:'Martes',                                                 badge:null,      holiday:false },
+    day20: { dateNum:'20', dateMo:'Mayo', city:'kumano', title:'Día 18 — Kumano Kodo',             sub:'Miércoles',                                              badge:null,      holiday:false },
+    day21: { dateNum:'21', dateMo:'Mayo', city:'kumano', title:'Día 19 — Kumano Kodo',             sub:'Jueves',                                                 badge:null,      holiday:false },
+    day22: { dateNum:'22', dateMo:'Mayo', city:'tokyo',  title:'Día 20 — Kumano Kodo → Tokyo',     sub:'Viernes · KUROSHIO 12 06:46 + NOZOMI 14 11:06 → 13:33', badge:null,     holiday:false },
+    day23: { dateNum:'23', dateMo:'Mayo', city:'tokyo',  title:'Día 21 — Tokyo',                   sub:'Sábado',                                                 badge:null,      holiday:false },
+    day24: { dateNum:'24', dateMo:'Mayo', city:'tokyo',  title:'Día 22 — Tokyo',                   sub:'Domingo',                                                badge:null,      holiday:false },
+    day25: { dateNum:'25', dateMo:'Mayo', city:'tokyo',  title:'Kamakura + Enoshima',              sub:'Lunes · 7:30 → 21:10 · JR Shonan-Shinjuku desde Shinjuku', badge:null,   holiday:false },
+    day26: { dateNum:'26', dateMo:'Mayo', city:'tokyo',  title:'Día 24 — Tokyo',                   sub:'Martes',                                                 badge:null,      holiday:false },
+    day27: { dateNum:'27', dateMo:'Mayo', city:'tokyo',  title:'Día 25 — Tokyo',                   sub:'Miércoles',                                              badge:null,      holiday:false },
+    day28: { dateNum:'28', dateMo:'Mayo', city:'tokyo',  title:'Día 26 — Vuelo de regreso',         sub:'Jueves · NRT 20:45',                                    badge:'last',    badgeText:'Vuelo', holiday:false },
   };
 
   const header = document.querySelector('.header');
@@ -1983,6 +2382,35 @@
 
   let current = null;
 
+  function closeDayPanel() {
+    const panel = document.getElementById('detail-panel');
+    const outer = document.getElementById('detail-outer');
+    panel.style.transition = 'opacity 0.14s ease, transform 0.18s ease';
+    panel.style.opacity = '0';
+    panel.style.transform = 'scale(0.84)';
+    panel.style.pointerEvents = 'none';
+    outer.classList.remove('open');
+    setTimeout(() => {
+      outer.style.display = 'none';
+      panel.style.cssText = '';
+      panel.classList.remove('fade-top', 'fade-bottom');
+    }, 180);
+    document.querySelectorAll('.cal-cell.trip-day').forEach(c => c.classList.remove('selected'));
+    current = null;
+  }
+
+
+  function syncFade() {
+    const scroll = document.getElementById('detail-scroll');
+    const panel  = document.getElementById('detail-panel');
+    const { scrollTop, scrollHeight, clientHeight } = scroll;
+    const diff = scrollHeight - scrollTop - clientHeight;
+    panel.classList.toggle('fade-top',    scrollTop > 1);
+    panel.classList.toggle('fade-bottom', diff > 2);
+  }
+
+  // listener attached after detail-scroll is in the DOM (see script tag below detail-outer)
+
   function selectDay(id) {
     const panel  = document.getElementById('detail-panel');
     const outer  = document.getElementById('detail-outer');
@@ -1991,10 +2419,7 @@
     document.querySelectorAll('.cal-cell.trip-day').forEach(c => c.classList.remove('selected'));
 
     if (current === id) {
-      // Toggle off
-      panel.classList.remove('open');
-      setTimeout(() => { outer.style.display = 'none'; }, 260);
-      current = null;
+      closeDayPanel();
       return;
     }
 
@@ -2004,8 +2429,9 @@
     const m = META[id];
 
     // Build header
+    const dateBoxClass = m.holiday ? 'holiday' : `city-${m.city}`;
     document.getElementById('detail-header').innerHTML =
-      `<div class="detail-date-box${m.holiday ? ' holiday' : ''}">
+      `<div class="detail-date-box ${dateBoxClass}">
         <span class="detail-date-num">${m.dateNum}</span>
         <span class="detail-date-mo">${m.dateMo}</span>
       </div>
@@ -2016,20 +2442,33 @@
         </div>
         <div class="detail-sub">${m.sub}</div>
       </div>
-      <button class="detail-close" onclick="selectDay('${id}')">✕</button>`;
+      <button class="detail-close" onclick="closeDayPanel()">✕</button>`;
 
     // Populate body
     document.getElementById('detail-body').innerHTML =
       document.getElementById(`tpl-${id}`).innerHTML;
 
-    // Show with animation
-    outer.style.display = 'block';
-    panel.classList.remove('open');
+    // Compute origin offset from clicked cell to viewport center
+    const cell = document.querySelector(`[data-day="${id}"]`);
+    const r = cell.getBoundingClientRect();
+    const dx = (r.left + r.width  / 2) - window.innerWidth  / 2;
+    const dy = (r.top  + r.height / 2) - window.innerHeight / 2;
 
-    requestAnimationFrame(() => requestAnimationFrame(() => {
-      panel.classList.add('open');
-      setTimeout(() => document.getElementById('sec-calendar').scrollTo({ top: 0, behavior: 'smooth' }), 40);
-    }));
+    // Show outer, snap panel to cell origin (no transition)
+    outer.style.display = 'flex';
+    outer.classList.remove('open');
+    panel.style.cssText = `transition:none; opacity:0; transform:translate(${dx}px,${dy}px) scale(0.15); pointer-events:none;`;
+    panel.getBoundingClientRect(); // force reflow
+
+    // Animate panel to center
+    const scroll = document.getElementById('detail-scroll');
+    scroll.scrollTop = 0;
+    panel.classList.remove('fade-top', 'fade-bottom');
+    requestAnimationFrame(() => {
+      panel.style.cssText = `transition: opacity 0.22s ease, transform 0.30s cubic-bezier(0.34,1.45,0.64,1); opacity:1; transform:translate(0,0) scale(1); pointer-events:auto;`;
+      outer.classList.add('open');
+      syncFade();
+    });
   }
 
   function initLang() {
@@ -2051,6 +2490,38 @@
     });
   }
   initLang();
+
+  function daySelector(day) {
+    const d = parseInt(day, 10);
+    document.querySelectorAll('[data-day]').forEach(cell => {
+      cell.classList.remove('today', 'past');
+      const n = parseInt(cell.dataset.day.slice(3), 10);
+      if (n === d) cell.classList.add('today');
+      else if (n < d) cell.classList.add('past');
+    });
+  }
+
+  (function () {
+    const t = new Date();
+    if (t.getFullYear() !== 2026 || t.getMonth() !== 4) return;
+    daySelector(t.getDate());
+  })();
+</script>
+
+<!-- ── Day detail overlay ── -->
+<div class="detail-outer" id="detail-outer" style="display:none">
+  <div class="detail-backdrop" id="detail-backdrop" onclick="closeDayPanel()"></div>
+  <div class="detail-panel" id="detail-panel">
+    <div class="detail-fade-top"></div>
+    <div class="detail-fade-bottom"></div>
+    <div class="detail-scroll" id="detail-scroll">
+      <div class="detail-header" id="detail-header"></div>
+      <div id="detail-body"></div>
+    </div>
+  </div>
+</div>
+<script>
+  document.getElementById('detail-scroll').addEventListener('scroll', syncFade, { passive: true });
 </script>
 
 </body>
