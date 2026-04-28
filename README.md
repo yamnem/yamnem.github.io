@@ -8,6 +8,15 @@ Live at: https://yamnem.github.io
 
 ## Changelog
 
+### v0.1.1 — 2026-04-27
+- Kumano Kodo section complete: full 5-day hiking itinerary with emoji timeline badges, PDF map modal, day tabs (Reservas · Preparación · Día 1–5)
+- Reservas tab: 6 booking cards with photos, check-in/out, map codes, Google Maps links, PDF route maps; Kumano Travel confirmation & outline PDFs
+- Nikko day-trip section complete: Itinerario + Información sub-tabs, transport cards with collapsible non-chosen options, getting-around maps
+- Información importante: Links / Documentos tabs; passport photos, medical assist vouchers, Ethiopian flight confirmation
+- PDF modal system for all local map PDFs and documents
+- Mobile tap-highlight removed; press animation on all buttons
+- Collapsible transport cards with chevron indicator
+
 ### v0.1.0 — 2026-04-24
 - Mobile UX overhaul: FAB + popover card menu replaces clipping navbar on mobile
 - Desktop navbar unchanged

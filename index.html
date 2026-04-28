@@ -24,7 +24,11 @@
       --night:    #7B241C;
       --accom:    #5D6D7E;
     }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    button:active, a:active {
+      transform: scale(0.95); opacity: 0.7;
+      transition: transform 0.08s ease, opacity 0.08s ease;
+    }
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       background: var(--bg);
@@ -160,7 +164,7 @@
       overflow-y: auto;
       z-index: 5;
     }
-    #sec-stays, #sec-trenes, #sec-lenguaje, #sec-atracciones {
+    #sec-stays, #sec-trenes, #sec-lenguaje, #sec-atracciones, #sec-kumano, #sec-info {
       position: absolute; top: 0; left: 0; right: 0; bottom: 0;
       overflow-y: auto;
       z-index: 5;
@@ -386,6 +390,306 @@
     }
     .phrase-tip.visible { opacity: 1; pointer-events: auto; transform: scale(1); }
 
+    /* ── Kumano sub-toggle ── */
+    .kumano-wrap { max-width: 900px; margin: 0 auto; padding: 24px 24px 60px; }
+    .kumano-toggle-row { display: flex; justify-content: center; margin-bottom: 28px; }
+    .sub-pill {
+      display: flex;
+      background: rgba(26,26,46,0.07);
+      border-radius: 24px;
+      padding: 3px;
+      gap: 2px;
+      position: relative;
+    }
+    .sub-slider {
+      position: absolute;
+      top: 3px; bottom: 3px;
+      border-radius: 20px;
+      background: var(--navy);
+      transition: transform 0.28s cubic-bezier(0.34, 1.2, 0.64, 1), width 0.28s cubic-bezier(0.34, 1.2, 0.64, 1);
+      pointer-events: none;
+      will-change: transform, width;
+    }
+    .sub-tab {
+      padding: 8px 28px;
+      border-radius: 20px;
+      border: none; background: none; cursor: pointer;
+      font-size: 13px; font-weight: 600;
+      color: var(--muted);
+      position: relative; z-index: 1;
+      transition: color 0.2s;
+      white-space: nowrap;
+    }
+    .sub-tab.active { color: #fff; }
+
+    /* ── Kumano Kodo guide ── */
+    .kk-day-nav {
+      display: flex; overflow-x: auto; -webkit-overflow-scrolling: touch;
+      gap: 6px; margin-bottom: 22px; padding-bottom: 2px;
+    }
+    .kk-day-nav::-webkit-scrollbar { display: none; }
+    .kk-day-btn {
+      flex-shrink: 0; padding: 7px 18px; border-radius: 20px;
+      border: none; background: rgba(26,26,46,0.06); cursor: pointer;
+      font-size: 12.5px; font-weight: 700; color: var(--muted);
+      transition: all 0.15s; white-space: nowrap;
+    }
+    .kk-day-btn.active { background: var(--navy); color: #fff; }
+    .kk-day-btn:hover:not(.active) { background: rgba(26,26,46,0.11); }
+    .kk-timeline { position: relative; padding-left: 40px; }
+    .kk-timeline::before {
+      content: ''; position: absolute;
+      left: 13px; top: 20px; bottom: 20px;
+      width: 2px; background: var(--border); border-radius: 1px;
+    }
+    .kk-item { position: relative; margin-bottom: 12px; }
+    .kk-badge {
+      position: absolute; left: -40px; top: 5px;
+      width: 28px; height: 28px; border-radius: 50%; z-index: 1;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 17px;
+    }
+    .kk-badge.overview::before { content: '📍'; }
+    .kk-badge.train::before    { content: '🚄'; }
+    .kk-badge.bus::before      { content: '🚌'; }
+    .kk-badge.hike::before     { content: '🥾'; }
+    .kk-badge.visit::before    { content: '⛩️'; }
+    .kk-badge.food::before     { content: '🍱'; }
+    .kk-badge.onsen::before    { content: '♨️'; }
+    .kk-badge.luggage::before  { content: '🧳'; }
+    .kk-badge.accom::before    { content: '🛏️'; }
+    .kk-badge.boat::before     { content: '🛶'; }
+    .kk-card {
+      background: var(--card); border-radius: 14px; padding: 12px 14px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .kk-title    { font-size: 12.5px; font-weight: 700; color: var(--text); line-height: 1.3; margin-bottom: 3px; }
+    .kk-subtitle { font-size: 11px; color: var(--muted); font-weight: 500; margin-bottom: 6px; }
+    .kk-desc     { font-size: 11.5px; color: var(--muted); line-height: 1.55; }
+    .kk-desc strong { color: var(--text); font-weight: 600; }
+    .kk-times    { display: flex; flex-direction: column; gap: 3px; margin: 6px 0; font-size: 11.5px; }
+    .kk-times span { color: var(--muted); }
+    .kk-times b  { color: var(--text); display: inline-block; min-width: 56px; }
+    .kk-meta     { display: flex; flex-wrap: wrap; gap: 8px 14px; margin: 8px 0; }
+    .kk-meta-item { font-size: 11px; color: var(--muted); }
+    .kk-meta-item b { color: var(--text); }
+    .kk-price {
+      display: inline-block; font-size: 11px; font-weight: 700;
+      background: rgba(26,26,46,0.06); color: var(--navy);
+      padding: 2px 10px; border-radius: 10px; margin-top: 6px;
+    }
+    .kk-note {
+      font-size: 11px; line-height: 1.45;
+      background: #FEF3C7; border: 1px solid #FDE68A; color: #92400E;
+      padding: 6px 10px; border-radius: 8px; margin-top: 8px;
+    }
+    .kk-tip {
+      font-size: 11px; line-height: 1.45;
+      background: #EFF6FF; border: 1px solid #DBEAFE; color: #1E40AF;
+      padding: 6px 10px; border-radius: 8px; margin-top: 6px;
+    }
+    .kk-links { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .kk-link {
+      display: inline-flex; align-items: center; gap: 3px;
+      padding: 4px 10px; border-radius: 20px;
+      font-size: 11px; font-weight: 600; text-decoration: none;
+      background: rgba(26,26,46,0.06); color: var(--navy);
+      transition: background 0.15s;
+    }
+    .kk-link:hover { background: rgba(26,26,46,0.12); }
+    button.kk-link { border: none; cursor: pointer; font-family: inherit; }
+
+    /* ── Nikko Pass Cards ── */
+    .nikko-pass-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 0 0 20px; }
+    .nikko-pass-card { background: #F8F6F2; border: 1px solid var(--border); border-radius: 12px; padding: 13px 15px; }
+    .nikko-pass-name { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 2px; }
+    .nikko-pass-price { font-size: 12px; font-weight: 700; color: #2A7A4B; margin-bottom: 6px; }
+    .nikko-pass-desc { font-size: 12px; color: var(--muted); line-height: 1.45; }
+
+    /* ── Nikko transport cards ── */
+    .nikko-transport-section { display: flex; flex-direction: column; gap: 12px; }
+    .nikko-transport-card { background: #F8F6F2; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+    .nikko-transport-card.chosen { border: 2px solid var(--navy); }
+    .nikko-transport-header {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 14px 16px 12px; border-bottom: 1px solid var(--border);
+    }
+    .nikko-transport-icon { font-size: 22px; flex-shrink: 0; line-height: 1; margin-top: 1px; }
+    .nikko-transport-title { font-size: 13.5px; font-weight: 700; color: var(--navy); margin-bottom: 7px; line-height: 1.3; }
+    .nikko-transport-stats { display: flex; flex-wrap: wrap; gap: 5px; }
+    .nikko-transport-stat { font-size: 11px; font-weight: 600; color: var(--navy); background: rgba(26,26,46,0.07); padding: 2px 9px; border-radius: 10px; }
+    .nikko-transport-body { padding: 12px 16px 14px; font-size: 12.5px; color: var(--text); line-height: 1.6; }
+    .nikko-chosen-badge { display: inline-block; font-size: 10px; font-weight: 700; background: var(--navy); color: #fff; padding: 2px 8px; border-radius: 10px; margin-left: 8px; vertical-align: middle; }
+    .nikko-jrp-badge { display: inline-block; font-size: 11px; font-weight: 600; background: #1a6b35; color: #fff; padding: 3px 10px; border-radius: 10px; margin-bottom: 8px; }
+    .nikko-section-title { font-size: 13px; font-weight: 700; color: var(--navy); margin: 18px 0 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); letter-spacing: 0.01em; }
+    .nikko-info-text { font-size: 12.5px; color: var(--text); line-height: 1.65; margin-bottom: 12px; }
+    .nikko-map-figure { margin: 4px 0 14px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); }
+    .nikko-map-figure img { width: 100%; height: auto; display: block; }
+    .nikko-map-caption { font-size: 11px; color: var(--muted); text-align: center; padding: 6px 10px; background: #F8F6F2; }
+    .nikko-transport-header.collapsible { cursor: pointer; user-select: none; }
+    .nikko-transport-header.collapsible:hover { background: rgba(26,26,46,0.04); }
+    .nikko-chevron { margin-left: auto; padding-left: 8px; align-self: center; flex-shrink: 0; font-size: 13px; color: var(--muted); transition: transform 0.2s ease; }
+    .nikko-chevron.open { transform: rotate(180deg); }
+
+    /* ── Kumano Booking Docs ── */
+    .kk-booking-docs {
+      background: linear-gradient(135deg, #F5F0E8, #EDE8DB);
+      border-left: 3px solid var(--arch);
+      border-radius: 14px;
+      padding: 12px 16px;
+      margin-bottom: 18px;
+    }
+    .kk-booking-docs-label {
+      font-size: 10px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 1px; color: var(--arch); margin-bottom: 8px;
+    }
+    .kk-booking-docs-links { display: flex; flex-wrap: wrap; gap: 6px; }
+
+    /* ── Kumano Bookings ── */
+    .kk-booking-list { display: flex; flex-direction: column; gap: 16px; }
+    .kk-booking-card {
+      background: var(--card);
+      border-radius: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07), 0 3px 12px rgba(0,0,0,0.06);
+      overflow: hidden;
+    }
+    .kk-booking-img { width: 100%; height: 160px; object-fit: cover; display: block; }
+    .kk-booking-body { padding: 14px 16px 16px; }
+    .kk-booking-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+    .kk-booking-name { font-size: 15px; font-weight: 700; color: var(--navy); line-height: 1.3; }
+    .kk-booking-subname { font-size: 11.5px; color: var(--muted); margin-top: 1px; font-style: italic; }
+    .kk-booking-badges { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 8px; }
+    .kk-badge-type { font-size: 9.5px; font-weight: 700; padding: 2px 9px; border-radius: 4px; background: rgba(26,26,46,0.08); color: var(--navy); text-transform: uppercase; letter-spacing: 0.3px; }
+    .kk-badge-date { font-size: 9.5px; font-weight: 700; padding: 2px 9px; border-radius: 4px; background: var(--arch); color: #fff; letter-spacing: 0.2px; }
+    .kk-badge-activity { font-size: 9.5px; font-weight: 700; padding: 2px 9px; border-radius: 4px; background: #0B7A6E; color: #fff; text-transform: uppercase; letter-spacing: 0.3px; }
+    .kk-booking-divider { border: none; border-top: 1px solid var(--border); margin: 10px 0; }
+    .kk-booking-meta { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px 16px; }
+    .kk-booking-meta-item { display: flex; flex-direction: column; gap: 2px; }
+    .kk-booking-meta-label { font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); }
+    .kk-booking-meta-val { font-size: 12.5px; color: var(--text); font-weight: 500; }
+    .kk-booking-address { font-size: 11px; color: var(--muted); line-height: 1.55; margin-top: 10px; }
+    .kk-booking-note {
+      background: #FEF9EC; border-left: 3px solid var(--arch);
+      border-radius: 0 8px 8px 0; padding: 8px 12px;
+      font-size: 11.5px; color: #6B4C00; line-height: 1.5; margin-top: 10px;
+    }
+    .kk-booking-note strong { color: #4A3300; }
+    .kk-booking-links { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+    .kk-booking-alts { font-size: 11px; color: var(--muted); margin-top: 8px; line-height: 1.5; }
+    .kk-booking-alts strong { color: var(--text); }
+    @media (max-width: 600px) {
+      .kk-booking-img { height: 140px; }
+      .kk-booking-meta { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* ── PDF Preview Modal ── */
+    #pdf-modal {
+      position: fixed; inset: 0; z-index: 200;
+      background: rgba(0,0,0,0.55);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .pdf-modal-box {
+      background: #fff; border-radius: 14px; overflow: hidden;
+      width: min(860px, 94vw); height: min(86vh, 720px);
+      display: flex; flex-direction: column;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.35);
+    }
+    .pdf-modal-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 11px 16px; background: var(--navy); color: #fff;
+      font-size: 13px; font-weight: 600; flex-shrink: 0;
+    }
+    .pdf-modal-header-actions { display: flex; align-items: center; gap: 4px; }
+    .pdf-modal-open {
+      color: rgba(255,255,255,0.75); font-size: 11px; text-decoration: none;
+      padding: 3px 10px; border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.3); transition: background 0.15s;
+    }
+    .pdf-modal-open:hover { background: rgba(255,255,255,0.15); color: #fff; }
+    .pdf-modal-close {
+      background: none; border: none; color: #fff; cursor: pointer;
+      font-size: 18px; padding: 2px 8px; line-height: 1;
+      opacity: 0.7; transition: opacity 0.15s;
+    }
+    .pdf-modal-close:hover { opacity: 1; }
+    .pdf-modal-frame { flex: 1; width: 100%; border: none; display: block; }
+    @media (max-width: 600px) {
+      .pdf-modal-box { width: 100vw; height: 100dvh; border-radius: 0; }
+    }
+    .kk-overview-card {
+      background: linear-gradient(135deg, #F5F0E8, #EDE8DB);
+      border-left: 3px solid var(--arch); border-radius: 14px;
+      padding: 14px 16px; margin-bottom: 18px;
+      font-size: 12px; color: var(--text); line-height: 1.6;
+    }
+    .kk-day-label {
+      font-size: 10px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 1px; color: var(--arch); margin-bottom: 6px;
+    }
+    .kk-overnight-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 11px; font-weight: 600;
+      background: var(--navy); color: #fff;
+      padding: 3px 12px; border-radius: 20px; margin-top: 10px;
+    }
+    .kk-option-label {
+      font-size: 10px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.8px; color: var(--muted); margin-bottom: 4px;
+    }
+    .kk-plan-b {
+      margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border);
+    }
+    .kk-extra-night-card {
+      background: #EFF6FF; border: 1px solid #BFDBFE;
+      border-radius: 10px; padding: 12px; margin-top: 8px;
+      font-size: 11.5px; color: #1E40AF; line-height: 1.55;
+    }
+    .kk-extra-night-card strong { color: #1E3A8A; }
+
+    /* ── Info section ── */
+    .info-wrap { max-width: 700px; margin: 0 auto; padding: 24px 24px 60px; }
+    .info-card {
+      background: var(--card);
+      border-radius: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07), 0 3px 12px rgba(0,0,0,0.06);
+      overflow: hidden;
+      margin-bottom: 12px;
+      display: flex;
+    }
+    .info-icon-box {
+      flex-shrink: 0;
+      width: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+    }
+    .info-icon-box.gov     { background: var(--navy); }
+    .info-icon-box.legal   { background: var(--sight); }
+    .info-icon-box.docs    { background: #4A3728; }
+    .info-icon-box.medical { background: #B91C1C; }
+    .info-icon-box.flight  { background: #1E40AF; }
+    .info-body { flex: 1; padding: 14px 16px; }
+    .info-title { font-size: 13px; font-weight: 700; color: var(--text); line-height: 1.3; }
+    .info-desc  { font-size: 12px; color: var(--muted); margin-top: 5px; line-height: 1.5; }
+    .info-desc strong { color: var(--text); font-weight: 600; }
+    .info-links { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+    .info-link, button.info-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+      text-decoration: none;
+      background: rgba(26,26,46,0.06);
+      color: var(--navy);
+      border: none; cursor: pointer;
+      transition: background 0.15s;
+    }
+    .info-link:hover, button.info-link:hover { background: rgba(26,26,46,0.12); }
+
     /* ── Legend ── */
     .legend { display: flex; flex-wrap: wrap; gap: 10px 14px; padding: 0 0 18px; justify-content: center; }
     .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--muted); }
@@ -424,7 +728,9 @@
       letter-spacing: 0.5px;
       color: var(--muted);
       border-bottom: 1px solid var(--border);
+      border-right: 1px solid #F0F0E8;
     }
+    .cal-dow:last-child { border-right: none; }
     .cal-dow.wknd { color: #B8A8A8; }
 
     .cal-cell {
@@ -436,7 +742,9 @@
       padding: 6px 3px 3px 16px;
       min-height: 0;
       border-bottom: 1px solid #F0F0E8;
+      border-right: 1px solid #F0F0E8;
     }
+    .cal-cell:nth-child(7n) { border-right: none; }
     .cal-emoji {
       position: absolute;
       top: 6px; right: 16px;
@@ -809,6 +1117,12 @@
       .nav-tab { padding: 6px 9px; font-size: 10.5px; }
       /* Stays */
       .stays-wrap { padding: 16px 12px 40px; }
+      /* Kumano guide */
+      .kumano-wrap { padding: 16px 12px 40px; }
+      .kk-day-btn { padding: 6px 14px; font-size: 11.5px; }
+      .nikko-pass-row { grid-template-columns: 1fr; }
+      .nikko-transport-header { padding: 12px 13px 10px; }
+      .nikko-transport-body { padding: 10px 13px 12px; }
       .stay-date-box { width: 56px; }
       .stay-date-num { font-size: 17px; }
       .stay-name { font-size: 14px; }
@@ -911,10 +1225,12 @@
     <div class="nav-slider" id="nav-slider"></div>
     <button class="nav-tab active" onclick="switchSection('calendar')">Calendario</button>
     <button class="nav-tab" onclick="switchSection('stays')">Alojamientos</button>
+    <button class="nav-tab" onclick="switchSection('kumano')">Kumano Kodo & Nikko</button>
     <button class="nav-tab" onclick="switchSection('trenes')">Trenes</button>
-    <button class="nav-tab" onclick="switchSection('lenguaje')">Lenguaje</button>
     <button class="nav-tab" onclick="switchSection('atracciones')">Atracciones</button>
-    <button class="nav-tab" onclick="switchSection('mapa')">Mapa</button>
+    <button class="nav-tab" onclick="switchSection('lenguaje')">Lenguaje</button>
+    <button class="nav-tab" onclick="switchSection('mapa')">Mapas</button>
+    <button class="nav-tab" onclick="switchSection('info')">Información importante</button>
   </div>
 </nav>
 
@@ -1799,6 +2115,1315 @@
   </div>
 </section><!-- /sec-mapa -->
 
+<section id="sec-kumano" style="display:none">
+  <div class="kumano-wrap">
+    <div class="kumano-toggle-row">
+      <div class="sub-pill" id="kumano-pill">
+        <div class="sub-slider" id="kumano-slider"></div>
+        <button class="sub-tab active" id="ktab-kumano" onclick="switchKumano('kumano')">Kumano Kodo</button>
+        <button class="sub-tab" id="ktab-nikko" onclick="switchKumano('nikko')">Nikko</button>
+      </div>
+    </div>
+    <div id="ksub-kumano">
+      <div class="kk-day-nav">
+        <button class="kk-day-btn active" id="kk-btn-6" onclick="switchKkDay(6)">Reservas</button>
+        <button class="kk-day-btn" id="kk-btn-0" onclick="switchKkDay(0)">Preparación</button>
+        <button class="kk-day-btn" id="kk-btn-1" onclick="switchKkDay(1)">Día 1</button>
+        <button class="kk-day-btn" id="kk-btn-2" onclick="switchKkDay(2)">Día 2</button>
+        <button class="kk-day-btn" id="kk-btn-3" onclick="switchKkDay(3)">Día 3</button>
+        <button class="kk-day-btn" id="kk-btn-4" onclick="switchKkDay(4)">Día 4</button>
+        <button class="kk-day-btn" id="kk-btn-5" onclick="switchKkDay(5)">Día 5</button>
+      </div>
+
+      <!-- ── Prep ── -->
+      <div id="kk-day-0" style="display:none">
+        <div class="kk-overview-card">
+          <div class="kk-day-label">Antes de comenzar</div>
+          La preparación y planificación son clave para una caminata segura en las sagradas montañas de Kumano. Elige una ruta que puedas completar de forma segura según tu experiencia y condición física. Usa ropa y calzado adecuados, y lleva el equipo necesario.
+        </div>
+        <div class="kk-timeline">
+          <div class="kk-item">
+            <div class="kk-badge overview"></div>
+            <div class="kk-card">
+              <div class="kk-title">Preparación</div>
+              <div class="kk-desc">El Kumano Kodo es un sendero de montaña — los tiempos de caminata varían mucho según el clima, la temporada, la experiencia y la condición física. Planifica con cuidado; muchas personas subestiman la dificultad del terreno.</div>
+              <div class="kk-note"><strong>NOTA:</strong> Los detalles pueden cambiar, especialmente los horarios de autobús. Verificar los horarios antes del viaje.</div>
+            </div>
+          </div>
+          <div class="kk-item">
+            <div class="kk-badge overview"></div>
+            <div class="kk-card">
+              <div class="kk-title">Cuándo Visitar</div>
+              <div class="kk-desc">La ruta Nakahechi está abierta todo el año. El verano puede ser caluroso y húmedo; en invierno hay ligera posibilidad de nieve en zonas altas (fines de diciembre a febrero). Los feriados nacionales japoneses pueden estar muy concurridos — conviene evitar la Semana Dorada y el Obon a mediados de agosto.</div>
+              <div class="kk-note"><strong>NOTA:</strong> Conviene viajar entre semana ya que la capacidad es limitada en los pequeños pueblos del camino.</div>
+              <div class="kk-links">
+                <a class="kk-link" href="https://en.wikipedia.org/wiki/Public_holidays_in_Japan" target="_blank" rel="noopener">↗ Public Holidays in Japan</a>
+              </div>
+            </div>
+          </div>
+          <div class="kk-item">
+            <div class="kk-badge visit"></div>
+            <div class="kk-card">
+              <div class="kk-title">Recursos</div>
+              <div class="kk-desc">Los mapas y la Guía Oficial están disponibles en Tanabe. Los "Pilgrim Packs" con estos materiales pueden solicitarse por correo con anticipación.</div>
+              <div class="kk-links">
+                <a class="kk-link" href="https://www.kumano-travel.com/en/travel-services/tanabe-city-kumano-tourism-bureau/1508" target="_blank" rel="noopener">↗ Pilgrim Pack</a>
+                <a class="kk-link" href="http://www.tb-kumano.jp/en/kumano-kodo/official-guide-book/" target="_blank" rel="noopener">↗ Official Guide Book</a>
+                <a class="kk-link" href="http://www.tb-kumano.jp/en/kumano-kodo/maps/" target="_blank" rel="noopener">↗ Kumano Kodo Maps</a>
+                <a class="kk-link" href="http://www.tb-kumano.jp/en/kumano-kodo/" target="_blank" rel="noopener">↗ Kumano Kodo Overview</a>
+                <a class="kk-link" href="http://www.tb-kumano.jp/en/transport/bus/" target="_blank" rel="noopener">↗ Bus Timetable List</a>
+                <a class="kk-link" href="http://www.tb-kumano.jp/en/world-heritage/dual-pilgrim/" target="_blank" rel="noopener">↗ Dual Pilgrim</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Day 1 ── -->
+      <div id="kk-day-1" style="display:none">
+        <div class="kk-overview-card">
+          <div class="kk-day-label">Día 1 · Traslado a Tanabe y Takijiri, Caminata por el Kumano Kodo</div>
+          Traslado al inicio del sendero en Takijiri-oji en tren y autobús, seguido de una caminata corta pero empinada por el Kumano Kodo hasta el poblado de Takahara.
+          <br><div class="kk-overnight-badge">🛏 Takahara</div>
+        </div>
+        <div class="kk-timeline">
+          <div class="kk-item">
+            <div class="kk-badge train"></div>
+            <div class="kk-card">
+              <div class="kk-title">Tren Osaka → Kii-Tanabe</div>
+              <div class="kk-subtitle">JR Kuroshio 3</div>
+              <div class="kk-times">
+                <span><b>Salida:</b> 8:58 Shin-Osaka</span>
+                <span><b>Salida:</b> 9:19 Tennoji</span>
+                <span><b>Llegada:</b> 11:21 Kii-Tanabe</span>
+              </div>
+              <div class="kk-desc">El tren JR recorre la costa oeste de la península de Kii. El paisaje cambia drásticamente de grandes centros urbanos a regiones agrícolas y naturales. Presta atención a los huertos en terrazas de naranjas y ume a lo largo del camino.</div>
+              <div class="kk-tip"><strong>TIP:</strong> Siéntate en el lado derecho del tren para las mejores vistas.</div>
+              <div class="kk-links">
+                <a class="kk-link" href="http://www.tb-kumano.jp/en/transport/train/#search" target="_blank" rel="noopener">↗ Train Timetable Search</a>
+              </div>
+            </div>
+          </div>
+          <div class="kk-item">
+            <div class="kk-badge luggage"></div>
+            <div class="kk-card">
+              <div class="kk-title">Traslado de Equipaje</div>
+              <div class="kk-desc">Entrega las maletas directamente a tu proveedor de traslado de equipaje reservado, frente al Centro de Información Turística de TANABE, para que las lleven a tu alojamiento.</div>
+              <div class="kk-tip"><strong>TIP:</strong> Muy recomendable: camina con libertad sin preocuparte por el equipaje.</div>
+            </div>
+          </div>
+          <div class="kk-item">
+            <div class="kk-badge visit"></div>
+            <div class="kk-card">
+              <div class="kk-title">Tanabe Tourist Information Center</div>
+              <div class="kk-desc">Junto a la estación Kii-Tanabe, salida a la izquierda. Copias en papel de mapas y horarios de transporte, además de la credencial Dual Pilgrim para coleccionar sellos en el camino. El mejor lugar para obtener información actualizada antes de comenzar.</div>
+            </div>
+          </div>
+          <div class="kk-item">
+            <div class="kk-badge food"></div>
+            <div class="kk-card">
+              <div class="kk-title">Almuerzo</div>
+              <div class="kk-desc">En un restaurante, o compra algo para llevar. Pregunta en el centro de información turística para ideas.</div>
+              <div class="kk-links">
+                <button type="button" class="kk-link" onclick="openPdfModal('assets/files/Tanabe-map.pdf','Central Tanabe Map')">📄 Central Tanabe Map</button>
+              </div>
+            </div>
+          </div>
+          <div class="kk-item">
+            <div class="kk-badge bus"></div>
+            <div class="kk-card">
+              <div class="kk-title">Bus Kii-Tanabe → Takijiri</div>
+              <div class="kk-subtitle">Ryujin Bus</div>
+              <div class="kk-times">
+                <span><b>Salida:</b> 13:00 Kii-Tanabe</span>
+                <span><b>Llegada:</b> 13:41 Takijiri</span>
+              </div>
+              <div class="kk-price">970 yen</div>
+              <div class="kk-desc" style="margin-top:8px">Los autobuses salen desde la parada nº2 frente a la estación. Compra el billete en la máquina expendedora del centro de información.</div>
+              <div class="kk-links">
+                <a class="kk-link" href="http://www.tb-kumano.jp/en/transport/bus/#localtimetables" target="_blank" rel="noopener">↗ Bus Timetable #1</a>
+                <a class="kk-link" href="http://www.tb-kumano.jp/en/transport/how-to-ride-local-bus/" target="_blank" rel="noopener">↗ How to Ride a Local Bus</a>
+              </div>
+            </div>
+          </div>
+          <div class="kk-item">
+            <div class="kk-badge visit"></div>
+            <div class="kk-card">
+              <div class="kk-title">Kumano Kodo Kan Pilgrimage Center</div>
+              <div class="kk-desc">Ubicado al otro lado del río frente a Takijiri-oji. Exposiciones introductorias en japonés e inglés sobre la ruta de peregrinación. Hay baños y máquinas expendedoras disponibles.</div>
+              <div class="kk-links">
+                <a class="kk-link" href="https://www.tb-kumano.jp/en/resources/information-centers/#kumano-kodo-kan" target="_blank" rel="noopener">↗ Kumano Kodo Kan</a>
+              </div>
+            </div>
+          </div>
+          <div class="kk-item">
+            <div class="kk-badge visit"></div>
+            <div class="kk-card">
+              <div class="kk-title">Takijiri-oji</div>
+              <div class="kk-desc">Uno de los principales puntos de partida de la ruta Nakahechi. Aquí comienza el paso hacia las montañas sagradas: la entrada al hogar de los dioses y los paraísos budistas del renacimiento.</div>
+              <div class="kk-links">
+                <a class="kk-link" href="https://www.tb-kumano.jp/en/places/takijiri/" target="_blank" rel="noopener">↗ Takijiri-oji</a>
+              </div>
+            </div>
+          </div>
+          <div class="kk-item">
+            <div class="kk-badge hike"></div>
+            <div class="kk-card">
+              <div class="kk-title">Caminata: Takijiri-oji → Takahara</div>
+              <div class="kk-meta">
+                <span class="kk-meta-item"><b>~4 km</b></span>
+                <span class="kk-meta-item"><b>2~3 hr</b></span>
+                <span class="kk-meta-item">↑ <b>~430 m</b></span>
+                <span class="kk-meta-item">↓ <b>~200 m</b></span>
+              </div>
+              <div class="kk-desc">Caminata corta pero empinada desde Takijiri hasta el poblado de Takahara en la cima de la cresta. El inicio del sendero se encuentra detrás del pabellón del santuario Takijiri-oji.</div>
+              <div class="kk-note"><strong>NOTA:</strong> El sendero comienza con una pendiente exigente: marca un ritmo lento y tranquilo, prestando atención a los pasos sobre piedras y raíces.</div>
+              <div class="kk-links">
+                <button type="button" class="kk-link" onclick="openPdfModal('assets/files/Kumano-Kodo-Nakahechi-Route-Maps-Takijiri-Takahara.pdf','Kumano Kodo Map — Takijiri→Takahara')">📄 Kumano Kodo Map</button>
+              </div>
+            </div>
+          </div>
+          <div class="kk-item">
+            <div class="kk-badge visit"></div>
+            <div class="kk-card">
+              <div class="kk-title">Takahara</div>
+              <div class="kk-desc">Pequeño poblado en una cresta con vistas panorámicas a la cordillera Hatenashi. Alberga el místico santuario Takahara Kumano-jinja, uno de los edificios más antiguos de esta sección, con enormes árboles alcanfor de más de 800 años. Conocido como "Kiri-no-Sato" (Pueblo entre la Niebla).</div>
+              <div class="kk-links">
+                <a class="kk-link" href="http://www.tb-kumano.jp/en/area-guide/takahara/" target="_blank" rel="noopener">↗ Takahara</a>
+              </div>
+            </div>
+          </div>
+          <div class="kk-item">
+            <div class="kk-badge accom"></div>
+            <div class="kk-card">
+              <div class="kk-title">Alojamiento en Takahara</div>
+              <div class="kk-desc">Algunas opciones incluyen el Lodge Kiri-no-Sato Takahara y casas de alquiler más pequeñas. Cena en el alojamiento.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Day 2 ── -->
+      <div id="kk-day-2" style="display:none">
+        <div class="kk-overview-card">
+          <div class="kk-day-label">Día 2 · Caminata por el Kumano Kodo, de Takahara a Chikatsuyu</div>
+          Una jornada completa de caminata por el Kumano Kodo desde Takahara hasta el pueblo de Chikatsuyu.
+          <br><div class="kk-overnight-badge">🛏 Chikatsuyu</div>
+        </div>
+        <div class="kk-timeline">
+          <div class="kk-item">
+            <div class="kk-badge food"></div>
+            <div class="kk-card">
+              <div class="kk-title">Desayuno + Lunch Box</div>
+              <div class="kk-desc">Desayuno en el alojamiento. Encarga tu lunch box al alojamiento: reserva el plan con lunch box para aprovechar este servicio.</div>
+            </div>
+          </div>
+          <div class="kk-item">
+            <div class="kk-badge luggage"></div>
+            <div class="kk-card">
+              <div class="kk-title">Traslado de Equipaje</div>
+              <div class="kk-desc">Deja el equipaje en el alojamiento para que lo trasladen a Chikatsuyu.</div>
+            </div>
+          </div>
+          <div class="kk-item">
+            <div class="kk-badge hike"></div>
+            <div class="kk-card">
+              <div class="kk-title">Caminata: Takahara → Chikatsuyu</div>
+              <div class="kk-meta">
+                <span class="kk-meta-item"><b>~10 km</b></span>
+                <span class="kk-meta-item"><b>4~6 hr</b></span>
+                <span class="kk-meta-item">↑ <b>~590 m</b></span>
+                <span class="kk-meta-item">↓ <b>~640 m</b></span>
+              </div>
+              <div class="kk-desc">Continúa hacia las montañas boscosas al este de Takahara, subiendo y cruzando crestas hasta la siguiente cuenca, y descendiendo al pueblo de Chikatsuyu.</div>
+              <div class="kk-note"><strong>NOTA:</strong> El área de descanso Michi-no-Eki, cerca del poste señalizado nº23, vende bebidas, aperitivos y comidas sencillas.</div>
+              <div class="kk-links">
+                <button type="button" class="kk-link" onclick="openPdfModal('assets/files/Kumano-Kodo-Nakahechi-Route-Maps-Takahara-Tsugizakura.pdf','Kumano Kodo Map — Takahara→Tsugizakura')">📄 Kumano Kodo Map</button>
+              </div>
+            </div>
+          </div>
+          <div class="kk-item">
+            <div class="kk-badge food"></div>
+            <div class="kk-card">
+              <div class="kk-title">Almuerzo</div>
+              <div class="kk-desc">Almuerzo de picnic en el sendero o en el área de descanso Michi-no-Eki.</div>
+            </div>
+          </div>
+          <div class="kk-item">
+            <div class="kk-badge visit"></div>
+            <div class="kk-card">
+              <div class="kk-title">Chikatsuyu</div>
+              <div class="kk-desc">Pueblo tras Takahara por el que discurre el cristalino río Hiki-gawa por el valle. Pasa por Chikatsuyu en dirección a Tsugizakura-oji.</div>
+              <div class="kk-links">
+                <button type="button" class="kk-link" onclick="openPdfModal('assets/files/nakahechi-map.pdf','Chikatsuyu Map')">📄 Chikatsuyu Map</button>
+              </div>
+            </div>
+          </div>
+          <div class="kk-item">
+            <div class="kk-badge accom"></div>
+            <div class="kk-card">
+              <div class="kk-title">Alojamiento en Chikatsuyu</div>
+              <div class="kk-desc">Minshuku y casas de alquiler. Cena en el alojamiento.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Day 3 (Plan A — Yunomine) ── -->
+      <div id="kk-day-3" style="display:none">
+        <div class="kk-overview-card">
+          <div class="kk-day-label">Día 3 · Plan A · Caminata por el Kumano Kodo, de Hosshinmon-oji a Kumano Hongu Taisha</div>
+          Traslado en autobús y caminata por el tramo culminante del Kumano Kodo. El sendero de Hosshinmon-oji a Hongu atraviesa una diversidad de tramos boscosos y poblados en las crestas. Visita al Kumano Hongu Taisha y al Yunomine Onsen.
+          <br><div class="kk-overnight-badge">🛏 Yunomine Onsen</div>
+        </div>
+        <div class="kk-timeline">
+          <div class="kk-item">
+            <div class="kk-badge food"></div>
+            <div class="kk-card">
+              <div class="kk-title">Desayuno + Lunch Box</div>
+              <div class="kk-desc">Desayuno en el alojamiento. Encarga tu lunch box al alojamiento: reserva el plan con lunch box para aprovechar este servicio.</div>
+            </div>
+          </div>
+          <div class="kk-item">
+            <div class="kk-badge luggage"></div>
+            <div class="kk-card">
+              <div class="kk-title">Traslado de Equipaje</div>
+              <div class="kk-desc">Deja el equipaje en el alojamiento para que lo trasladen al Yunomine Onsen.</div>
+            </div>
+          </div>
+          <div class="kk-item">
+            <div class="kk-badge bus"></div>
+            <div class="kk-card">
+              <div class="kk-title">Bus Chikatsuyu → Hongu</div>
+              <div class="kk-subtitle">Meiko Bus</div>
+              <div class="kk-times">
+                <span><b>Salida:</b> 9:42 Nakahechi Bijutsukan (Nakahechi Museum)</span>
+                <span><b>Llegada:</b> 10:12 Hongu Taisha-mae</span>
+              </div>
+              <div class="kk-price">1,090 yen</div>
+              <div class="kk-note" style="margin-top:8px"><strong>NOTA:</strong> También hay un autobús directo de Chikatsuyu a Hosshinmon-oji que parte antes, a las 7:23.</div>
+              <div class="kk-links">
+                <a class="kk-link" href="http://www.tb-kumano.jp/en/transport/bus/#localtimetables" target="_blank" rel="noopener">↗ Bus Timetable #1</a>
+                <a class="kk-link" href="http://www.tb-kumano.jp/en/transport/how-to-ride-local-bus/" target="_blank" rel="noopener">↗ How to Ride a Local Bus</a>
+              </div>
+            </div>
+          </div>
+          <div class="kk-item">
+            <div class="kk-badge bus"></div>
+            <div class="kk-card">
+              <div class="kk-title">Bus Hongu → Hosshinmon-oji</div>
+              <div class="kk-subtitle">Ryujin Bus</div>
+              <div class="kk-times">
+                <span><b>Salida:</b> 10:30 Hongu Taisha-mae</span>
+                <span><b>Llegada:</b> 10:45 Hosshinmon-oji</span>
+              </div>
+              <div class="kk-price">470 yen</div>
+              <div class="kk-note" style="margin-top:8px"><strong>NOTA:</strong> Transbordo en la misma parada de autobús.</div>
+              <div class="kk-links">
+                <a class="kk-link" href="http://www.tb-kumano.jp/en/transport/bus/#localtimetables" target="_blank" rel="noopener">↗ Bus Timetable #1</a>
+                <a class="kk-link" href="http://www.tb-kumano.jp/en/transport/how-to-ride-local-bus/" target="_blank" rel="noopener">↗ How to Ride a Local Bus</a>
+              </div>
+            </div>
+          </div>
+          <div class="kk-item">
+            <div class="kk-badge hike"></div>
+            <div class="kk-card">
+              <div class="kk-title">Caminata: Hosshinmon-oji → Kumano Hongu Taisha</div>
+              <div class="kk-meta">
+                <span class="kk-meta-item"><b>~7 km</b></span>
+                <span class="kk-meta-item"><b>2~3 hr</b></span>
+                <span class="kk-meta-item">↑ <b>~190 m</b></span>
+                <span class="kk-meta-item">↓ <b>~460 m</b></span>
+              </div>
+              <div class="kk-desc">Una agradable caminata de media jornada por una mezcla de poblados en las crestas y senderos forestales, con buenos miradores panorámicos en el camino.</div>
+              <div class="kk-links">
+                <button type="button" class="kk-link" onclick="openPdfModal('assets/files/Kumano-Kodo-Nakahechi-Route-Maps-Hongu.pdf','Kumano Kodo Map — Hongu')">📄 Kumano Kodo Map</button>
+              </div>
+            </div>
+          </div>
+          <div class="kk-item">
+            <div class="kk-badge food"></div>
+            <div class="kk-card">
+              <div class="kk-title">Almuerzo</div>
+              <div class="kk-desc">Almuerzo de picnic en el sendero o en un restaurante en Hongu.</div>
+            </div>
+          </div>
+          <div class="kk-item">
+            <div class="kk-badge visit"></div>
+            <div class="kk-card">
+              <div class="kk-title">Kumano Hongu Taisha</div>
+              <div class="kk-desc">Uno de los tres grandes santuarios, situado en una pequeña cresta al norte de Hongu. Austeros pabellones de madera con impresionantes techos de corteza de ciprés, arquitectura de más de 800 años de antigüedad. Presta atención al sagrado Yatagarasu, el cuervo de tres patas.</div>
+              <div class="kk-links">
+                <a class="kk-link" href="http://www.tb-kumano.jp/en/world-heritage/kumano-hongu-taisha/" target="_blank" rel="noopener">↗ Kumano Hongu Taisha</a>
+                <button type="button" class="kk-link" onclick="openPdfModal('assets/files/Hongu-map.pdf','Hongu Map')">📄 Hongu Map</button>
+              </div>
+            </div>
+          </div>
+          <div class="kk-item">
+            <div class="kk-badge visit"></div>
+            <div class="kk-card">
+              <div class="kk-title">Kumano Hongu Heritage Center</div>
+              <div class="kk-desc">Centro de visitantes al este de la ruta 311, frente al Kumano Hongu Taisha. Exposiciones detalladas sobre la zona en inglés. <strong>El registro Dual Pilgrim se realiza aquí</strong>: tarda al menos 15 minutos y no puede enviarse por correo.</div>
+              <div class="kk-note"><strong>HORARIO:</strong> 9:00~17:00 (abierto todo el año)</div>
+              <div class="kk-links">
+                <a class="kk-link" href="http://www.tb-kumano.jp/en/what-to-do/kumano-hongu-heritage-center/" target="_blank" rel="noopener">↗ Heritage Center</a>
+                <a class="kk-link" href="http://www.tb-kumano.jp/en/world-heritage/dual-pilgrim/" target="_blank" rel="noopener">↗ Dual Pilgrim</a>
+              </div>
+            </div>
+          </div>
+          <div class="kk-item">
+            <div class="kk-badge visit"></div>
+            <div class="kk-card">
+              <div class="kk-title">Oyunohara</div>
+              <div class="kk-desc">Ubicación original del Kumano Hongu Taisha: un banco de arena en la confluencia de los ríos Kumano-gawa y Otonashi. Según la leyenda, las deidades del Kumano descendieron aquí en forma de tres lunas. Todas las rutas del Kumano Kodo llevan a este lugar sagrado. Señalado por el torii más grande del mundo: 33,9 m de alto y 42 m de ancho.</div>
+              <div class="kk-links">
+                <a class="kk-link" href="http://www.tb-kumano.jp/en/world-heritage/kumano-hongu-taisha/#oyunohara" target="_blank" rel="noopener">↗ Oyunohara</a>
+              </div>
+            </div>
+          </div>
+          <div class="kk-item">
+            <div class="kk-badge bus"></div>
+            <div class="kk-card">
+              <div class="kk-title">Bus Hongu → Yunomine Onsen</div>
+              <div class="kk-subtitle">Nara Kotsu · También para Watarase (17:17) y Kawayu (17:19)</div>
+              <div class="kk-times">
+                <span><b>Salida:</b> 16:58 Hongu Taisha-mae</span>
+                <span><b>Llegada:</b> 17:09 Yunomine Onsen</span>
+              </div>
+              <div class="kk-price">310 yen</div>
+              <div class="kk-desc" style="margin-top:8px">Los autobuses salen desde delante del Kumano Hongu Heritage Center.</div>
+              <div class="kk-note"><strong>NOTA:</strong> Después del autobús de las 16:58, hay una larga espera hasta el siguiente.</div>
+              <div class="kk-links">
+                <a class="kk-link" href="http://www.tb-kumano.jp/en/transport/bus/#localtimetables" target="_blank" rel="noopener">↗ Bus Timetable #11</a>
+              </div>
+            </div>
+          </div>
+          <div class="kk-item">
+            <div class="kk-badge onsen"></div>
+            <div class="kk-card">
+              <div class="kk-title">Yunomine Onsen</div>
+              <div class="kk-desc">Uno de los manantiales termales más antiguos de Japón, directamente relacionado con el Kumano Kodo. Un encantador conjunto de posadas en un pequeño valle. El <strong>Tsuboyu</strong> es un baño histórico utilizado por los peregrinos para purificarse: las entradas se venden en la caseta junto al templo.</div>
+              <div class="kk-links">
+                <a class="kk-link" href="http://www.tb-kumano.jp/en/onsen/yunomine/" target="_blank" rel="noopener">↗ Yunomine Onsen</a>
+                <button type="button" class="kk-link" onclick="openPdfModal('assets/files/Yunomine-Onsen-map.pdf','Yunomine Onsen Map')">📄 Yunomine Onsen Map</button>
+              </div>
+            </div>
+          </div>
+          <div class="kk-item">
+            <div class="kk-badge accom"></div>
+            <div class="kk-card">
+              <div class="kk-title">Alojamiento en Yunomine Onsen</div>
+              <div class="kk-desc">Una variedad de posadas Ryokan y alojamientos Minshuku, cada uno con sus propios baños termales. Cena en el alojamiento.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Day 4 ── -->
+      <div id="kk-day-4" style="display:none">
+        <div class="kk-overview-card">
+          <div class="kk-day-label">Día 4 · Paseo Tradicional en Bote, Visita al Kumano Hayatama Taisha</div>
+          Viaje por el Kumano-gawa en un bote de fondo plano tradicional, siguiendo la histórica ruta de peregrinación acuática del Kumano Kodo. Visita al Kumano Hayatama Taisha y al Katsuura Onsen, un pueblo pesquero de aguas termales en la costa famoso por sus mariscos.
+          <br><div class="kk-overnight-badge">🛏 Katsuura Onsen</div>
+        </div>
+        <div class="kk-timeline">
+          <div class="kk-item">
+            <div class="kk-badge food"></div>
+            <div class="kk-card">
+              <div class="kk-title">Desayuno</div>
+              <div class="kk-desc">En el alojamiento.</div>
+            </div>
+          </div>
+          <div class="kk-item">
+            <div class="kk-badge luggage"></div>
+            <div class="kk-card">
+              <div class="kk-title">Traslado de Equipaje</div>
+              <div class="kk-desc">Deja el equipaje en el alojamiento para que lo trasladen a Katsuura.</div>
+            </div>
+          </div>
+          <div class="kk-item">
+            <div class="kk-badge bus"></div>
+            <div class="kk-card">
+              <div class="kk-title">Bus → Michi-no-eki Kumanogawa (Boat Center)</div>
+              <div class="kk-times">
+                <span><b>Salida:</b> 8:31 Yunomine Onsen</span>
+                <span><b>Salida:</b> 8:37 Watarase Onsen</span>
+                <span><b>Salida:</b> 8:39 Kawayu Onsen</span>
+                <span><b>Llegada:</b> 9:08 Michi-no-eki Kumanogawa Boat Center</span>
+              </div>
+              <div class="kk-price">~1,060 yen desde Yunomine</div>
+              <div class="kk-desc" style="margin-top:8px">Los autobuses salen desde delante del Kumano Hongu Heritage Center.</div>
+              <div class="kk-links">
+                <button type="button" class="kk-link" onclick="openPdfModal('assets/files/Gojo-Totsukawa-Hongu-to-Shingu-bus.pdf','Bus Timetable #4')">📄 Bus Timetable #4</button>
+              </div>
+            </div>
+          </div>
+          <div class="kk-item">
+            <div class="kk-badge boat"></div>
+            <div class="kk-card">
+              <div class="kk-title">Paseo en Bote — Río Kumano-gawa</div>
+              <div class="kk-times">
+                <span><b>Horario:</b> 10:00 ~ 11:30</span>
+              </div>
+              <div class="kk-desc">Históricamente los peregrinos viajaban en bote entre el Kumano Hongu Taisha y el Kumano Hayatama Taisha. Estos paseos siguen la misma ruta en botes de madera de fondo plano tradicionales: una excelente manera de contemplar el paisaje espiritual como los peregrinos de antaño.</div>
+            </div>
+          </div>
+          <div class="kk-item">
+            <div class="kk-badge visit"></div>
+            <div class="kk-card">
+              <div class="kk-title">Kumano Hayatama Taisha</div>
+              <div class="kk-desc">Uno de los tres grandes santuarios del Kumano, situado en la desembocadura del río Kumano-gawa. Los vivos colores bermejos destacan sobre el bosque circundante. Presta atención al antiguo árbol Nagi, cuyas hojas se usaban como amuletos.</div>
+              <div class="kk-links">
+                <a class="kk-link" href="http://www.tb-kumano.jp/en/world-heritage/kumano-hayatama-taisha/" target="_blank" rel="noopener">↗ Kumano Hayatama Taisha</a>
+                <button type="button" class="kk-link" onclick="openPdfModal('assets/files/Shingu-map.pdf','Shingu Map')">📄 Shingu Map</button>
+              </div>
+            </div>
+          </div>
+          <div class="kk-item">
+            <div class="kk-badge food"></div>
+            <div class="kk-card">
+              <div class="kk-title">Almuerzo</div>
+              <div class="kk-desc">Almuerzo de picnic o en un restaurante en Shingu.</div>
+              <div class="kk-tip"><strong>TIP:</strong> Kamikura-jinja es un buen lugar para un almuerzo de picnic.</div>
+            </div>
+          </div>
+          <div class="kk-item">
+            <div class="kk-badge visit"></div>
+            <div class="kk-card">
+              <div class="kk-title">Kamikura-jinja</div>
+              <div class="kk-desc">Gotobiki-iwa, una enorme roca a mitad de camino del monte Gongen, es venerada como divinidad y el lugar donde se cree que los dioses del Kumano descendieron por primera vez. El santuario Kamikura-jinja se asienta a su base con amplias vistas sobre Shingu.</div>
+              <div class="kk-links">
+                <button type="button" class="kk-link" onclick="openPdfModal('assets/files/Shingu-map.pdf','Shingu Map')">📄 Shingu Map</button>
+              </div>
+            </div>
+          </div>
+          <div class="kk-item">
+            <div class="kk-badge train"></div>
+            <div class="kk-card">
+              <div class="kk-title">Shingu → Kii-Katsuura</div>
+              <div class="kk-option-label">Plan A — Tren (recomendado)</div>
+              <div class="kk-subtitle">JR local</div>
+              <div class="kk-times">
+                <span><b>Salida:</b> 15:51 Shingu</span>
+                <span><b>Llegada:</b> 16:15 Kii-Katsuura</span>
+              </div>
+              <div class="kk-tip"><strong>TIP:</strong> Sit on the left hand side of the train for the best coastal views.</div>
+              <div class="kk-links">
+                <a class="kk-link" href="http://www.tb-kumano.jp/en/transport/train/#search" target="_blank" rel="noopener">↗ Train Timetable Search</a>
+              </div>
+              <div class="kk-plan-b">
+                <div class="kk-option-label">Plan B — Bus</div>
+                <div class="kk-subtitle">Kumano Kotsu</div>
+                <div class="kk-times">
+                  <span><b>Salida:</b> 15:00 Shingu Station</span>
+                  <span><b>Llegada:</b> 15:39 Kii-Katsuura Station</span>
+                </div>
+                <div class="kk-price">630 yen</div>
+                <div class="kk-note" style="margin-top:8px"><strong>NOTE:</strong> Departures every 30 minutes.</div>
+                <div class="kk-links">
+                  <a class="kk-link" href="http://www.tb-kumano.jp/en/transport/bus/#localtimetables" target="_blank" rel="noopener">↗ Bus Timetable #12</a>
+                  <a class="kk-link" href="http://www.tb-kumano.jp/en/transport/how-to-ride-local-bus/" target="_blank" rel="noopener">↗ How to Ride a Local Bus</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="kk-item">
+            <div class="kk-badge onsen"></div>
+            <div class="kk-card">
+              <div class="kk-title">Katsuura Onsen</div>
+              <div class="kk-desc">Puerto pesquero en la accidentada costa del Pacífico, famoso por sus baños termales y sus mariscos de primer nivel.</div>
+              <div class="kk-links">
+                <button type="button" class="kk-link" onclick="openPdfModal('assets/files/Katsuura-map.pdf','Katsuura Map')">📄 Katsuura Map</button>
+              </div>
+            </div>
+          </div>
+          <div class="kk-item">
+            <div class="kk-badge accom"></div>
+            <div class="kk-card">
+              <div class="kk-title">Alojamiento en Katsuura</div>
+              <div class="kk-desc">Una variedad de Ryokan, Minshuku y casas de huéspedes, algunas con vistas a la costa, muchas con baños termales. Cena en el alojamiento.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Day 5 (modified: extra night) ── -->
+      <div id="kk-day-5" style="display:none">
+        <div class="kk-overview-card">
+          <div class="kk-day-label">Día 5 · Visit Kumano Nachi Taisha · Noche extra en Kii-Katsuura</div>
+          Visita matutina al complejo de templos y santuarios de Nachi, con una corta caminata por la pintoresca escalinata de piedra de Daimon-zaka, que culmina en Nachi-no-Otaki, la cascada más alta de Japón. Quedándose una noche más en Kii-Katsuura en lugar de regresar a Osaka.
+          <br><div class="kk-overnight-badge">🛏 Kii-Katsuura (noche extra)</div>
+        </div>
+        <div class="kk-timeline">
+          <div class="kk-item">
+            <div class="kk-badge food"></div>
+            <div class="kk-card">
+              <div class="kk-title">Desayuno</div>
+              <div class="kk-desc">En el alojamiento.</div>
+            </div>
+          </div>
+          <div class="kk-item">
+            <div class="kk-badge luggage"></div>
+            <div class="kk-card">
+              <div class="kk-title">Guardaequipaje</div>
+              <div class="kk-desc">Deja el equipaje en el alojamiento o en las taquillas de monedas junto a la estación de Kii-Katsuura.</div>
+              <div class="kk-links">
+                <button type="button" class="kk-link" onclick="openPdfModal('assets/files/Kii-Katsuura-station-area-map.pdf','Kii-Katsuura Station Area Map')">📄 Kii-Katsuura Station Area Map</button>
+              </div>
+            </div>
+          </div>
+          <div class="kk-item">
+            <div class="kk-badge bus"></div>
+            <div class="kk-card">
+              <div class="kk-title">Bus Katsuura → Daimon-zaka</div>
+              <div class="kk-subtitle">Kumano Kotsu</div>
+              <div class="kk-times">
+                <span><b>Salida:</b> 8:25 Kii-Katsuura</span>
+                <span><b>Llegada:</b> 8:44 Daimon-zaka</span>
+              </div>
+              <div class="kk-price">430 yen</div>
+              <div class="kk-note" style="margin-top:8px"><strong>NOTA:</strong> Baños y máquinas expendedoras disponibles en la parada de autobús Daimon-zaka.</div>
+              <div class="kk-links">
+                <a class="kk-link" href="http://www.tb-kumano.jp/en/transport/bus/#localtimetables" target="_blank" rel="noopener">↗ Bus Timetable #8</a>
+              </div>
+            </div>
+          </div>
+          <div class="kk-item">
+            <div class="kk-badge hike"></div>
+            <div class="kk-card">
+              <div class="kk-title">Caminata: Daimon-zaka</div>
+              <div class="kk-meta">
+                <span class="kk-meta-item"><b>~2 km</b></span>
+                <span class="kk-meta-item"><b>~1 hr</b></span>
+                <span class="kk-meta-item">↑ <b>~190 m</b></span>
+              </div>
+              <div class="kk-desc">Corta pero pintoresca escalinata de adoquines que asciende desde el valle, flanqueada por árboles milenarios.</div>
+              <div class="kk-note"><strong>NOTA:</strong> La distancia y el tiempo son solo desde la base del valle hasta el complejo de santuarios y templos. Hay un descenso adicional hasta la base de la cascada y la parada de autobús Nachi-no-Taki-mae.</div>
+              <div class="kk-links">
+                <button type="button" class="kk-link" onclick="openPdfModal('assets/files/Nachi-map.pdf','Nachisan Map')">📄 Nachisan Map</button>
+              </div>
+            </div>
+          </div>
+          <div class="kk-item">
+            <div class="kk-badge visit"></div>
+            <div class="kk-card">
+              <div class="kk-title">Kumano Nachi Taisha</div>
+              <div class="kk-desc">Uno de los tres grandes santuarios, situado a mitad de camino del monte Nachi, a ~350 m sobre el nivel del mar. Su origen religioso reside en el antiguo culto a la naturaleza de las cataratas Nachi-no-Otaki. Un enorme árbol alcanfor da sombra al tejado del salón de culto.</div>
+              <div class="kk-links">
+                <a class="kk-link" href="http://www.tb-kumano.jp/en/world-heritage/kumano-nachi-taisha/" target="_blank" rel="noopener">↗ Kumano Nachi Taisha</a>
+                <button type="button" class="kk-link" onclick="openPdfModal('assets/files/Nachi-map.pdf','Nachisan Map')">📄 Nachisan Map</button>
+              </div>
+            </div>
+          </div>
+          <div class="kk-item">
+            <div class="kk-badge visit"></div>
+            <div class="kk-card">
+              <div class="kk-title">Seiganto-ji</div>
+              <div class="kk-desc">Templo fundado a principios del siglo V, uno de los edificios más antiguos de la región. Vista dramática desde los terrenos del templo: una pagoda de tres pisos con las cataratas Nachi de fondo.</div>
+              <div class="kk-links">
+                <button type="button" class="kk-link" onclick="openPdfModal('assets/files/Nachi-map.pdf','Nachisan Map')">📄 Nachisan Map</button>
+              </div>
+            </div>
+          </div>
+          <div class="kk-item">
+            <div class="kk-badge visit"></div>
+            <div class="kk-card">
+              <div class="kk-title">Cataratas Nachi (Nachi-no-Otaki)</div>
+              <div class="kk-desc">133 m de altura y 13 m de ancho: la cascada más alta de Japón. El agua proviene del bosque primigenio de hoja ancha perenne circundante, un santuario protegido desde tiempos remotos y utilizado para el entrenamiento ascético de los monjes de montaña.</div>
+              <div class="kk-links">
+                <button type="button" class="kk-link" onclick="openPdfModal('assets/files/Nachi-map.pdf','Nachisan Map')">📄 Nachisan Map</button>
+              </div>
+            </div>
+          </div>
+          <div class="kk-item">
+            <div class="kk-badge bus"></div>
+            <div class="kk-card">
+              <div class="kk-title">Bus Nachi → Kii-Katsuura</div>
+              <div class="kk-subtitle">Kumano Kotsu</div>
+              <div class="kk-times">
+                <span><b>Salida:</b> 11:44 Nachi-no-Taki-mae</span>
+                <span><b>Llegada:</b> 12:08 Kii-Katsuura</span>
+              </div>
+              <div class="kk-price">630 yen</div>
+              <div class="kk-links">
+                <a class="kk-link" href="http://www.tb-kumano.jp/en/transport/bus/#localtimetables" target="_blank" rel="noopener">↗ Bus Timetable #8</a>
+              </div>
+            </div>
+          </div>
+          <div class="kk-item">
+            <div class="kk-badge food"></div>
+            <div class="kk-card">
+              <div class="kk-title">Almuerzo</div>
+              <div class="kk-desc">Gran variedad de pequeños restaurantes cerca de la estación. Pregunta en la oficina de información turística de la estación de Kii-Katsuura.</div>
+              <div class="kk-links">
+                <button type="button" class="kk-link" onclick="openPdfModal('assets/files/Kii-Katsuura-station-area-map.pdf','Kii-Katsuura Station Area Map')">📄 Kii-Katsuura Station Area Map</button>
+              </div>
+            </div>
+          </div>
+          <div class="kk-item">
+            <div class="kk-badge accom"></div>
+            <div class="kk-card">
+              <div class="kk-title">Noche extra — Kii-Katsuura</div>
+              <div class="kk-extra-night-card"><strong>Quedándose una noche más en Kii-Katsuura.</strong> El itinerario original parte en tren hacia Osaka a las 13:46 — en cambio, se aprovecha la tarde y la noche para disfrutar del puerto, los mariscos y los onsen de la costa.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Reservas ── -->
+      <div id="kk-day-6">
+
+        <div class="kk-booking-docs">
+          <div class="kk-booking-docs-label">Documentos de reserva · Kumano Travel #185936</div>
+          <div class="kk-booking-docs-links">
+            <button type="button" class="kk-link" onclick="openPdfModal('assets/files/Confirmation_KTResNo185936_20260428_111015.pdf','Confirmación de reservas · KT Res #185936')">📄 Confirmación de reservas</button>
+            <button type="button" class="kk-link" onclick="openPdfModal('assets/files/Outline_KTResNo185936_20260428_111025.pdf','Detalle de reservas · KT Res #185936')">📄 Detalle de reservas</button>
+          </div>
+        </div>
+
+        <div class="kk-booking-list">
+
+          <!-- 1 · Kiri-no-Sato Takahara Lodge -->
+          <div class="kk-booking-card">
+            <img src="assets/files/kk_takahara_lodge.jpg" alt="Kiri-no-Sato Takahara Lodge" class="kk-booking-img">
+            <div class="kk-booking-body">
+              <div class="kk-booking-badges">
+                <span class="kk-badge-date">Mayo 17</span>
+                <span class="kk-badge-type">Ryokan</span>
+              </div>
+              <div class="kk-booking-name">Kiri-no-Sato Takahara Lodge</div>
+              <div class="kk-booking-subname">"Organic Hotel" · Western style room · 1 noche</div>
+              <hr class="kk-booking-divider">
+              <div class="kk-booking-meta">
+                <div class="kk-booking-meta-item">
+                  <span class="kk-booking-meta-label">Check-in</span>
+                  <span class="kk-booking-meta-val">18:30</span>
+                </div>
+                <div class="kk-booking-meta-item">
+                  <span class="kk-booking-meta-label">Check-out</span>
+                  <span class="kk-booking-meta-val">11:00</span>
+                </div>
+                <div class="kk-booking-meta-item">
+                  <span class="kk-booking-meta-label">Teléfono</span>
+                  <span class="kk-booking-meta-val">0739-64-1900</span>
+                </div>
+                <div class="kk-booking-meta-item">
+                  <span class="kk-booking-meta-label">Map Code</span>
+                  <span class="kk-booking-meta-val">615 754 065*24</span>
+                </div>
+              </div>
+              <div class="kk-booking-address">📍 826 Takahara, Nakahechi-cho, Tanabe City, 646-1416<br>🚶 Caminando desde Takijiri-Oji</div>
+              <div class="kk-booking-links">
+                <a class="kk-link" href="http://maps.google.com/maps/ms?ie=UTF8&hl=en&msa=0&msid=102183447146219675911.00047e9de8bac9683b943&ll=33.749464,135.631714&spn=0.823269,1.448822" target="_blank" rel="noopener">🗺 Google Maps</a>
+                <button type="button" class="kk-link" onclick="openPdfModal('assets/files/nakahechi-map.pdf','Nakahechi Route Map')">📄 Nakahechi Map</button>
+                <button type="button" class="kk-link" onclick="openPdfModal('assets/files/Kumano-Kodo-Nakahechi-Route-Maps-Takijiri-Takahara.pdf','Takijiri → Takahara Route Map')">📄 Takijiri → Takahara</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2 · Minshuku Chikatsuyu -->
+          <div class="kk-booking-card">
+            <img src="assets/files/kk_chikatsuyu.jpg" alt="Minshuku Chikatsuyu" class="kk-booking-img">
+            <div class="kk-booking-body">
+              <div class="kk-booking-badges">
+                <span class="kk-badge-date">Mayo 18</span>
+                <span class="kk-badge-type">Minshuku</span>
+              </div>
+              <div class="kk-booking-name">Minshuku Chikatsuyu</div>
+              <div class="kk-booking-subname">Edificio principal · 1 noche</div>
+              <hr class="kk-booking-divider">
+              <div class="kk-booking-meta">
+                <div class="kk-booking-meta-item">
+                  <span class="kk-booking-meta-label">Check-in</span>
+                  <span class="kk-booking-meta-val">18:30</span>
+                </div>
+                <div class="kk-booking-meta-item">
+                  <span class="kk-booking-meta-label">Check-out</span>
+                  <span class="kk-booking-meta-val">9:00</span>
+                </div>
+                <div class="kk-booking-meta-item">
+                  <span class="kk-booking-meta-label">Teléfono</span>
+                  <span class="kk-booking-meta-val">0739-65-0617</span>
+                </div>
+                <div class="kk-booking-meta-item">
+                  <span class="kk-booking-meta-label">Map Code</span>
+                  <span class="kk-booking-meta-val">615 823 541*88</span>
+                </div>
+              </div>
+              <div class="kk-booking-address">📍 401-12 Chikatsuyu, Nakahechi-cho, Tanabe City, 646-1402</div>
+              <div class="kk-booking-alts"><strong>Alternativas:</strong> Yamazakura Annex · Minshuku Wago · Yado G</div>
+              <div class="kk-booking-links">
+                <a class="kk-link" href="https://www.google.com/maps/d/viewer?mid=1jsad-OPFWzwlecYZSUP5Xk9U9DI&z=8&ll=34.213644,135.348446" target="_blank" rel="noopener">🗺 Google Maps</a>
+                <button type="button" class="kk-link" onclick="openPdfModal('assets/files/nakahechi-map.pdf','Nakahechi Route Map')">📄 Nakahechi Map</button>
+                <button type="button" class="kk-link" onclick="openPdfModal('assets/files/Kumano-Kodo-Nakahechi-Route-Maps-Takahara-Tsugizakura.pdf','Takahara → Tsugizakura Route Map')">📄 Takahara → Tsugizakura</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3 · Minshuku Takiyoshi -->
+          <div class="kk-booking-card">
+            <img src="assets/files/kk_takiyoshi.jpg" alt="Minshuku Takiyoshi" class="kk-booking-img">
+            <div class="kk-booking-body">
+              <div class="kk-booking-badges">
+                <span class="kk-badge-date">Mayo 19</span>
+                <span class="kk-badge-type">Minshuku</span>
+              </div>
+              <div class="kk-booking-name">Minshuku Takiyoshi</div>
+              <div class="kk-booking-subname">Yunomine Onsen · 1 noche</div>
+              <hr class="kk-booking-divider">
+              <div class="kk-booking-meta">
+                <div class="kk-booking-meta-item">
+                  <span class="kk-booking-meta-label">Check-in</span>
+                  <span class="kk-booking-meta-val">17:30</span>
+                </div>
+                <div class="kk-booking-meta-item">
+                  <span class="kk-booking-meta-label">Check-out</span>
+                  <span class="kk-booking-meta-val">9:30</span>
+                </div>
+                <div class="kk-booking-meta-item">
+                  <span class="kk-booking-meta-label">Toque de queda</span>
+                  <span class="kk-booking-meta-val">22:00</span>
+                </div>
+                <div class="kk-booking-meta-item">
+                  <span class="kk-booking-meta-label">Teléfono</span>
+                  <span class="kk-booking-meta-val">0735-42-1515</span>
+                </div>
+                <div class="kk-booking-meta-item">
+                  <span class="kk-booking-meta-label">Map Code</span>
+                  <span class="kk-booking-meta-val">478 318 036*02</span>
+                </div>
+              </div>
+              <div class="kk-booking-address">📍 260-4 Yunomine, Hongu-cho, Tanabe City, 647-1732</div>
+              <div class="kk-booking-note"><strong>NOTA:</strong> Check-in 15:00–17:00. Avisar si se llega tarde. Cenas a las 18:00 o 18:30.</div>
+              <div class="kk-booking-alts"><strong>Alternativa:</strong> Onsen Minshuku Wadama</div>
+              <div class="kk-booking-links">
+                <a class="kk-link" href="https://www.google.com/maps/d/viewer?mid=1lsb2PgxRHDdWsgS6HC74lSYNf_n2WxgY&z=8&ll=34.213644,135.348446" target="_blank" rel="noopener">🗺 Google Maps</a>
+                <button type="button" class="kk-link" onclick="openPdfModal('assets/files/Yunomine-Onsen-map.pdf','Yunomine Onsen Map')">📄 Yunomine Onsen Map</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4 · BOND Kumano Bento -->
+          <div class="kk-booking-card">
+            <img src="assets/files/kk_bond_bento.jpg" alt="BOND Kumano Bento Lunch Box" class="kk-booking-img">
+            <div class="kk-booking-body">
+              <div class="kk-booking-badges">
+                <span class="kk-badge-date">Mayo 20</span>
+                <span class="kk-badge-activity">Servicio</span>
+              </div>
+              <div class="kk-booking-name">BOND Kumano Bento Lunch Box</div>
+              <div class="kk-booking-subname">2 cajas · Entrega en Minshuku Takiyoshi</div>
+              <hr class="kk-booking-divider">
+              <div class="kk-booking-meta">
+                <div class="kk-booking-meta-item">
+                  <span class="kk-booking-meta-label">Entrega</span>
+                  <span class="kk-booking-meta-val">07:30</span>
+                </div>
+                <div class="kk-booking-meta-item">
+                  <span class="kk-booking-meta-label">Teléfono</span>
+                  <span class="kk-booking-meta-val">070-4209-0971</span>
+                </div>
+              </div>
+              <div class="kk-booking-address">📍 145, Ukegawa, Hongu-cho, Tanabe City, 647-1703</div>
+              <div class="kk-booking-note"><strong>NOTA:</strong> Entregado directamente en Minshuku Takiyoshi a las 07:30 antes de comenzar la jornada.</div>
+            </div>
+          </div>
+
+          <!-- 5 · Traditional Boat Tour -->
+          <div class="kk-booking-card">
+            <img src="assets/files/kk_boat_tour.jpg" alt="Traditional Boat Tour" class="kk-booking-img">
+            <div class="kk-booking-body">
+              <div class="kk-booking-badges">
+                <span class="kk-badge-date">Mayo 20</span>
+                <span class="kk-badge-activity">Actividad</span>
+              </div>
+              <div class="kk-booking-name">Paseo Tradicional en Bote</div>
+              <div class="kk-booking-subname">Kawabune · Shingu</div>
+              <hr class="kk-booking-divider">
+              <div class="kk-booking-meta">
+                <div class="kk-booking-meta-item">
+                  <span class="kk-booking-meta-label">Salida</span>
+                  <span class="kk-booking-meta-val">10:00 (alternativa 14:30)</span>
+                </div>
+                <div class="kk-booking-meta-item">
+                  <span class="kk-booking-meta-label">Llegada</span>
+                  <span class="kk-booking-meta-val">Antes de las 9:30</span>
+                </div>
+                <div class="kk-booking-meta-item">
+                  <span class="kk-booking-meta-label">Teléfono</span>
+                  <span class="kk-booking-meta-val">0735-44-0987</span>
+                </div>
+                <div class="kk-booking-meta-item">
+                  <span class="kk-booking-meta-label">Map Code</span>
+                  <span class="kk-booking-meta-val">246 422 417*76</span>
+                </div>
+              </div>
+              <div class="kk-booking-address">🚌 Parada: Michi-no-Eki Kumano-gawa</div>
+              <div class="kk-booking-note"><strong>NOTA:</strong> Llegar antes de las 9:30 para la orientación previa a la salida.</div>
+              <div class="kk-booking-links">
+                <button type="button" class="kk-link" onclick="openPdfModal('assets/files/Shingu-map.pdf','Shingu Map')">📄 Shingu Map</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 6 · Kamenoi Hotel Nachi Katsuura -->
+          <div class="kk-booking-card">
+            <img src="assets/files/kk_kamenoi.jpg" alt="Kamenoi Hotel Nachi Katsuura" class="kk-booking-img">
+            <div class="kk-booking-body">
+              <div class="kk-booking-badges">
+                <span class="kk-badge-date">Mayo 20–21</span>
+                <span class="kk-badge-type">Ryokan</span>
+              </div>
+              <div class="kk-booking-name">Kamenoi Hotel Nachi Katsuura</div>
+              <div class="kk-booking-subname">Oceanview Japanese room with Open Air Bath · 2 noches</div>
+              <hr class="kk-booking-divider">
+              <div class="kk-booking-meta">
+                <div class="kk-booking-meta-item">
+                  <span class="kk-booking-meta-label">Check-in</span>
+                  <span class="kk-booking-meta-val">18:30</span>
+                </div>
+                <div class="kk-booking-meta-item">
+                  <span class="kk-booking-meta-label">Check-out</span>
+                  <span class="kk-booking-meta-val">10:00</span>
+                </div>
+                <div class="kk-booking-meta-item">
+                  <span class="kk-booking-meta-label">Teléfono</span>
+                  <span class="kk-booking-meta-val">0735-52-0333</span>
+                </div>
+                <div class="kk-booking-meta-item">
+                  <span class="kk-booking-meta-label">Map Code</span>
+                  <span class="kk-booking-meta-val">324 773 524*37</span>
+                </div>
+              </div>
+              <div class="kk-booking-address">📍 216-19 Katsuura, Nachi-Katsuura-cho, 649-5334</div>
+              <div class="kk-booking-note"><strong>NOTA:</strong> Check-in antes de las 18:00. Impuesto de onsen ¥150 por persona.</div>
+              <div class="kk-booking-alts"><strong>Alternativa:</strong> Minshuku Wakatake</div>
+              <div class="kk-booking-links">
+                <a class="kk-link" href="https://maps.google.com/maps/ms?msid=213791128974696468673.0004bfb8d1da403f5e907&msa=0&ll=33.835061,135.722351&spn=0.905723,1.783905" target="_blank" rel="noopener">🗺 Google Maps</a>
+                <button type="button" class="kk-link" onclick="openPdfModal('assets/files/Katsuura-map.pdf','Katsuura Map')">📄 Katsuura Map</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div id="ksub-nikko" style="display:none">
+      <div class="kk-day-nav">
+        <button class="kk-day-btn active" id="nikko-btn-0" onclick="switchNikkoTab(0)">Itinerario</button>
+        <button class="kk-day-btn" id="nikko-btn-1" onclick="switchNikkoTab(1)">Información</button>
+      </div>
+
+      <div id="nikko-tab-0">
+      <!-- Overview -->
+      <div class="kk-overview-card">
+        <div class="kk-day-label">Viernes 8 de Mayo · Day Trip a Nikko</div>
+        Excursión de un día desde Tokyo: templos Patrimonio de la Humanidad, trekking por el humedal de Senjogahara, baño de pies en Yumoto Onsen y las cataratas Kegon junto al lago Chuzenji.
+        <br><div class="kk-overnight-badge">🚄 Regreso a Asakusa · ~21:30</div>
+      </div>
+
+      <!-- Passes -->
+      <div class="nikko-pass-row">
+        <div class="nikko-pass-card">
+          <div class="nikko-pass-name">Nikko Pass All Area</div>
+          <div class="nikko-pass-price">~USD 50</div>
+          <div class="nikko-pass-desc">Incluye tren Tobu Limited Express desde Asakusa y todos los buses dentro de Nikko. Recomendado para este itinerario.</div>
+          <div class="kk-links"><a class="kk-link" href="https://www.japan-guide.com/e/e2358_002.html" target="_blank" rel="noopener">↗ Nikko Pass All Area</a></div>
+        </div>
+        <div class="nikko-pass-card">
+          <div class="nikko-pass-name">World Heritage Area Pass</div>
+          <div class="nikko-pass-price">~USD 20</div>
+          <div class="nikko-pass-desc">Acceso a la zona de templos únicamente, sin transporte incluido.</div>
+          <div class="kk-links"><a class="kk-link" href="https://www.japan-guide.com/e/e3805.html" target="_blank" rel="noopener">↗ World Heritage Area Pass</a></div>
+        </div>
+      </div>
+
+      <!-- Timeline -->
+      <div class="kk-timeline">
+
+        <div class="kk-item">
+          <div class="kk-badge train"></div>
+          <div class="kk-card">
+            <div class="kk-title">Tren Asakusa → Tobu-Nikko</div>
+            <div class="kk-subtitle">Tobu Limited Express</div>
+            <div class="kk-times">
+              <span><b>Salida:</b> 7:00 Asakusa Station</span>
+              <span><b>Llegada:</b> 8:50 Tobu-Nikko Station</span>
+            </div>
+            <div class="kk-note" style="margin-top:8px"><strong>NOTA:</strong> Salida máxima a las 7:30.</div>
+            <div class="kk-tip"><strong>TIP:</strong> Activar el Nikko Pass All Area al subir. Al llegar, sacar foto al horario de buses hacia Yumoto para planificar el regreso.</div>
+          </div>
+        </div>
+
+        <div class="kk-item">
+          <div class="kk-badge bus"></div>
+          <div class="kk-card">
+            <div class="kk-title">Bus → Zona Templos</div>
+            <div class="kk-subtitle">Bus Tobu</div>
+            <div class="kk-times">
+              <span><b>Salida:</b> ~9:00 Tobu-Nikko Station</span>
+              <span><b>Llegada:</b> ~9:10 Shinkyo / Omotesando</span>
+            </div>
+            <div class="kk-desc" style="margin-top:8px">Buses cada 10-15 minutos desde la estación.</div>
+          </div>
+        </div>
+
+        <div class="kk-item">
+          <div class="kk-badge visit"></div>
+          <div class="kk-card">
+            <div class="kk-title">Templos de Nikko</div>
+            <div class="kk-meta">
+              <span class="kk-meta-item"><b>~1h 45min</b></span>
+            </div>
+            <div class="kk-desc">Complejo de templos y santuarios Patrimonio de la Humanidad: Toshogu, Rinnoji y el Puente Shinkyo. Priorizar Toshogu.</div>
+            <div class="kk-note"><strong>NOTA:</strong> Templos cierran a las 16:30. Akechidaira Plateau cerrado por mantenimiento.</div>
+          </div>
+        </div>
+
+        <div class="kk-item">
+          <div class="kk-badge bus"></div>
+          <div class="kk-card">
+            <div class="kk-title">Bus → Ryuzu Falls</div>
+            <div class="kk-subtitle">Bus Tobu · Ruta hacia Yumoto Onsen</div>
+            <div class="kk-times">
+              <span><b>Salida:</b> ~11:15 Tobu-Nikko Station</span>
+              <span><b>Llegada:</b> ~12:20 Ryuzu Falls</span>
+            </div>
+            <div class="kk-note" style="margin-top:8px"><strong>NOTA:</strong> Tomar este bus antes de las 12:00 para garantizar tiempo suficiente en el trekking.</div>
+          </div>
+        </div>
+
+        <div class="kk-item">
+          <div class="kk-badge visit"></div>
+          <div class="kk-card">
+            <div class="kk-title">Ryuzu Falls — Inicio del Trekking</div>
+            <div class="kk-desc">Punto de partida del trekking. Baños y restaurante disponibles en la parada.</div>
+            <div class="kk-tip"><strong>TIP:</strong> Buen momento para comer antes de comenzar la caminata.</div>
+          </div>
+        </div>
+
+        <div class="kk-item">
+          <div class="kk-badge hike"></div>
+          <div class="kk-card">
+            <div class="kk-title">Trekking: Ryuzu → Senjogahara → Yutaki Iriguchi</div>
+            <div class="kk-meta">
+              <span class="kk-meta-item"><b>~2 hr</b></span>
+              <span class="kk-meta-item">Sendero plano</span>
+            </div>
+            <div class="kk-times">
+              <span><b>Inicio:</b> ~12:30</span>
+              <span><b>Fin:</b> ~14:30</span>
+            </div>
+            <div class="kk-desc" style="margin-top:8px">Sendero plano a través del humedal de Senjogahara, bordeando el lago Izumiyadoike. Salida alternativa posible en Akanuma.</div>
+            <div class="kk-note"><strong>NOTA:</strong> Último inicio posible a las 13:30.</div>
+          </div>
+        </div>
+
+        <div class="kk-item">
+          <div class="kk-badge visit"></div>
+          <div class="kk-card">
+            <div class="kk-title">Cataratas Yudaki</div>
+            <div class="kk-desc">Vista de las cataratas Yudaki al finalizar el trekking en la parada Yutaki Iriguchi.</div>
+            <div class="kk-note"><strong>NOTA:</strong> Salir de Yutaki antes de las 16:30.</div>
+          </div>
+        </div>
+
+        <div class="kk-item">
+          <div class="kk-badge bus"></div>
+          <div class="kk-card">
+            <div class="kk-title">Bus → Yumoto Onsen</div>
+            <div class="kk-subtitle">Bus Tobu · Buses cada 30-40 min</div>
+            <div class="kk-times">
+              <span><b>Salida:</b> ~14:40 Yutaki Iriguchi</span>
+              <span><b>Llegada:</b> ~14:55 Yumoto Onsen</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="kk-item">
+          <div class="kk-badge onsen"></div>
+          <div class="kk-card">
+            <div class="kk-title">Ashiyu — Baño de Pies en Yumoto Onsen</div>
+            <div class="kk-times">
+              <span><b>Horario:</b> 15:00 ~ 15:30</span>
+            </div>
+            <div class="kk-desc" style="margin-top:8px">Baño de pies gratuito (ashiyu) en Yumoto Onsen. Descanso de 30 minutos tras el trekking.</div>
+            <div class="kk-note"><strong>NOTA:</strong> Salir de Yumoto antes de las 17:00.</div>
+          </div>
+        </div>
+
+        <div class="kk-item">
+          <div class="kk-badge bus"></div>
+          <div class="kk-card">
+            <div class="kk-title">Bus → Chuzenji Onsen</div>
+            <div class="kk-subtitle">Bus Tobu</div>
+            <div class="kk-times">
+              <span><b>Salida:</b> ~15:40 Yumoto Onsen</span>
+              <span><b>Llegada:</b> ~16:20 Chuzenji Onsen</span>
+            </div>
+            <div class="kk-desc" style="margin-top:8px">Descenso por la montaña. Trayecto de 35-40 minutos.</div>
+          </div>
+        </div>
+
+        <div class="kk-item">
+          <div class="kk-badge visit"></div>
+          <div class="kk-card">
+            <div class="kk-title">Cataratas Kegon y Lago Chuzenji</div>
+            <div class="kk-times">
+              <span><b>Horario:</b> 16:20 ~ 18:00</span>
+            </div>
+            <div class="kk-desc" style="margin-top:8px">Visita a las cataratas Kegon y paseo por el lago Chuzenji. Merienda en los cafés junto al lago.</div>
+            <div class="kk-note"><strong>NOTA:</strong> Salir antes de las 18:00 — último bus cómodo a las 18:45.</div>
+          </div>
+        </div>
+
+        <div class="kk-item">
+          <div class="kk-badge bus"></div>
+          <div class="kk-card">
+            <div class="kk-title">Bus → Tobu-Nikko Station</div>
+            <div class="kk-subtitle">Bus Tobu</div>
+            <div class="kk-times">
+              <span><b>Salida:</b> ~18:00 Chuzenji Onsen</span>
+              <span><b>Llegada:</b> ~18:50 Tobu-Nikko Station</span>
+            </div>
+            <div class="kk-desc" style="margin-top:8px">~50 minutos. Esencial para alcanzar el tren de regreso.</div>
+            <div class="kk-note"><strong>NOTA:</strong> Último bus cómodo a las 18:45.</div>
+          </div>
+        </div>
+
+        <div class="kk-item">
+          <div class="kk-badge train"></div>
+          <div class="kk-card">
+            <div class="kk-title">Tren Tobu-Nikko → Asakusa</div>
+            <div class="kk-subtitle">Tobu Railway Limited Express</div>
+            <div class="kk-times">
+              <span><b>Salida:</b> ~19:30 Tobu-Nikko Station</span>
+              <span><b>Llegada:</b> ~21:20 Asakusa Station</span>
+            </div>
+            <div class="kk-tip"><strong>TIP:</strong> Reservar el Limited Express con antelación.</div>
+            <div class="kk-note"><strong>NOTA:</strong> Último tren cómodo a las 20:30.</div>
+          </div>
+        </div>
+
+      </div>
+      </div><!-- /nikko-tab-0 -->
+
+      <div id="nikko-tab-1" style="display:none">
+
+        <div class="kk-overview-card">
+          Nikko está a ~125 km al norte de Tokyo y es un destino perfecto para una excursión de uno o dos días. Está conectado con Tokyo por la línea Tobu Railway y por Japan Railways (JR).
+        </div>
+
+        <div class="nikko-section-title">Cómo llegar a Nikko</div>
+
+        <div class="nikko-transport-section">
+
+          <div class="nikko-transport-card chosen">
+            <div class="nikko-transport-header">
+              <div class="nikko-transport-icon">🚄</div>
+              <div>
+                <div class="nikko-transport-title">Tobu Railway desde Asakusa <span class="nikko-chosen-badge">✓ Nuestra opción</span></div>
+                <div class="nikko-transport-stats">
+                  <span class="nikko-transport-stat">⏱ 2–3h</span>
+                  <span class="nikko-transport-stat">¥1,400–3,540</span>
+                  <span class="nikko-transport-stat">Cada 15-30 min</span>
+                </div>
+              </div>
+            </div>
+            <div class="nikko-transport-body">
+              <div>La estación de salida es Tobu Asakusa Station, accesible en metro (líneas Ginza y Asakusa). Hay dos opciones de servicio:</div>
+              <div style="margin-top:8px"><strong>Limited Express</strong> — ~2h · ¥2,850–3,540 · 1-2 trenes por hora. Algunos servicios requieren transbordo en Shimo-Imaichi.</div>
+              <div style="margin-top:4px"><strong>Express / Local</strong> — ¥1,400 · Al menos 30 min más de trayecto · 1-3 transbordos.</div>
+              <div class="kk-note" style="margin-top:10px"><strong>NOTA:</strong> Los pases Tobu incluyen el trayecto de ida y vuelta desde Tokyo más buses ilimitados en Nikko, pero no cubren el suplemento del Limited Express (¥1,450–2,140 por trayecto). El Japan Rail Pass no es válido en trenes Tobu.</div>
+            </div>
+          </div>
+
+          <div class="nikko-transport-card">
+            <div class="nikko-transport-header collapsible" onclick="toggleTransportCard(this)">
+              <div class="nikko-transport-icon">🚄</div>
+              <div>
+                <div class="nikko-transport-title">Limited Express desde Shinjuku</div>
+                <div class="nikko-transport-stats">
+                  <span class="nikko-transport-stat">⏱ 2h</span>
+                  <span class="nikko-transport-stat">¥4,140</span>
+                  <span class="nikko-transport-stat">1–2 trenes/día</span>
+                </div>
+              </div>
+              <span class="nikko-chevron">▾</span>
+            </div>
+            <div class="nikko-transport-body" style="display:none">
+              <div>Trenes directos operados conjuntamente por JR y Tobu Railway entre JR Shinjuku Station y Tobu Nikko Station. Todos los asientos son reservados.</div>
+              <div class="kk-note" style="margin-top:10px"><strong>NOTA:</strong> El Japan Rail Pass no cubre completamente este trayecto ya que parte del recorrido usa vías Tobu. Sí están cubiertos: JR Tokyo Wide Pass, JR East Pass y JR East South Hokkaido Pass.</div>
+            </div>
+          </div>
+
+          <div class="nikko-transport-card">
+            <div class="nikko-transport-header collapsible" onclick="toggleTransportCard(this)">
+              <div class="nikko-transport-icon">🚅</div>
+              <div>
+                <div class="nikko-transport-title">Japan Railways (JR)</div>
+                <div class="nikko-transport-stats">
+                  <span class="nikko-transport-stat">⏱ ~100 min</span>
+                  <span class="nikko-transport-stat">¥5,500</span>
+                  <span class="nikko-transport-stat">Cada hora</span>
+                </div>
+              </div>
+              <span class="nikko-chevron">▾</span>
+            </div>
+            <div class="nikko-transport-body" style="display:none">
+              <span class="nikko-jrp-badge">🎫 Cubierto por Japan Rail Pass</span>
+              <div>Shinkansen Tohoku (desde Tokyo o Ueno) hasta Utsunomiya Station, luego transbordo a la línea JR Nikko. Con buena conexión, el trayecto total es de ~100 minutos. Opción recomendada para titulares de JR Pass dado el elevado coste sin pase.</div>
+            </div>
+          </div>
+
+          <div class="kk-note" style="border-radius:12px; padding:10px 14px;">
+            <strong>🚌 Bus desde Prefectura de Gunma</strong> — Solo fines de semana y festivos, del 1 de junio al 25 de octubre. Conecta Yumoto Onsen (Oku-Nikko) con Kamada (entrada a Oze). 1h · ¥2,370. Permite combinar Nikko con Oze o acceder desde Gunma.
+          </div>
+
+        </div>
+
+        <!-- ── Cómo moverse por Nikko ── -->
+        <div class="nikko-section-title">Cómo moverse por Nikko</div>
+
+        <div class="nikko-map-figure">
+          <img src="assets/files/nikko_map_full.gif" alt="Mapa general de Nikko">
+        </div>
+
+        <div class="nikko-info-text">
+          Nikko cuenta con dos estaciones de tren, Tobu-Nikko Station y JR Nikko Station, separadas unos 200 metros entre sí. Los famosos templos y santuarios se concentran en una zona a ~2 km al noroeste de las estaciones, accesibles en autobús en 10 minutos o a pie en 30-40 minutos caminando por la calle principal.
+        </div>
+
+        <div class="nikko-transport-card" style="margin-bottom:12px">
+          <div class="nikko-transport-header">
+            <div class="nikko-transport-icon">🚌</div>
+            <div>
+              <div class="nikko-transport-title">Autobuses a la zona de templos</div>
+              <div class="nikko-transport-stats">
+                <span class="nikko-transport-stat">⏱ ~10 min</span>
+                <span class="nikko-transport-stat">¥350 por trayecto</span>
+                <span class="nikko-transport-stat">¥600 pase día</span>
+              </div>
+            </div>
+          </div>
+          <div class="nikko-transport-body">
+            <div><strong>Buses hacia Lago Chuzenji</strong> — Paran en "Shinkyo" y "Nishisando", a 5-10 minutos a pie de los templos.</div>
+            <div style="margin-top:6px"><strong>World Heritage Meguri</strong> — Bus circular cada 10-20 min que para más cerca de los templos. Bajarse en "Omotesando" para Toshogu y Rinnoji, o en "Taiyuin-Futarasanjinja-mae" para Taiyuin y Futarasan Shrine.</div>
+            <div class="kk-tip" style="margin-top:10px"><strong>TIP:</strong> Ambas líneas están cubiertas por los pases de tren disponibles para Nikko.</div>
+          </div>
+        </div>
+
+        <div class="nikko-map-figure">
+          <img src="assets/files/nikko_transport_map.gif" alt="Mapa de transporte de Nikko">
+        </div>
+
+        <div class="nikko-transport-card" style="margin-bottom:12px">
+          <div class="nikko-transport-header">
+            <div class="nikko-transport-icon">🚌</div>
+            <div>
+              <div class="nikko-transport-title">Autobuses a Oku-Nikko</div>
+              <div class="nikko-transport-stats">
+                <span class="nikko-transport-stat">Lago Chuzenji ~50 min · ¥1,250</span>
+                <span class="nikko-transport-stat">Yumoto Onsen ~80 min · ¥1,950</span>
+              </div>
+            </div>
+          </div>
+          <div class="nikko-transport-body">
+            <div>Autobuses desde el centro de Nikko hasta el área de Oku-Nikko dentro del Parque Nacional de Nikko, incluyendo el Lago Chuzenji y Yumoto Onsen.</div>
+            <div style="margin-top:8px"><strong>Pases de 2 días disponibles en Tobu Nikko Station:</strong></div>
+            <div style="margin-top:4px">· Nikko ↔ Lago Chuzenji — <strong>¥2,300</strong></div>
+            <div style="margin-top:2px">· Nikko ↔ Yumoto Onsen — <strong>¥3,500</strong></div>
+            <div class="kk-tip" style="margin-top:10px"><strong>TIP:</strong> Estos buses están cubiertos por la mayoría de los pases de tren disponibles para Nikko.</div>
+            <div class="kk-note" style="margin-top:8px"><strong>NOTA:</strong> En octubre, durante la temporada de hojas otoñales, el tráfico hacia Oku-Nikko puede ser muy intenso especialmente los fines de semana, con grandes retrasos en los autobuses.</div>
+          </div>
+        </div>
+
+        <div class="nikko-map-figure">
+          <img src="assets/files/nikko_map_town.gif" alt="Mapa del centro de Nikko">
+        </div>
+
+        <div class="nikko-map-figure">
+          <img src="assets/files/nikko_tobu_bus.jpg" alt="Bus Tobu en Yumoto Onsen">
+          <div class="nikko-map-caption">Bus Tobu en Yumoto Onsen</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section><!-- /sec-kumano -->
+
+<!-- ══════════════ Info section ══════════════ -->
+<section id="sec-info" style="display:none">
+  <div class="info-wrap">
+
+    <div class="kk-day-nav">
+      <button class="kk-day-btn active" id="info-btn-0" onclick="switchInfoTab(0)">Links</button>
+      <button class="kk-day-btn" id="info-btn-1" onclick="switchInfoTab(1)">Documentos</button>
+    </div>
+
+    <div id="info-tab-0">
+      <div class="info-card">
+        <div class="info-icon-box gov">🛂</div>
+        <div class="info-body">
+          <div class="info-title">Visit Japan Web — Aduana e Inmigración</div>
+          <div class="info-desc">Registro completado. El QR de aduana e inmigración ya está disponible en el sitio.</div>
+          <div class="info-links">
+            <a class="info-link" href="https://www.vjw.digital.go.jp/main/#/vjwpti006" target="_blank" rel="noopener">↗ vjw.digital.go.jp</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-icon-box legal">🗾</div>
+        <div class="info-body">
+          <div class="info-title">Países sin visa — Ministerio de Relaciones Exteriores de Japón</div>
+          <div class="info-desc">Listado oficial de países exentos de visa para estadías cortas. <strong>Argentina incluida.</strong></div>
+          <div class="info-links">
+            <a class="info-link" href="https://www.mofa.go.jp/j_info/visit/visa/short/novisa.html" target="_blank" rel="noopener">↗ mofa.go.jp</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="info-tab-1" style="display:none">
+      <div class="info-card">
+        <div class="info-icon-box docs">🪪</div>
+        <div class="info-body">
+          <div class="info-title">Pasaportes</div>
+          <div class="info-desc">Fotografías del pasaporte · Argentina</div>
+          <div class="info-links">
+            <button class="info-link" onclick="openPdfModal('assets/files/Yam_passport.png','Pasaporte — Yamil')">📄 Yamil</button>
+            <button class="info-link" onclick="openPdfModal('assets/files/Melu_passport.png','Pasaporte — Melu')">📄 Melu</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-icon-box medical">❤️‍🩹</div>
+        <div class="info-body">
+          <div class="info-title">Asistencia Médica — 365 Assist</div>
+          <div class="info-desc">Vouchers de cobertura médica para el viaje</div>
+          <div class="info-links">
+            <button class="info-link" onclick="openPdfModal('assets/files/Yam_365assist.pdf','Asistencia Médica — Yamil')">📄 Yamil</button>
+            <button class="info-link" onclick="openPdfModal('assets/files/Melu_365assist.pdf','Asistencia Médica — Melu')">📄 Melu</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-icon-box flight">✈️</div>
+        <div class="info-body">
+          <div class="info-title">Vuelo Ethiopian Airlines</div>
+          <div class="info-desc">Confirmación de vuelo e información de asientos</div>
+          <div class="info-links">
+            <button class="info-link" onclick="openPdfModal('assets/files/Ethiopian_JEDJXX.pdf','Ethiopian Airlines — Confirmación de vuelo')">📄 Ver documento</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section><!-- /sec-info -->
+
 
 <!-- ══════════════ Day content templates ══════════════ -->
 <div id="tpl-day03" style="display:none"><div class="tpl-placeholder">Plan por agregar</div></div>
@@ -2438,6 +4063,64 @@
     document.querySelectorAll('.ham-item').forEach(t => t.classList.remove('ham-active'));
     const hamItem = document.querySelector(`.ham-item[data-section="${id}"]`);
     if (hamItem) hamItem.classList.add('ham-active');
+    if (id === 'kumano') requestAnimationFrame(() => switchKumano(_kumanoActive));
+  }
+
+  function toggleTransportCard(header) {
+    const body = header.nextElementSibling;
+    const chevron = header.querySelector('.nikko-chevron');
+    const isOpen = body.style.display !== 'none';
+    body.style.display = isOpen ? 'none' : '';
+    chevron.classList.toggle('open', !isOpen);
+  }
+
+  let _nikkoTab = 0;
+  function switchNikkoTab(n) {
+    _nikkoTab = n;
+    for (let i = 0; i <= 1; i++) {
+      const el  = document.getElementById('nikko-tab-' + i);
+      const btn = document.getElementById('nikko-btn-' + i);
+      if (el)  el.style.display = i === n ? '' : 'none';
+      if (btn) btn.classList.toggle('active', i === n);
+    }
+  }
+
+  let _infoTab = 0;
+  function switchInfoTab(n) {
+    _infoTab = n;
+    for (let i = 0; i <= 1; i++) {
+      const el  = document.getElementById('info-tab-' + i);
+      const btn = document.getElementById('info-btn-' + i);
+      if (el)  el.style.display = i === n ? '' : 'none';
+      if (btn) btn.classList.toggle('active', i === n);
+    }
+  }
+
+  let _kkDay = 6;
+  function switchKkDay(n) {
+    _kkDay = n;
+    for (let i = 0; i <= 6; i++) {
+      const el  = document.getElementById('kk-day-' + i);
+      const btn = document.getElementById('kk-btn-' + i);
+      if (el)  el.style.display = i === n ? '' : 'none';
+      if (btn) btn.classList.toggle('active', i === n);
+    }
+  }
+
+  let _kumanoActive = 'kumano';
+  function switchKumano(id) {
+    _kumanoActive = id;
+    ['kumano', 'nikko'].forEach(k => {
+      document.getElementById('ksub-' + k).style.display = k === id ? '' : 'none';
+      document.getElementById('ktab-' + k).classList.toggle('active', k === id);
+    });
+    const tab    = document.getElementById('ktab-' + id);
+    const pill   = document.getElementById('kumano-pill');
+    const slider = document.getElementById('kumano-slider');
+    const pr = pill.getBoundingClientRect();
+    const tr = tab.getBoundingClientRect();
+    slider.style.width = tr.width + 'px';
+    slider.style.transform = `translateX(${tr.left - pr.left - 3}px)`;
   }
 
   function toggleHamburger() {
@@ -2603,7 +4286,36 @@
   document.getElementById('detail-scroll').addEventListener('scroll', syncFade, { passive: true });
 </script>
 
-<div class="version-footer">v0.1.0</div>
+<div class="version-footer">v0.1.1</div>
+
+<!-- ══════════════ PDF Preview Modal ══════════════ -->
+<div id="pdf-modal" style="display:none" onclick="if(event.target===this)closePdfModal()">
+  <div class="pdf-modal-box">
+    <div class="pdf-modal-header">
+      <span id="pdf-modal-title"></span>
+      <div class="pdf-modal-header-actions">
+        <a id="pdf-modal-open" href="#" target="_blank" rel="noopener" class="pdf-modal-open">↗ Abrir</a>
+        <button class="pdf-modal-close" onclick="closePdfModal()">✕</button>
+      </div>
+    </div>
+    <iframe id="pdf-modal-frame" src="" class="pdf-modal-frame" title="Vista previa PDF"></iframe>
+  </div>
+</div>
+<script>
+  function openPdfModal(path, title) {
+    document.getElementById('pdf-modal-title').textContent = title;
+    document.getElementById('pdf-modal-frame').src = path;
+    document.getElementById('pdf-modal-open').href = path;
+    document.getElementById('pdf-modal').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+  function closePdfModal() {
+    document.getElementById('pdf-modal').style.display = 'none';
+    document.getElementById('pdf-modal-frame').src = '';
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closePdfModal(); });
+</script>
 
 <!-- ── Hamburger menu ── -->
 <button class="hamburger-btn" id="hamburger-btn" onclick="toggleHamburger()" aria-label="Menú">☰</button>
@@ -2612,10 +4324,12 @@
   <nav class="ham-nav">
     <button class="ham-item ham-active" data-section="calendar" onclick="switchSection('calendar');closeHamburger()">Calendario</button>
     <button class="ham-item" data-section="stays" onclick="switchSection('stays');closeHamburger()">Alojamientos</button>
+    <button class="ham-item" data-section="kumano" onclick="switchSection('kumano');closeHamburger()">Kumano Kodo & Nikko</button>
     <button class="ham-item" data-section="trenes" onclick="switchSection('trenes');closeHamburger()">Trenes</button>
-    <button class="ham-item" data-section="lenguaje" onclick="switchSection('lenguaje');closeHamburger()">Lenguaje</button>
     <button class="ham-item" data-section="atracciones" onclick="switchSection('atracciones');closeHamburger()">Atracciones</button>
-    <button class="ham-item" data-section="mapa" onclick="switchSection('mapa');closeHamburger()">Mapa</button>
+    <button class="ham-item" data-section="lenguaje" onclick="switchSection('lenguaje');closeHamburger()">Lenguaje</button>
+    <button class="ham-item" data-section="mapa" onclick="switchSection('mapa');closeHamburger()">Mapas</button>
+    <button class="ham-item" data-section="info" onclick="switchSection('info');closeHamburger()">Información importante</button>
   </nav>
 </div>
 
