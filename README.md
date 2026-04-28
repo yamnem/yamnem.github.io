@@ -8,6 +8,10 @@ Live at: https://yamnem.github.io
 
 ## Changelog
 
+### v0.1.2 — 2026-04-27
+- Version footer: centered at bottom, GitHub repo link with Octocat icon and underline
+- Información importante: Links / Documentos tabs
+
 ### v0.1.1 — 2026-04-27
 - Kumano Kodo section complete: full 5-day hiking itinerary with emoji timeline badges, PDF map modal, day tabs (Reservas · Preparación · Día 1–5)
 - Reservas tab: 6 booking cards with photos, check-in/out, map codes, Google Maps links, PDF route maps; Kumano Travel confirmation & outline PDFs
