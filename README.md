@@ -10,7 +10,7 @@ Live at: https://yamnem.github.io
 
 ### v0.2.0 — 2026-04-28
 - Rebranded site header from "Itinerario de Viaje" to **Travel Buddy**
-- Cover photo easter egg: tap interaction with themed emoji burst animations and springy photo bounce
+- Cover photo: themed easter egg 🤫
 - Footer now lives at the bottom of every section's scroll container (not fixed); consistent 32px symmetric spacing across all pages
 - Card widths unified across all sections (Alojamientos, Trenes, Atracciones, Links & Documentos)
 - Hamburger menu fixed on Mapa section (Google Maps iframe no longer intercepts taps)
