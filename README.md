@@ -8,6 +8,22 @@ Live at: https://yamnem.github.io
 
 ## Changelog
 
+### v0.1.3 — 2026-04-28
+- Kumano Kodo Calendar focus days (17–21): full schedule, meals, map PDFs, redirect pills to day tabs and Reservas booking cards with Kumano-green pulse highlight
+- Calendar overview previews for Kumano days (17–21) with overnight destination; boat emoji on day 20
+- Calendar overview train previews on days 9, 17, 22 (train name + departure time)
+- Grinding Matcha Experience (day 11): new Atracciones card, calendar preview, day focus schedule, receipt PDF + Maps link
+- Day 23 Sorpresas banners (gradient + shimmer) and subtle calendar cell shimmer; fades when day ≥ 24
+- Redirect pills at top of Calendar day focus cards: chronological order (train → KK day tab → lodging); Kumano days also get stay redirect pills with pulse highlight
+- Atracciones: city color coding + highlight pulse on redirect; Nintendo Museum info corrected
+- Trenes section: city color coding + highlight pulse on redirect; train tickets linked in Links & Documentos; Ver boletos pill on each card
+- Alojamientos: Google Maps links on all 5 cards; all stays marked PAGADO
+- HEIC train ticket files converted to PNG for in-app preview
+- Footer: now injected into every section's scroll container (visible on scroll to bottom, symmetric 32px spacing); no longer fixed
+- Card widths unified across Alojamientos, Trenes, Atracciones and Links & Documentos (consistent 24px desktop / 12px mobile padding)
+- Hamburger menu fixed on Mapa section (iframe no longer captures taps over button)
+- Renamed Información Importante → Links & Documentos
+
 ### v0.1.2 — 2026-04-27
 - Version footer: centered at bottom, GitHub repo link with Octocat icon and underline
 - Información importante: Links / Documentos tabs

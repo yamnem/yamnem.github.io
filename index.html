@@ -88,12 +88,13 @@
       font-weight: 400;
     }
     .version-footer {
-      position: fixed; bottom: 10px; left: 50%; transform: translateX(-50%);
+      display: block; text-align: center;
+      margin-top: 32px;
+      padding: 8px 0 32px;
       font-size: 9px; font-weight: 600;
       color: var(--muted); opacity: 0.4;
       letter-spacing: 0.3px;
       white-space: nowrap;
-      z-index: 5;
       text-decoration: none;
       transition: opacity 0.15s;
     }
@@ -193,10 +194,9 @@
     /* ── Content ── */
     .legend-wrap { flex-shrink: 0; max-width: 700px; margin: 0 auto; padding: 16px 24px 10px; text-align: center; }
     .cal-wrap    { flex: 1; min-height: 0; display: flex; flex-direction: column; max-width: 1100px; margin: 0 auto; padding: 0 16px 0; width: 100%; }
-    .cal-wrap::after { content: ''; display: block; height: 32px; flex-shrink: 0; }
 
     /* ── Stays section ── */
-    .stays-wrap { max-width: 700px; margin: 0 auto; padding: 24px 24px 60px; }
+    .stays-wrap { max-width: 700px; margin: 0 auto; padding: 24px 24px 0; }
     .stay-card {
       background: var(--card);
       border-radius: 16px;
@@ -216,9 +216,14 @@
       color: #fff;
       text-align: center;
     }
-    .stay-date-box.airbnb  { background: var(--crimson); }
-    .stay-date-box.hotel   { background: var(--navy); }
-    .stay-date-box.nature  { background: #4A3728; }
+    .stay-date-box.city-tokyo  { background: #FF7043; }
+    .stay-date-box.city-kyoto  { background: #7B1FA2; }
+    .stay-date-box.city-osaka  { background: #FFA000; }
+    .stay-date-box.city-kumano { background: #00796B; }
+    .stay-card.city-tokyo  { --pulse-from: rgba(255,112,67,0.6); --pulse-mid: rgba(255,112,67,0.22); --pulse-to: rgba(255,112,67,0); }
+    .stay-card.city-kyoto  { --pulse-from: rgba(123,31,162,0.6);  --pulse-mid: rgba(123,31,162,0.22);  --pulse-to: rgba(123,31,162,0); }
+    .stay-card.city-osaka  { --pulse-from: rgba(255,160,0,0.6);   --pulse-mid: rgba(255,160,0,0.22);   --pulse-to: rgba(255,160,0,0); }
+    .stay-card.city-kumano { --pulse-from: rgba(0,121,107,0.6);   --pulse-mid: rgba(0,121,107,0.22);   --pulse-to: rgba(0,121,107,0); }
     .stay-date-mo   { font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: rgba(255,255,255,0.55); }
     .stay-date-num  { font-size: 20px; font-weight: 800; line-height: 1.1; margin-top: 2px; }
     .stay-date-thru { font-size: 10px; color: rgba(255,255,255,0.45); margin-top: 1px; }
@@ -237,7 +242,7 @@
     .badge-type    { font-size: 9.5px; font-weight: 600; padding: 2px 8px; border-radius: 4px; background: rgba(26,26,46,0.07); color: var(--navy); }
 
     /* ── Train cards ── */
-    .trains-wrap { max-width: 700px; margin: 0 auto; padding: 24px 24px 60px; }
+    .trains-wrap { max-width: 700px; margin: 0 auto; padding: 24px 24px 0; }
     .train-card {
       background: var(--card);
       border-radius: 16px;
@@ -257,11 +262,13 @@
       color: #fff;
       text-align: center;
     }
-    .train-date-box.shinkansen { background: var(--shinkansen); }
-    .train-date-box.express    { background: var(--express); }
-    .train-date-box.combo {
-      background: linear-gradient(160deg, var(--express) 50%, var(--shinkansen) 50%);
-    }
+    .train-date-box.city-tokyo  { background: #FF7043; }
+    .train-date-box.city-kyoto  { background: #7B1FA2; }
+    .train-date-box.city-kumano { background: #00796B; }
+    .train-card.city-tokyo  { --pulse-from: rgba(255,112,67,0.6); --pulse-mid: rgba(255,112,67,0.22); --pulse-to: rgba(255,112,67,0); }
+    .train-card.city-kyoto  { --pulse-from: rgba(123,31,162,0.6);  --pulse-mid: rgba(123,31,162,0.22);  --pulse-to: rgba(123,31,162,0); }
+    .train-card.city-kumano { --pulse-from: rgba(0,121,107,0.6);   --pulse-mid: rgba(0,121,107,0.22);   --pulse-to: rgba(0,121,107,0); }
+    .train-card.highlight-pulse { animation: stay-card-pulse 0.9s ease-out 3; }
     .train-info { flex: 1; padding: 14px 16px; }
     .train-route { font-size: 14px; font-weight: 800; color: var(--navy); letter-spacing: 0.5px; }
     .train-leg { margin-top: 10px; }
@@ -280,7 +287,7 @@
     .train-price-usd { font-size: 11px; color: var(--muted); font-weight: 400; }
 
     /* ── Atracciones section ── */
-    .atrac-wrap { max-width: 700px; margin: 0 auto; padding: 24px 16px 60px; }
+    .atrac-wrap { max-width: 700px; margin: 0 auto; padding: 24px 24px 0; }
     .atrac-card {
       background: var(--card);
       border-radius: 16px;
@@ -295,6 +302,13 @@
       align-items: center; justify-content: center;
       color: #fff; text-align: center; padding: 16px 6px;
     }
+    .atrac-date-box.city-tokyo  { background: #FF7043; }
+    .atrac-date-box.city-kyoto  { background: #7B1FA2; }
+    .atrac-date-box.city-osaka  { background: #FFA000; }
+    .atrac-card.city-tokyo  { --pulse-from: rgba(255,112,67,0.6); --pulse-mid: rgba(255,112,67,0.22); --pulse-to: rgba(255,112,67,0); }
+    .atrac-card.city-kyoto  { --pulse-from: rgba(123,31,162,0.6);  --pulse-mid: rgba(123,31,162,0.22);  --pulse-to: rgba(123,31,162,0); }
+    .atrac-card.city-osaka  { --pulse-from: rgba(255,160,0,0.6);   --pulse-mid: rgba(255,160,0,0.22);   --pulse-to: rgba(255,160,0,0); }
+    .atrac-card.highlight-pulse { animation: stay-card-pulse 0.9s ease-out 3; }
     .atrac-day   { font-size: 30px; font-weight: 800; line-height: 1; }
     .atrac-month { font-size: 10px; font-weight: 700; letter-spacing: 1px; margin-top: 4px; opacity: 0.85; text-transform: uppercase; }
     .atrac-body  { flex: 1; min-width: 0; padding: 14px 16px 14px; }
@@ -307,7 +321,8 @@
       font-size: 10.5px; font-weight: 700;
       padding: 2px 9px; border-radius: 10px; margin-bottom: 8px;
     }
-    .atrac-status.paid { background: #D1FAE5; color: #065F46; }
+    .atrac-status.paid    { background: #D1FAE5; color: #065F46; }
+    .atrac-status.pending { background: #FEF3C7; color: #92400E; }
     .atrac-comment { font-size: 11.5px; color: var(--muted); line-height: 1.55; }
     .atrac-address { font-size: 11px; color: var(--muted); margin-top: 5px; font-style: italic; }
     .atrac-link {
@@ -329,7 +344,7 @@
       justify-content: center;
       width: 100%;
     }
-    .lang-wrap { max-width: 900px; margin: 0 auto; padding: 0 16px 60px; }
+    .lang-wrap { max-width: 900px; margin: 0 auto; padding: 0 16px 0; }
     .lang-filter {
       padding: 6px 14px; border-radius: 16px;
       border: 1.5px solid var(--border);
@@ -396,7 +411,7 @@
     .phrase-tip.visible { opacity: 1; pointer-events: auto; transform: scale(1); }
 
     /* ── Kumano sub-toggle ── */
-    .kumano-wrap { max-width: 900px; margin: 0 auto; padding: 24px 24px 60px; }
+    .kumano-wrap { max-width: 900px; margin: 0 auto; padding: 24px 24px 0; }
     .kumano-toggle-row { display: flex; justify-content: center; margin-bottom: 28px; }
     .sub-pill {
       display: flex;
@@ -493,6 +508,15 @@
       background: #EFF6FF; border: 1px solid #DBEAFE; color: #1E40AF;
       padding: 6px 10px; border-radius: 8px; margin-top: 6px;
     }
+    .kk-lunch-notice {
+      display: flex; align-items: center; gap: 12px;
+      background: #FFF3E0; border: 2px solid #FB8C00; border-radius: 12px;
+      color: #E65100; padding: 12px 16px; margin-bottom: 20px;
+      font-size: 13px; font-weight: 600; line-height: 1.45;
+    }
+    .kk-lunch-notice-icon { font-size: 22px; flex-shrink: 0; }
+    .kk-lunch-notice-text { flex: 1; }
+    .kk-lunch-notice-text small { display: block; font-weight: 400; color: #BF360C; font-size: 11.5px; margin-top: 2px; }
     .kk-links { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
     .kk-link {
       display: inline-flex; align-items: center; gap: 3px;
@@ -652,7 +676,7 @@
     .kk-extra-night-card strong { color: #1E3A8A; }
 
     /* ── Info section ── */
-    .info-wrap { max-width: 700px; margin: 0 auto; padding: 24px 24px 60px; }
+    .info-wrap { max-width: 700px; margin: 0 auto; padding: 24px 24px 0; }
     .info-card {
       background: var(--card);
       border-radius: 16px;
@@ -669,11 +693,20 @@
       justify-content: center;
       font-size: 22px;
     }
-    .info-icon-box.gov     { background: var(--navy); }
-    .info-icon-box.legal   { background: var(--sight); }
-    .info-icon-box.docs    { background: #4A3728; }
-    .info-icon-box.medical { background: #B91C1C; }
-    .info-icon-box.flight  { background: #1E40AF; }
+    .info-icon-box.gov        { background: var(--navy); }
+    .info-icon-box.legal      { background: var(--sight); }
+    .info-icon-box.docs       { background: #4A3728; }
+    .info-icon-box.medical    { background: #B91C1C; }
+    .info-icon-box.flight     { background: #1E40AF; }
+    .info-icon-box.city-tokyo  { background: #FF7043; }
+    .info-icon-box.city-kyoto  { background: #7B1FA2; }
+    .info-icon-box.city-kumano { background: #00796B; }
+    .info-card.city-tokyo  { --pulse-from: rgba(255,112,67,0.6); --pulse-mid: rgba(255,112,67,0.22); --pulse-to: rgba(255,112,67,0); }
+    .info-card.city-kyoto  { --pulse-from: rgba(123,31,162,0.6);  --pulse-mid: rgba(123,31,162,0.22);  --pulse-to: rgba(123,31,162,0); }
+    .info-card.city-kumano { --pulse-from: rgba(0,121,107,0.6);   --pulse-mid: rgba(0,121,107,0.22);   --pulse-to: rgba(0,121,107,0); }
+    .kk-booking-card { --pulse-from: rgba(0,121,107,0.6); --pulse-mid: rgba(0,121,107,0.22); --pulse-to: rgba(0,121,107,0); }
+    .kk-booking-card.highlight-pulse { animation: stay-card-pulse 0.9s ease-out 3; }
+    .info-card.highlight-pulse { animation: stay-card-pulse 0.9s ease-out 3; }
     .info-body { flex: 1; padding: 14px 16px; }
     .info-title { font-size: 13px; font-weight: 700; color: var(--text); line-height: 1.3; }
     .info-desc  { font-size: 12px; color: var(--muted); margin-top: 5px; line-height: 1.5; }
@@ -928,6 +961,32 @@
     .detail-panel.fade-bottom .detail-fade-bottom { opacity: 1; }
     .detail-outer.open .detail-backdrop { opacity: 1; pointer-events: auto; }
 
+    .stay-link-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11.5px;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      color: var(--navy);
+      background: #F0EDE8;
+      border: none;
+      border-radius: 20px;
+      padding: 5px 10px 5px 9px;
+      cursor: pointer;
+      margin: 14px 16px 2px;
+      transition: background 0.15s, transform 0.1s;
+      white-space: nowrap;
+    }
+    .stay-link-pill:hover { background: #E5E0D8; }
+    .stay-link-pill:active { transform: scale(0.97); }
+    @keyframes stay-card-pulse {
+      0%   { box-shadow: 0 0 0 0px var(--pulse-from); }
+      40%  { box-shadow: 0 0 0 6px var(--pulse-mid); }
+      100% { box-shadow: 0 0 0 0px var(--pulse-to); }
+    }
+    .stay-card.highlight-pulse { animation: stay-card-pulse 0.9s ease-out 3; }
+
     /* detail header */
     .detail-header {
       display: flex;
@@ -1081,6 +1140,63 @@
       text-align: center; padding: 36px 20px;
       color: var(--muted); font-size: 13px; font-style: italic;
     }
+    .tpl-notice {
+      display: flex; align-items: center; gap: 8px;
+      margin: 14px 16px 4px; padding: 9px 12px;
+      background: #F5F3EE; border-radius: 10px;
+      font-size: 12px; font-weight: 500; color: var(--navy);
+    }
+    @keyframes cal-sorpresa-shimmer {
+      0%   { left: -80%; }
+      60%  { left: 140%; }
+      100% { left: 140%; }
+    }
+    .cal-cell.sorpresa-day {
+      background: linear-gradient(150deg, rgba(124,58,237,0.07) 0%, rgba(219,39,119,0.06) 100%);
+      overflow: hidden;
+    }
+    .cal-cell.sorpresa-day::after {
+      content: '';
+      position: absolute; top: 0; bottom: 0; left: -80%; width: 55%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.22), transparent);
+      animation: cal-sorpresa-shimmer 5s ease-in-out infinite;
+      pointer-events: none;
+    }
+    .cal-cell.sorpresa-day.past { background: none; }
+    .cal-cell.sorpresa-day.past::after { display: none; }
+    @keyframes sorpresa-shine {
+      0%   { left: -60%; }
+      100% { left: 130%; }
+    }
+    .sorpresa-banner {
+      margin: 10px 16px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #7C3AED 0%, #DB2777 55%, #F97316 100%);
+      padding: 15px 18px;
+      color: #fff;
+      display: flex; align-items: center; gap: 13px;
+      position: relative; overflow: hidden; cursor: default;
+    }
+    .sorpresa-banner::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        -45deg,
+        rgba(255,255,255,0.055) 0px, rgba(255,255,255,0.055) 1px,
+        transparent 1px, transparent 9px
+      );
+      pointer-events: none;
+    }
+    .sorpresa-banner::after {
+      content: '';
+      position: absolute; top: 0; bottom: 0; left: -60%; width: 45%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+      animation: sorpresa-shine 3.2s ease-in-out infinite;
+      pointer-events: none;
+    }
+    .sorpresa-emoji { font-size: 26px; flex-shrink: 0; line-height: 1; }
+    .sorpresa-title { font-size: 14px; font-weight: 800; letter-spacing: 0.02em; }
+    .sorpresa-hint  { font-size: 11px; opacity: 0.72; margin-top: 3px; font-style: italic; }
     .plan-b-divider {
       display: flex; align-items: center; gap: 10px;
       padding: 4px 18px 6px;
@@ -1120,10 +1236,12 @@
       /* Nav — start from left so overflow-x scroll works */
       .nav-bar { padding: 10px 12px 0; justify-content: flex-start; }
       .nav-tab { padding: 6px 9px; font-size: 10.5px; }
-      /* Stays */
-      .stays-wrap { padding: 16px 12px 40px; }
+      /* Section wraps — consistent narrow padding on mobile */
+      .stays-wrap, .trains-wrap, .atrac-wrap, .info-wrap { padding: 16px 12px 0; }
+      /* Mapa — lift iframe above hamburger button (bottom: 24px + 52px height = 76px) */
+      .mapa-wrap { padding-bottom: 90px; }
       /* Kumano guide */
-      .kumano-wrap { padding: 16px 12px 40px; }
+      .kumano-wrap { padding: 16px 12px 0; }
       .kk-day-btn { padding: 6px 14px; font-size: 11.5px; }
       .nikko-pass-row { grid-template-columns: 1fr; }
       .nikko-transport-header { padding: 12px 13px 10px; }
@@ -1235,7 +1353,7 @@
     <button class="nav-tab" onclick="switchSection('atracciones')">Atracciones</button>
     <button class="nav-tab" onclick="switchSection('lenguaje')">Lenguaje</button>
     <button class="nav-tab" onclick="switchSection('mapa')">Mapas</button>
-    <button class="nav-tab" onclick="switchSection('info')">Información importante</button>
+    <button class="nav-tab" onclick="switchSection('info')">Links & Documentos</button>
   </div>
 </nav>
 
@@ -1249,7 +1367,7 @@
   <!-- ── Calendar ── -->
   <div class="calendar-card">
     <div class="cal-month-header">
-      <span class="cal-month-title">Mayo 2025</span>
+      <span class="cal-month-title">Mayo 2026</span>
     </div>
     <div class="city-legend-strip">
       <span class="city-pill pill-tokyo">Tokyo</span>
@@ -1288,6 +1406,7 @@
         <div class="cal-emoji">✨</div>
         <div class="cal-num">4</div>
         <div class="cal-day-name">Lun</div>
+        <div class="cal-trip-name">Fuji-Q alert <span class="trip-time">18:00</span></div>
       </div>
       <div class="cal-cell trip-day holiday city-tokyo" data-day="day05" onclick="selectDay('day05')">
         <div class="cal-emoji">✨</div>
@@ -1300,8 +1419,10 @@
         <div class="cal-day-name">Mié</div>
       </div>
       <div class="cal-cell trip-day city-tokyo" data-day="day07" onclick="selectDay('day07')">
+        <div class="cal-emoji">🎢</div>
         <div class="cal-num">7</div>
         <div class="cal-day-name">Jue</div>
+        <div class="cal-trip-name">Fuji-Q Highland <span class="trip-time">7:10–19:49</span></div>
       </div>
       <div class="cal-cell trip-day city-tokyo" data-day="day08" onclick="selectDay('day08')">
         <div class="cal-emoji">🏖️</div>
@@ -1314,6 +1435,7 @@
         <div class="cal-emoji">🚄</div>
         <div class="cal-num">9</div>
         <div class="cal-day-name">Sáb</div>
+        <div class="cal-trip-name">Nozomi 107 <span class="trip-time">7:00</span></div>
       </div>
       <div class="cal-cell trip-day city-kyoto" data-day="day10" onclick="selectDay('day10')">
         <div class="cal-num">10</div>
@@ -1325,7 +1447,9 @@
         <div class="cal-emoji">🏖️</div>
         <div class="cal-num">11</div>
         <div class="cal-day-name">Lun</div>
-        <div class="cal-trip-name">Uji <span class="trip-time">8:30–20:00</span></div>
+        <div class="cal-trip-name">Uji</div>
+        <div class="cal-trip-name">Matcha Museum <span class="trip-time">11:00</span></div>
+        <div class="cal-trip-name">Nintendo Museum <span class="trip-time">14:00</span></div>
       </div>
       <div class="cal-cell trip-day city-kyoto" data-day="day12" onclick="selectDay('day12')">
         <div class="cal-emoji">🏖️</div>
@@ -1358,39 +1482,51 @@
         <div class="cal-emoji">🚄</div>
         <div class="cal-num">17</div>
         <div class="cal-day-name">Dom</div>
+        <div class="cal-trip-name">Kuroshio 01 <span class="trip-time">7:34</span></div>
+        <div class="cal-trip-name">KK Día 1 <span class="trip-time">Takahara</span></div>
       </div>
 
       <!-- Row 4 -->
       <div class="cal-cell trip-day city-kumano" data-day="day18" onclick="selectDay('day18')">
         <div class="cal-num">18</div>
         <div class="cal-day-name">Lun</div>
+        <div class="cal-trip-name">KK Día 2 <span class="trip-time">Chikatsuyu</span></div>
       </div>
       <div class="cal-cell trip-day city-kumano" data-day="day19" onclick="selectDay('day19')">
         <div class="cal-num">19</div>
         <div class="cal-day-name">Mar</div>
+        <div class="cal-trip-name">KK Día 3 <span class="trip-time">Yunomine</span></div>
       </div>
       <div class="cal-cell trip-day city-kumano" data-day="day20" onclick="selectDay('day20')">
+        <div class="cal-emoji">🚣</div>
         <div class="cal-num">20</div>
         <div class="cal-day-name">Mié</div>
+        <div class="cal-trip-name">KK Día 4 <span class="trip-time">Katsuura</span></div>
       </div>
       <div class="cal-cell trip-day city-kumano" data-day="day21" onclick="selectDay('day21')">
         <div class="cal-num">21</div>
         <div class="cal-day-name">Jue</div>
+        <div class="cal-trip-name">KK Día 5 <span class="trip-time">Nachi</span></div>
       </div>
       <!-- May 22 — Kumano Kodo → Tokyo -->
       <div class="cal-cell trip-day city-tokyo" data-day="day22" onclick="selectDay('day22')">
         <div class="cal-emoji">🚄</div>
         <div class="cal-num">22</div>
         <div class="cal-day-name">Vie</div>
+        <div class="cal-trip-name">Kuroshio 12 <span class="trip-time">6:46</span></div>
+        <div class="cal-trip-name">Nozomi 14 <span class="trip-time">11:06</span></div>
       </div>
-      <div class="cal-cell trip-day city-tokyo" data-day="day23" onclick="selectDay('day23')">
+      <div class="cal-cell trip-day city-tokyo sorpresa-day" data-day="day23" onclick="selectDay('day23')">
         <div class="cal-emoji">🎉</div>
         <div class="cal-num">23</div>
         <div class="cal-day-name">Sáb</div>
+        <div class="cal-trip-name">Sumo <span class="trip-time">12:00–14:00</span></div>
       </div>
       <div class="cal-cell trip-day city-tokyo" data-day="day24" onclick="selectDay('day24')">
+        <div class="cal-emoji">🛍️</div>
         <div class="cal-num">24</div>
         <div class="cal-day-name">Dom</div>
+        <div class="cal-trip-name">Flea Market <span class="trip-time">9:00–14:30</span></div>
       </div>
 
       <!-- Row 5 -->
@@ -1439,9 +1575,9 @@
   <div class="stays-wrap">
 
     <!-- Stay 1 — Tokyo AirBnb -->
-    <div class="stay-card">
+    <div class="stay-card city-tokyo" id="stay-minamiotsuka">
       <div class="stay-card-header">
-        <div class="stay-date-box airbnb">
+        <div class="stay-date-box city-tokyo">
           <span class="stay-date-mo">Mayo</span>
           <span class="stay-date-num">3</span>
           <span class="stay-date-thru">— 9</span>
@@ -1465,6 +1601,7 @@
             </div>
           </div>
           <div class="stay-address">1-chōme-35-12 Minamiōtsuka, Toshima City, Tokyo 170-0005</div>
+          <div class="kk-links"><a class="kk-link" href="https://maps.app.goo.gl/jHMVRNqETTWy9hF56" target="_blank" rel="noopener">📍 Ver en Maps</a></div>
           <div class="stay-badges">
             <span class="badge-type">AirBnb</span>
             <span class="badge-paid">Pagado</span>
@@ -1474,15 +1611,15 @@
     </div>
 
     <!-- Stay 2 — Kyoto Hotel -->
-    <div class="stay-card">
+    <div class="stay-card city-kyoto" id="stay-shimogyo">
       <div class="stay-card-header">
-        <div class="stay-date-box hotel">
+        <div class="stay-date-box city-kyoto">
           <span class="stay-date-mo">Mayo</span>
           <span class="stay-date-num">9</span>
           <span class="stay-date-thru">— 15</span>
         </div>
         <div class="stay-info">
-          <div class="stay-name">Hotel · Shimogyo</div>
+          <div class="stay-name">Hotel Unito · Shimogyo</div>
           <div class="stay-location">Shimogyo-ku, Kyoto</div>
           <hr class="stay-divider">
           <div class="stay-meta">
@@ -1500,6 +1637,7 @@
             </div>
           </div>
           <div class="stay-address">359-1 Tameike-cho, Shomen-agaru, Dotemachi-dori, Shimogyo-ku, Kyoto</div>
+          <div class="kk-links"><a class="kk-link" href="https://maps.app.goo.gl/cuRsjxqyLx4exQ7bA" target="_blank" rel="noopener">📍 Ver en Maps</a></div>
           <div class="stay-badges">
             <span class="badge-type">Hotel · Agoda</span>
             <span class="badge-paid">Pagado</span>
@@ -1509,9 +1647,9 @@
     </div>
 
     <!-- Stay 3 — Osaka AirBnb -->
-    <div class="stay-card">
+    <div class="stay-card city-osaka" id="stay-shimanouchi">
       <div class="stay-card-header">
-        <div class="stay-date-box airbnb">
+        <div class="stay-date-box city-osaka">
           <span class="stay-date-mo">Mayo</span>
           <span class="stay-date-num">15</span>
           <span class="stay-date-thru">— 17</span>
@@ -1535,18 +1673,19 @@
             </div>
           </div>
           <div class="stay-address">2 Chome-5-26 Shimanouchi, Chūō-ku, Ōsaka-shi, Ōsaka-fu 542-0082</div>
+          <div class="kk-links"><a class="kk-link" href="https://maps.app.goo.gl/ywQ8jW3vpJMiD69S9" target="_blank" rel="noopener">📍 Ver en Maps</a></div>
           <div class="stay-badges">
             <span class="badge-type">AirBnb</span>
-            <span class="badge-partial">⚠ Pago parcial</span>
+            <span class="badge-paid">Pagado</span>
           </div>
         </div>
       </div>
     </div>
 
     <!-- Stay 4 — Kumano Kodo -->
-    <div class="stay-card">
+    <div class="stay-card city-kumano">
       <div class="stay-card-header">
-        <div class="stay-date-box nature">
+        <div class="stay-date-box city-kumano">
           <span class="stay-date-mo">Mayo</span>
           <span class="stay-date-num">17</span>
           <span class="stay-date-thru">— 22</span>
@@ -1570,6 +1709,7 @@
             </div>
           </div>
           <div class="stay-address">Kamenoi Hotel Nachi Katsuura · 216-19 Katsuura, Nachikatsuura, Higashimuro District, Wakayama 649-5334</div>
+          <div class="kk-links"><a class="kk-link" href="https://maps.app.goo.gl/KnfcdbYVVyqws7MbA" target="_blank" rel="noopener">📍 Ver en Maps</a></div>
           <div class="stay-badges">
             <span class="badge-type">Multi-parada · Hotel</span>
             <span class="badge-paid">Pagado</span>
@@ -1579,9 +1719,9 @@
     </div>
 
     <!-- Stay 5 — Tokyo Hotel (2nd) -->
-    <div class="stay-card">
+    <div class="stay-card city-tokyo" id="stay-kameido">
       <div class="stay-card-header">
-        <div class="stay-date-box hotel">
+        <div class="stay-date-box city-tokyo">
           <span class="stay-date-mo">Mayo</span>
           <span class="stay-date-num">22</span>
           <span class="stay-date-thru">— 28</span>
@@ -1605,6 +1745,7 @@
             </div>
           </div>
           <div class="stay-address">6 Chome-13-2 Kameido, Koto City, Tokyo 136-0071</div>
+          <div class="kk-links"><a class="kk-link" href="https://maps.app.goo.gl/9tkiBzVYqLq6hyCA9" target="_blank" rel="noopener">📍 Ver en Maps</a></div>
           <div class="stay-badges">
             <span class="badge-type">Hotel · Agoda</span>
             <span class="badge-paid">Pagado</span>
@@ -1621,9 +1762,9 @@
   <div class="trains-wrap">
 
     <!-- Train 1: Tokyo → Kyoto (May 9) -->
-    <div class="train-card">
+    <div class="train-card city-kyoto" id="train-tokyo-kyoto">
       <div class="train-card-header">
-        <div class="train-date-box shinkansen">
+        <div class="train-date-box city-kyoto">
           <span class="stay-date-mo">Mayo</span>
           <span class="stay-date-num">9</span>
         </div>
@@ -1649,14 +1790,17 @@
               <span class="stay-meta-val">4:00 PM</span>
             </div>
           </div>
+          <div class="kk-links">
+            <button class="kk-link" onclick="goToInfoDoc('info-tren-1')">🎫 Ver boletos</button>
+          </div>
         </div>
       </div>
     </div>
 
     <!-- Train 2: Osaka → Kii-Tanabe (May 17) -->
-    <div class="train-card">
+    <div class="train-card city-kumano" id="train-osaka-kii">
       <div class="train-card-header">
-        <div class="train-date-box express">
+        <div class="train-date-box city-kumano">
           <span class="stay-date-mo">Mayo</span>
           <span class="stay-date-num">17</span>
         </div>
@@ -1682,29 +1826,26 @@
               <span class="stay-meta-val">—</span>
             </div>
           </div>
+          <div class="kk-links">
+            <button class="kk-link" onclick="goToInfoDoc('info-tren-2')">🎫 Ver boletos</button>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- Train 3: Kii-Katsuura → Tokyo (May 22, combination) -->
-    <div class="train-card">
+    <!-- Train 3a: Kii-Katsuura → Shin Osaka (May 22) -->
+    <div class="train-card city-kumano" id="train-kii-osaka">
       <div class="train-card-header">
-        <div class="train-date-box combo">
+        <div class="train-date-box city-kumano">
           <span class="stay-date-mo">Mayo</span>
           <span class="stay-date-num">22</span>
         </div>
         <div class="train-info">
-          <div class="train-route">KII-KATSUURA → TOKYO</div>
+          <div class="train-route">KII-KATSUURA → SHIN OSAKA</div>
           <div class="train-leg">
             <div class="train-type">KUROSHIO 12 · Tren Rápido Reservado</div>
             <div class="train-schedule">06:46 → 10:51 <span class="train-duration">· 4h 05min</span></div>
             <div class="train-stations">Kii Katsuura Station → Shin Osaka Station</div>
-          </div>
-          <div class="train-connector">Combinación · 15 min en Shin Osaka</div>
-          <div class="train-leg">
-            <div class="train-type">NOZOMI 14 · Tren Bala Asiento Reservado</div>
-            <div class="train-schedule">11:06 → 13:33 <span class="train-duration">· 2h 27min</span></div>
-            <div class="train-stations">Shin Osaka Station → Tokyo Station</div>
           </div>
           <div class="train-prices">
             <span class="train-price-jpy">¥41,800</span>
@@ -1716,10 +1857,37 @@
               <span class="stay-meta-label">Check-out hotel</span>
               <span class="stay-meta-val">10:00 AM</span>
             </div>
+          </div>
+          <div class="kk-links">
+            <button class="kk-link" onclick="goToInfoDoc('info-tren-3a')">🎫 Ver boletos</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Train 3b: Shin Osaka → Tokyo (May 22) -->
+    <div class="train-card city-tokyo" id="train-osaka-tokyo">
+      <div class="train-card-header">
+        <div class="train-date-box city-tokyo">
+          <span class="stay-date-mo">Mayo</span>
+          <span class="stay-date-num">22</span>
+        </div>
+        <div class="train-info">
+          <div class="train-route">SHIN OSAKA → TOKYO</div>
+          <div class="train-leg">
+            <div class="train-type">NOZOMI 14 · Tren Bala Asiento Reservado</div>
+            <div class="train-schedule">11:06 → 13:33 <span class="train-duration">· 2h 27min</span></div>
+            <div class="train-stations">Shin Osaka Station → Tokyo Station</div>
+          </div>
+          <hr class="stay-divider">
+          <div class="stay-meta">
             <div class="stay-meta-group">
               <span class="stay-meta-label">Check-in destino</span>
               <span class="stay-meta-val">4:00 PM</span>
             </div>
+          </div>
+          <div class="kk-links">
+            <button class="kk-link" onclick="goToInfoDoc('info-tren-3b')">🎫 Ver boletos</button>
           </div>
         </div>
       </div>
@@ -2009,8 +2177,8 @@
   <div class="atrac-wrap">
 
     <!-- 1 · Fuji-Q · 7 mayo -->
-    <div class="atrac-card">
-      <div class="atrac-date-box" style="background:var(--shopping)">
+    <div class="atrac-card city-tokyo">
+      <div class="atrac-date-box city-tokyo">
         <span class="atrac-day">7</span>
         <span class="atrac-month">Mayo</span>
       </div>
@@ -2028,8 +2196,8 @@
     </div>
 
     <!-- 2 · Osaka Büuteon · 10 mayo -->
-    <div class="atrac-card">
-      <div class="atrac-date-box" style="background:var(--volley)">
+    <div class="atrac-card city-osaka">
+      <div class="atrac-date-box city-osaka">
         <span class="atrac-day">10</span>
         <span class="atrac-month">Mayo</span>
       </div>
@@ -2046,9 +2214,31 @@
       </div>
     </div>
 
-    <!-- 3 · Nintendo Museum · 11 mayo -->
-    <div class="atrac-card">
-      <div class="atrac-date-box" style="background:var(--anime)">
+    <!-- 3 · Grinding Matcha Experience · 11 mayo -->
+    <div class="atrac-card city-kyoto" id="atrac-matcha">
+      <div class="atrac-date-box city-kyoto">
+        <span class="atrac-day">11</span>
+        <span class="atrac-month">Mayo</span>
+      </div>
+      <div class="atrac-body">
+        <div class="atrac-name">Grinding Matcha Experience · Museo del Té</div>
+        <div class="atrac-meta">
+          <span class="atrac-meta-item">📍 Uji, Kyoto</span>
+          <span class="atrac-meta-item">🕙 11:00 AM</span>
+        </div>
+        <div class="atrac-divider"></div>
+        <span class="atrac-status paid">✓ Pagado</span>
+        <div class="atrac-comment">Moler matcha con mortero tradicional · ¥5,600 (2 adultos) · 1h · Llegar 10 min antes · Parque Histórico del Té de Uji</div>
+        <div class="kk-links" style="margin-top:8px">
+          <button class="kk-link" onclick="openPdfModal('assets/files/chazuna-uji-receipt.pdf','Chazuna Uji · Recibo')">🧾 Ver recibo</button>
+          <a class="kk-link" href="https://maps.app.goo.gl/d1bPGr9torzMqcW58" target="_blank">📍 Ver en Maps</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4 · Nintendo Museum · 11 mayo -->
+    <div class="atrac-card city-kyoto" id="atrac-nintendo">
+      <div class="atrac-date-box city-kyoto">
         <span class="atrac-day">11</span>
         <span class="atrac-month">Mayo</span>
       </div>
@@ -2060,14 +2250,14 @@
         </div>
         <div class="atrac-divider"></div>
         <span class="atrac-status paid">✓ Pagado</span>
-        <div class="atrac-comment">OneDay Pass. Queda sacar los tickets de prioridad.</div>
+        <div class="atrac-comment">Exposición interactiva de la historia de Nintendo · 2–4h · ¥3,300 · Tienda exclusiva adentro</div>
         <a class="atrac-link" href="https://check.museum-tickets.nintendo.com/myticket" target="_blank">Ver ticket ↗</a>
       </div>
     </div>
 
-    <!-- 4 · TeamLab Biovortex · 13 mayo -->
-    <div class="atrac-card">
-      <div class="atrac-date-box" style="background:var(--sight)">
+    <!-- 5 · TeamLab Biovortex · 13 mayo -->
+    <div class="atrac-card city-kyoto">
+      <div class="atrac-date-box city-kyoto">
         <span class="atrac-day">13</span>
         <span class="atrac-month">Mayo</span>
       </div>
@@ -2084,9 +2274,9 @@
       </div>
     </div>
 
-    <!-- 5 · Sumo · 23 mayo -->
-    <div class="atrac-card">
-      <div class="atrac-date-box" style="background:var(--crimson)">
+    <!-- 6 · Sumo · 23 mayo -->
+    <div class="atrac-card city-tokyo" id="atrac-sumo">
+      <div class="atrac-date-box city-tokyo">
         <span class="atrac-day">23</span>
         <span class="atrac-month">Mayo</span>
       </div>
@@ -2100,6 +2290,10 @@
         <span class="atrac-status paid">✓ Pagado</span>
         <div class="atrac-comment">Experiencia turística: explicación de la tradición, demostración de combate y almuerzo tradicional de sumo (chanko nabe) con barra libre.</div>
         <div class="atrac-address">2 Chome-10-12 Asakusa, Taito City, Tokyo</div>
+        <div class="kk-links">
+          <a class="kk-link" href="https://maps.app.goo.gl/gEYxVH1e9uqiZ67q6" target="_blank" rel="noopener">📍 Ver en Maps</a>
+          <button class="kk-link" onclick="goToInfoDoc('info-sumo')">📄 Ver recibo</button>
+        </div>
         <a class="atrac-link" href="https://bookings.bokun.io/MjA2NDg1YzItMTQ2OC00ZmU0LTgzYjMtZTQxM2UxZDliNmEw?lng=en" target="_blank">Ver ticket ↗</a>
       </div>
     </div>
@@ -2191,6 +2385,13 @@
           Traslado al inicio del sendero en Takijiri-oji en tren y autobús, seguido de una caminata corta pero empinada por el Kumano Kodo hasta el poblado de Takahara.
           <br><div class="kk-overnight-badge">🛏 Takahara</div>
         </div>
+        <div class="kk-lunch-notice">
+          <div class="kk-lunch-notice-icon">🍱</div>
+          <div class="kk-lunch-notice-text">
+            Almuerzo no incluido en la reserva — comprar en Tanabe
+            <small>Busca un restaurante o algo para llevar en Tanabe antes del autobús de las 13:00 a Takijiri. No hay opciones de comida en el sendero ese día.</small>
+          </div>
+        </div>
         <div class="kk-timeline">
           <div class="kk-item">
             <div class="kk-badge train"></div>
@@ -2212,9 +2413,9 @@
           <div class="kk-item">
             <div class="kk-badge luggage"></div>
             <div class="kk-card">
-              <div class="kk-title">Traslado de Equipaje</div>
-              <div class="kk-desc">Entrega las maletas directamente a tu proveedor de traslado de equipaje reservado, frente al Centro de Información Turística de TANABE, para que las lleven a tu alojamiento.</div>
-              <div class="kk-tip"><strong>TIP:</strong> Muy recomendable: camina con libertad sin preocuparte por el equipaje.</div>
+              <div class="kk-title">Traslado de Equipaje → Kii-Katsuura</div>
+              <div class="kk-desc">Entrega las maletas al servicio de traslado en el Centro de Información Turística de Tanabe: el equipaje viaja directamente a Kii-Katsuura (o hasta Tokyo) <strong>sin necesidad de trasladarlo entre etapas</strong>. Caminarás toda la ruta con solo una mochila de día.</div>
+              <div class="kk-tip"><strong>TIP:</strong> Llega a Tanabe con tiempo para dejar el equipaje antes del autobús a Takijiri.</div>
             </div>
           </div>
           <div class="kk-item">
@@ -2227,8 +2428,8 @@
           <div class="kk-item">
             <div class="kk-badge food"></div>
             <div class="kk-card">
-              <div class="kk-title">Almuerzo</div>
-              <div class="kk-desc">En un restaurante, o compra algo para llevar. Pregunta en el centro de información turística para ideas.</div>
+              <div class="kk-title">Almuerzo <span style="font-weight:400;color:#b71c1c">(por tu cuenta)</span></div>
+              <div class="kk-desc">No incluido en la reserva. Come en un restaurante o compra algo para llevar antes del autobús a Takijiri. Pregunta en el centro de información turística para ideas.</div>
               <div class="kk-links">
                 <button type="button" class="kk-link" onclick="openPdfModal('assets/files/Tanabe-map.pdf','Central Tanabe Map')">📄 Central Tanabe Map</button>
               </div>
@@ -2302,7 +2503,7 @@
             <div class="kk-badge accom"></div>
             <div class="kk-card">
               <div class="kk-title">Alojamiento en Takahara</div>
-              <div class="kk-desc">Algunas opciones incluyen el Lodge Kiri-no-Sato Takahara y casas de alquiler más pequeñas. Cena en el alojamiento.</div>
+              <div class="kk-desc">Kiri-no-Sato Takahara Lodge. Cena en el alojamiento. El plan de reserva incluye: <strong>Cena + Desayuno + Lunch Box</strong> para la siguiente etapa.</div>
             </div>
           </div>
         </div>
@@ -2320,14 +2521,14 @@
             <div class="kk-badge food"></div>
             <div class="kk-card">
               <div class="kk-title">Desayuno + Lunch Box</div>
-              <div class="kk-desc">Desayuno en el alojamiento. Encarga tu lunch box al alojamiento: reserva el plan con lunch box para aprovechar este servicio.</div>
+              <div class="kk-desc">Desayuno en el alojamiento y lunch box para el camino — <strong>ya incluidos en tu reserva</strong> de Kiri-no-Sato Takahara.</div>
             </div>
           </div>
           <div class="kk-item">
             <div class="kk-badge luggage"></div>
             <div class="kk-card">
-              <div class="kk-title">Traslado de Equipaje</div>
-              <div class="kk-desc">Deja el equipaje en el alojamiento para que lo trasladen a Chikatsuyu.</div>
+              <div class="kk-title">Sin traslado de equipaje</div>
+              <div class="kk-desc">El equipaje viaja directo desde Tanabe a Kii-Katsuura. Solo llevas tu mochila de día durante toda la ruta.</div>
             </div>
           </div>
           <div class="kk-item">
@@ -2350,8 +2551,8 @@
           <div class="kk-item">
             <div class="kk-badge food"></div>
             <div class="kk-card">
-              <div class="kk-title">Almuerzo</div>
-              <div class="kk-desc">Almuerzo de picnic en el sendero o en el área de descanso Michi-no-Eki.</div>
+              <div class="kk-title">Almuerzo <span style="font-weight:400;color:#2e7d32">(incluido — Lunch Box)</span></div>
+              <div class="kk-desc">Lunch box incluido en la reserva de Kiri-no-Sato Takahara. Disfrútalo en el sendero o en el área de descanso Michi-no-Eki.</div>
             </div>
           </div>
           <div class="kk-item">
@@ -2368,7 +2569,7 @@
             <div class="kk-badge accom"></div>
             <div class="kk-card">
               <div class="kk-title">Alojamiento en Chikatsuyu</div>
-              <div class="kk-desc">Minshuku y casas de alquiler. Cena en el alojamiento.</div>
+              <div class="kk-desc">Minshuku Chikatsuyu. Cena en el alojamiento. El plan de reserva incluye: <strong>Cena + Desayuno + Lunch Box</strong> para la siguiente etapa.</div>
             </div>
           </div>
         </div>
@@ -2386,14 +2587,14 @@
             <div class="kk-badge food"></div>
             <div class="kk-card">
               <div class="kk-title">Desayuno + Lunch Box</div>
-              <div class="kk-desc">Desayuno en el alojamiento. Encarga tu lunch box al alojamiento: reserva el plan con lunch box para aprovechar este servicio.</div>
+              <div class="kk-desc">Desayuno en el alojamiento y lunch box para el camino — <strong>ya incluidos en tu reserva</strong> de Minshuku Chikatsuyu.</div>
             </div>
           </div>
           <div class="kk-item">
             <div class="kk-badge luggage"></div>
             <div class="kk-card">
-              <div class="kk-title">Traslado de Equipaje</div>
-              <div class="kk-desc">Deja el equipaje en el alojamiento para que lo trasladen al Yunomine Onsen.</div>
+              <div class="kk-title">Sin traslado de equipaje</div>
+              <div class="kk-desc">El equipaje viaja directo desde Tanabe a Kii-Katsuura. Solo llevas tu mochila de día durante toda la ruta.</div>
             </div>
           </div>
           <div class="kk-item">
@@ -2449,8 +2650,8 @@
           <div class="kk-item">
             <div class="kk-badge food"></div>
             <div class="kk-card">
-              <div class="kk-title">Almuerzo</div>
-              <div class="kk-desc">Almuerzo de picnic en el sendero o en un restaurante en Hongu.</div>
+              <div class="kk-title">Almuerzo <span style="font-weight:400;color:#2e7d32">(incluido — Lunch Box)</span></div>
+              <div class="kk-desc">Lunch box incluido en la reserva de Minshuku Chikatsuyu. Disfrútalo en el sendero o en Hongu.</div>
             </div>
           </div>
           <div class="kk-item">
@@ -2518,7 +2719,7 @@
             <div class="kk-badge accom"></div>
             <div class="kk-card">
               <div class="kk-title">Alojamiento en Yunomine Onsen</div>
-              <div class="kk-desc">Una variedad de posadas Ryokan y alojamientos Minshuku, cada uno con sus propios baños termales. Cena en el alojamiento.</div>
+              <div class="kk-desc">Minshuku Takiyoshi. Cena en el alojamiento. El plan de reserva incluye <strong>Cena + Desayuno</strong> — <strong>sin lunch box</strong>: el almuerzo del día siguiente corre por cuenta del BOND Kumano Bento, entregado en el alojamiento a las 7:30.</div>
             </div>
           </div>
         </div>
@@ -2536,14 +2737,14 @@
             <div class="kk-badge food"></div>
             <div class="kk-card">
               <div class="kk-title">Desayuno</div>
-              <div class="kk-desc">En el alojamiento.</div>
+              <div class="kk-desc">En el alojamiento. El <strong>BOND Kumano Bento (×2)</strong> se entrega a las 7:30 — recógelo antes del check-out.</div>
             </div>
           </div>
           <div class="kk-item">
             <div class="kk-badge luggage"></div>
             <div class="kk-card">
-              <div class="kk-title">Traslado de Equipaje</div>
-              <div class="kk-desc">Deja el equipaje en el alojamiento para que lo trasladen a Katsuura.</div>
+              <div class="kk-title">Equipaje en Kii-Katsuura</div>
+              <div class="kk-desc">El equipaje llegó directamente a Kii-Katsuura desde Tanabe. Te esperará en el Kamenoi Hotel al hacer el check-in esta tarde.</div>
             </div>
           </div>
           <div class="kk-item">
@@ -2587,9 +2788,9 @@
           <div class="kk-item">
             <div class="kk-badge food"></div>
             <div class="kk-card">
-              <div class="kk-title">Almuerzo</div>
-              <div class="kk-desc">Almuerzo de picnic o en un restaurante en Shingu.</div>
-              <div class="kk-tip"><strong>TIP:</strong> Kamikura-jinja es un buen lugar para un almuerzo de picnic.</div>
+              <div class="kk-title">Almuerzo <span style="font-weight:400;color:#2e7d32">(incluido — BOND Bento)</span></div>
+              <div class="kk-desc">BOND Kumano Bento — recogido en Minshuku Takiyoshi antes de salir. Disfrútalo en Shingu o durante el trayecto.</div>
+              <div class="kk-tip"><strong>TIP:</strong> Kamikura-jinja es un buen lugar para un almuerzo de picnic con el bento.</div>
             </div>
           </div>
           <div class="kk-item">
@@ -2646,7 +2847,7 @@
             <div class="kk-badge accom"></div>
             <div class="kk-card">
               <div class="kk-title">Alojamiento en Katsuura</div>
-              <div class="kk-desc">Una variedad de Ryokan, Minshuku y casas de huéspedes, algunas con vistas a la costa, muchas con baños termales. Cena en el alojamiento.</div>
+              <div class="kk-desc">Kamenoi Hotel Nachi Katsuura — 2 noches. Cena en el alojamiento. El plan de reserva incluye <strong>Cena + Desayuno</strong> — <strong>sin lunch box</strong>.</div>
             </div>
           </div>
         </div>
@@ -2659,12 +2860,19 @@
           Visita matutina al complejo de templos y santuarios de Nachi, con una corta caminata por la pintoresca escalinata de piedra de Daimon-zaka, que culmina en Nachi-no-Otaki, la cascada más alta de Japón. Quedándose una noche más en Kii-Katsuura en lugar de regresar a Osaka.
           <br><div class="kk-overnight-badge">🛏 Kii-Katsuura (noche extra)</div>
         </div>
+        <div class="kk-lunch-notice">
+          <div class="kk-lunch-notice-icon">🍱</div>
+          <div class="kk-lunch-notice-text">
+            Almuerzo no incluido en la reserva — comprar en Kii-Katsuura
+            <small>Hay restaurantes cerca de la estación de Kii-Katsuura al volver de Nachi. Considerar llevar algo desde el hotel al salir por la mañana.</small>
+          </div>
+        </div>
         <div class="kk-timeline">
           <div class="kk-item">
             <div class="kk-badge food"></div>
             <div class="kk-card">
-              <div class="kk-title">Desayuno</div>
-              <div class="kk-desc">En el alojamiento.</div>
+              <div class="kk-title">Desayuno <span style="font-weight:400;color:#2e7d32">(incluido)</span></div>
+              <div class="kk-desc">En el alojamiento — incluido en la reserva de Kamenoi Hotel.</div>
             </div>
           </div>
           <div class="kk-item">
@@ -2758,8 +2966,8 @@
           <div class="kk-item">
             <div class="kk-badge food"></div>
             <div class="kk-card">
-              <div class="kk-title">Almuerzo</div>
-              <div class="kk-desc">Gran variedad de pequeños restaurantes cerca de la estación. Pregunta en la oficina de información turística de la estación de Kii-Katsuura.</div>
+              <div class="kk-title">Almuerzo <span style="font-weight:400;color:#b71c1c">(por tu cuenta)</span></div>
+              <div class="kk-desc">No incluido en la reserva. Gran variedad de pequeños restaurantes cerca de la estación. Pregunta en la oficina de información turística de la estación de Kii-Katsuura.</div>
               <div class="kk-links">
                 <button type="button" class="kk-link" onclick="openPdfModal('assets/files/Kii-Katsuura-station-area-map.pdf','Kii-Katsuura Station Area Map')">📄 Kii-Katsuura Station Area Map</button>
               </div>
@@ -2789,7 +2997,7 @@
         <div class="kk-booking-list">
 
           <!-- 1 · Kiri-no-Sato Takahara Lodge -->
-          <div class="kk-booking-card">
+          <div class="kk-booking-card" id="kk-book-takahara">
             <img src="assets/files/kk_takahara_lodge.jpg" alt="Kiri-no-Sato Takahara Lodge" class="kk-booking-img">
             <div class="kk-booking-body">
               <div class="kk-booking-badges">
@@ -2800,6 +3008,10 @@
               <div class="kk-booking-subname">"Organic Hotel" · Western style room · 1 noche</div>
               <hr class="kk-booking-divider">
               <div class="kk-booking-meta">
+                <div class="kk-booking-meta-item">
+                  <span class="kk-booking-meta-label">Comidas</span>
+                  <span class="kk-booking-meta-val">Cena · Desayuno · Lunch Box</span>
+                </div>
                 <div class="kk-booking-meta-item">
                   <span class="kk-booking-meta-label">Check-in</span>
                   <span class="kk-booking-meta-val">18:30</span>
@@ -2827,7 +3039,7 @@
           </div>
 
           <!-- 2 · Minshuku Chikatsuyu -->
-          <div class="kk-booking-card">
+          <div class="kk-booking-card" id="kk-book-chikatsuyu">
             <img src="assets/files/kk_chikatsuyu.jpg" alt="Minshuku Chikatsuyu" class="kk-booking-img">
             <div class="kk-booking-body">
               <div class="kk-booking-badges">
@@ -2838,6 +3050,10 @@
               <div class="kk-booking-subname">Edificio principal · 1 noche</div>
               <hr class="kk-booking-divider">
               <div class="kk-booking-meta">
+                <div class="kk-booking-meta-item">
+                  <span class="kk-booking-meta-label">Comidas</span>
+                  <span class="kk-booking-meta-val">Cena · Desayuno · Lunch Box</span>
+                </div>
                 <div class="kk-booking-meta-item">
                   <span class="kk-booking-meta-label">Check-in</span>
                   <span class="kk-booking-meta-val">18:30</span>
@@ -2866,7 +3082,7 @@
           </div>
 
           <!-- 3 · Minshuku Takiyoshi -->
-          <div class="kk-booking-card">
+          <div class="kk-booking-card" id="kk-book-takiyoshi">
             <img src="assets/files/kk_takiyoshi.jpg" alt="Minshuku Takiyoshi" class="kk-booking-img">
             <div class="kk-booking-body">
               <div class="kk-booking-badges">
@@ -2877,6 +3093,10 @@
               <div class="kk-booking-subname">Yunomine Onsen · 1 noche</div>
               <hr class="kk-booking-divider">
               <div class="kk-booking-meta">
+                <div class="kk-booking-meta-item">
+                  <span class="kk-booking-meta-label">Comidas</span>
+                  <span class="kk-booking-meta-val">Cena · Desayuno (sin lunch box)</span>
+                </div>
                 <div class="kk-booking-meta-item">
                   <span class="kk-booking-meta-label">Check-in</span>
                   <span class="kk-booking-meta-val">17:30</span>
@@ -2909,7 +3129,7 @@
           </div>
 
           <!-- 4 · BOND Kumano Bento -->
-          <div class="kk-booking-card">
+          <div class="kk-booking-card" id="kk-book-bond">
             <img src="assets/files/kk_bond_bento.jpg" alt="BOND Kumano Bento Lunch Box" class="kk-booking-img">
             <div class="kk-booking-body">
               <div class="kk-booking-badges">
@@ -2935,7 +3155,7 @@
           </div>
 
           <!-- 5 · Traditional Boat Tour -->
-          <div class="kk-booking-card">
+          <div class="kk-booking-card" id="kk-book-boat">
             <img src="assets/files/kk_boat_tour.jpg" alt="Traditional Boat Tour" class="kk-booking-img">
             <div class="kk-booking-body">
               <div class="kk-booking-badges">
@@ -2972,7 +3192,7 @@
           </div>
 
           <!-- 6 · Kamenoi Hotel Nachi Katsuura -->
-          <div class="kk-booking-card">
+          <div class="kk-booking-card" id="kk-book-kamenoi">
             <img src="assets/files/kk_kamenoi.jpg" alt="Kamenoi Hotel Nachi Katsuura" class="kk-booking-img">
             <div class="kk-booking-body">
               <div class="kk-booking-badges">
@@ -2983,6 +3203,10 @@
               <div class="kk-booking-subname">Oceanview Japanese room with Open Air Bath · 2 noches</div>
               <hr class="kk-booking-divider">
               <div class="kk-booking-meta">
+                <div class="kk-booking-meta-item">
+                  <span class="kk-booking-meta-label">Comidas</span>
+                  <span class="kk-booking-meta-val">Cena · Desayuno × 2 noches (sin lunch box)</span>
+                </div>
                 <div class="kk-booking-meta-item">
                   <span class="kk-booking-meta-label">Check-in</span>
                   <span class="kk-booking-meta-val">18:30</span>
@@ -3424,6 +3648,66 @@
           </div>
         </div>
       </div>
+
+      <div class="info-card city-kyoto" id="info-tren-1">
+        <div class="info-icon-box city-kyoto">🚄</div>
+        <div class="info-body">
+          <div class="info-title">Boleto · Tokyo → Kyoto</div>
+          <div class="info-desc">NOZOMI 107 · Mayo 9 · Tokyo Station → Kyoto Station · 07:00 → 09:12</div>
+          <div class="info-links">
+            <button class="info-link" onclick="openPdfModal('assets/files/Tokyo%20-%20Kyoto%201.pdf','Boleto Tokyo → Kyoto — Yamil')">📄 Yamil</button>
+            <button class="info-link" onclick="openPdfModal('assets/files/Tokyo%20-%20Kyoto%202.pdf','Boleto Tokyo → Kyoto — Melu')">📄 Melu</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-card city-kumano" id="info-tren-2">
+        <div class="info-icon-box city-kumano">🚄</div>
+        <div class="info-body">
+          <div class="info-title">Boleto · Osaka → Kii-Tanabe</div>
+          <div class="info-desc">KUROSHIO 01 · Mayo 17 · Shin Osaka Station → Kii Tanabe Station · 07:34 → 09:58</div>
+          <div class="info-links">
+            <button class="info-link" onclick="openPdfModal('assets/files/Shin%20Osaka%20-%20Kii%20Tanabe%201.png','Boleto Osaka → Kii-Tanabe — Yamil')">📄 Yamil</button>
+            <button class="info-link" onclick="openPdfModal('assets/files/Shin%20Osaka%20-%20KII%20Tanabe%202.png','Boleto Osaka → Kii-Tanabe — Melu')">📄 Melu</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-card city-kumano" id="info-tren-3a">
+        <div class="info-icon-box city-kumano">🚄</div>
+        <div class="info-body">
+          <div class="info-title">Boleto · Kii-Katsuura → Shin Osaka</div>
+          <div class="info-desc">KUROSHIO 12 · Mayo 22 · Kii Katsuura Station → Shin Osaka Station · 06:46 → 10:51</div>
+          <div class="info-links">
+            <button class="info-link" onclick="openPdfModal('assets/files/Kii%20Matsuura%20-%20Shin%20Osaka%201.png','Boleto Kii-Katsuura → Shin Osaka — Yamil')">📄 Yamil</button>
+            <button class="info-link" onclick="openPdfModal('assets/files/Kii%20Matsuura%20-%20Shin%20Osaka%202.png','Boleto Kii-Katsuura → Shin Osaka — Melu')">📄 Melu</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-card city-tokyo" id="info-tren-3b">
+        <div class="info-icon-box city-tokyo">🚄</div>
+        <div class="info-body">
+          <div class="info-title">Boleto · Shin Osaka → Tokyo</div>
+          <div class="info-desc">NOZOMI 14 · Mayo 22 · Shin Osaka Station → Tokyo Station · 11:06 → 13:33</div>
+          <div class="info-links">
+            <button class="info-link" onclick="openPdfModal('assets/files/Shin%20Osaka%20-%20Tokyo%201.pdf','Boleto Shin Osaka → Tokyo — Yamil')">📄 Yamil</button>
+            <button class="info-link" onclick="openPdfModal('assets/files/Shin%20Osaka%20-%20Tokyo%202.pdf','Boleto Shin Osaka → Tokyo — Melu')">📄 Melu</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-card city-tokyo" id="info-sumo">
+        <div class="info-icon-box city-tokyo">🥋</div>
+        <div class="info-body">
+          <div class="info-title">Recibo · Experiencia de Sumo</div>
+          <div class="info-desc">Asakusa Sumo Club · Mayo 23 · 12:00 PM · Asakusa, Tokyo</div>
+          <div class="info-links">
+            <button class="info-link" onclick="openPdfModal('assets/files/asakusa-sumo-club-receipt.pdf','Recibo — Experiencia de Sumo')">📄 Ver recibo</button>
+            <a class="info-link" href="https://bookings.bokun.io/MjA2NDg1YzItMTQ2OC00ZmU0LTgzYjMtZTQxM2UxZDliNmEw?lng=en" target="_blank" rel="noopener">↗ Ver ticket</a>
+          </div>
+        </div>
+      </div>
     </div>
 
   </div>
@@ -3432,10 +3716,65 @@
 
 <!-- ══════════════ Day content templates ══════════════ -->
 <div id="tpl-day03" style="display:none"><div class="tpl-placeholder">Plan por agregar</div></div>
-<div id="tpl-day04" style="display:none"><div class="tpl-placeholder">Plan por agregar</div></div>
+<div id="tpl-day04" style="display:none">
+
+  <div class="tpl-placeholder">Plan por agregar</div>
+
+  <div class="time-slot">
+    <div class="time-label">Recordatorio — 18:00 🎢</div>
+    <div class="act c-shopping">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">18:00</span><span class="deadline">⚠ Sacar tickets Priority Scream para Fuji-Q</span></div>
+        <div class="kk-links">
+          <a class="kk-link" href="https://membersclub.fujiq.jp/ticket/priority/?_gl=1*1kvb9ot*_gcl_au*MTUzMTA0MTI3NC4xNzc3Mzg3Mzkz" target="_blank" rel="noopener">↗ Thrill Ride / Priority Scream Tickets</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
 <div id="tpl-day05" style="display:none"><div class="tpl-placeholder">Plan por agregar</div></div>
 <div id="tpl-day06" style="display:none"><div class="tpl-placeholder">Plan por agregar</div></div>
-<div id="tpl-day07" style="display:none"><div class="tpl-placeholder">Plan por agregar</div></div>
+<div id="tpl-day07" style="display:none">
+
+  <div class="time-slot">
+    <div class="time-label">Mañana — Traslado a Fuji-Q 🚌</div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">7:10 → 9:00</span>Bus → Fuji-Q Highland</div>
+        <div class="act-note">TokuQ Pack · Línea Ikebukuro–Kawaguchiko · Vehículo 0003 Car 01 · Asientos B5, A5 · Mostrar ticket al subir</div>
+        <div class="kk-links">
+          <a class="kk-link" href="https://share.google/WzQZbvKXwrjxycb5Q" target="_blank" rel="noopener">📍 Parada Ikebukuro East Exit</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="time-slot">
+    <div class="time-label">Día completo — Fuji-Q Highland 🎢</div>
+    <div class="act c-shopping">
+      <div class="act-content">
+        <div class="act-name">Fuji-Q Highland · Día completo</div>
+        <div class="act-note">One-day pass (reconocimiento facial) · 2 pases · Válido 2026/05/07</div>
+        <div class="kk-links">
+          <a class="kk-link" href="https://membersclub.fujiq.jp/myticket/freepass/?ticketId=2609757" target="_blank" rel="noopener">🎫 Pase de Yami</a>
+          <a class="kk-link" href="https://membersclub.fujiq.jp/myticket/freepass/?ticketId=2609758" target="_blank" rel="noopener">🎫 Pase de Melu</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="time-slot">
+    <div class="time-label">Tarde — Regreso a Tokyo 🚌</div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">17:59 → 19:49</span>Bus → Ikebukuro</div>
+        <div class="act-note">TokuQ Pack · Línea Kawaguchiko–Ikebukuro · Vehículo 0106 Car 01 · Asientos D5, C5 · Mostrar ticket al subir</div>
+      </div>
+    </div>
+  </div>
+
+</div>
 <div id="tpl-day08" style="display:none">
 
   <div class="time-slot">
@@ -3592,12 +3931,16 @@
   </div>
 
   <div class="time-slot">
-    <div class="time-label">Mediodía — Experiencia de Matcha & Museo 🍵</div>
+    <div class="time-label">Mañana — Experiencia de Matcha & Museo del Té 🍵</div>
     <div class="act c-sight">
       <div class="act-content">
         <div class="act-name"><span class="act-time">11:00</span>Grinding Matcha Experience · Museo del Té</div>
-        <div class="act-note">Moler matcha con mano de mortero tradicional · Parque Histórico del Té de Uji · 1h</div>
-        <div class="act-arch">Abre 11:00 · Cierra 12:00</div>
+        <div class="act-note">Moler matcha con mortero tradicional · ¥5,600 (2 adultos) · 1h · Llegar 10 min antes</div>
+        <div class="act-arch">Parque Histórico del Té de Uji · Tickets confirmados ✓</div>
+        <div class="kk-links">
+          <button class="kk-link" onclick="goToAtrac('atrac-matcha')">🎟 Ver en Atracciones</button>
+          <a class="kk-link" href="https://maps.app.goo.gl/d1bPGr9torzMqcW58" target="_blank">📍 Ver en Maps</a>
+        </div>
       </div>
     </div>
     <div class="act c-food">
@@ -3613,8 +3956,11 @@
     <div class="act c-sight">
       <div class="act-content">
         <div class="act-name"><span class="act-time">14:00</span>Nintendo Museum</div>
-        <div class="act-note">Exposición interactiva de la historia de Nintendo · 2–4h · ¥3,300 · reserva online requerida</div>
+        <div class="act-note">Exposición interactiva de la historia de Nintendo · 2–4h · ¥3,300 · Tickets confirmados ✓</div>
         <div class="act-arch">Tienda exclusiva adentro · también se puede comer ahí si hay hambre</div>
+        <div class="kk-links">
+          <button class="kk-link" onclick="goToAtrac('atrac-nintendo')">🎟 Ver en Atracciones</button>
+        </div>
       </div>
     </div>
   </div>
@@ -3830,16 +4176,373 @@
   </div>
 
 </div>
-<div id="tpl-day15" style="display:none"><div class="tpl-placeholder">Plan por agregar</div></div>
+<div id="tpl-day15" style="display:none">
+  <div class="tpl-notice">🚃 Viajar a Osaka por línea Hankyu</div>
+  <div class="tpl-placeholder">Plan por agregar</div>
+</div>
 <div id="tpl-day16" style="display:none"><div class="tpl-placeholder">Plan por agregar</div></div>
-<div id="tpl-day17" style="display:none"><div class="tpl-placeholder">Plan por agregar</div></div>
-<div id="tpl-day18" style="display:none"><div class="tpl-placeholder">Plan por agregar</div></div>
-<div id="tpl-day19" style="display:none"><div class="tpl-placeholder">Plan por agregar</div></div>
-<div id="tpl-day20" style="display:none"><div class="tpl-placeholder">Plan por agregar</div></div>
-<div id="tpl-day21" style="display:none"><div class="tpl-placeholder">Plan por agregar</div></div>
+<!-- ── Día 1 Kumano Kodo · May 17 ── -->
+<div id="tpl-day17" style="display:none">
+
+  <div class="time-slot">
+    <div class="time-label">Mañana — Osaka → Kii-Tanabe 🚄</div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">8:58</span>JR Kuroshio 01 · Shin-Osaka → Kii-Tanabe</div>
+        <div class="act-note">Sale 9:19 Tennoji · llega 11:21 Kii-Tanabe · siéntate a la derecha para la mejor vista de la costa</div>
+      </div>
+    </div>
+    <div class="act c-food">
+      <div class="act-content">
+        <div class="act-name">Tanabe — equipaje + almuerzo</div>
+        <div class="act-note">Dejar maletas en el Centro de Información Turística junto a la estación · viajarán directo a Kii-Katsuura</div>
+        <div class="act-arch">🌅 Desayuno — por cuenta · 🍱 Almuerzo — por cuenta en Tanabe antes del bus · 🌙 Cena — incluida en Takahara</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="time-slot">
+    <div class="time-label">Tarde — Inicio del Kumano Kodo 🥾</div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">13:00</span>Bus Kii-Tanabe → Takijiri-oji</div>
+        <div class="act-note">Ryujin Bus · llega 13:41 · ¥970 · parada nº2 frente a la estación</div>
+      </div>
+    </div>
+    <div class="act c-sight">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">~14:00</span>Caminata: Takijiri-oji → Takahara</div>
+        <div class="act-note">~4 km · 2–3h · ↑430m ↓200m · empinada desde el inicio — ritmo lento y tranquilo</div>
+        <div class="kk-links">
+          <button class="kk-link" onclick="openPdfModal('assets/files/Kumano-Kodo-Nakahechi-Route-Maps-Takijiri-Takahara.pdf','Mapa — Takijiri→Takahara')">📄 Mapa del sendero</button>
+          <button class="kk-link" onclick="openPdfModal('assets/files/Tanabe-map.pdf','Mapa Tanabe')">📄 Mapa Tanabe</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="time-slot">
+    <div class="time-label">Noche — Kiri-no-Sato Takahara Lodge 🛏</div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">18:30</span>Check-in · Kiri-no-Sato Takahara Lodge</div>
+        <div class="act-note">✓ Cena incluida · ✓ Desayuno + Lunch Box para el día siguiente incluidos</div>
+        <div class="kk-links">
+          <button class="kk-link" onclick="goToKkDay(1)">📖 Ver Día 1 detallado</button>
+          <button class="kk-link" onclick="goToKkStay('kk-book-takahara')">🏠 Reserva Takahara Lodge</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── Día 2 Kumano Kodo · May 18 ── -->
+<div id="tpl-day18" style="display:none">
+
+  <div class="time-slot">
+    <div class="time-label">Todo el día — Caminata larga 🥾</div>
+    <div class="act c-food">
+      <div class="act-content">
+        <div class="act-name">Comidas del día</div>
+        <div class="act-arch">🌅 Desayuno — incluido en Takahara · 🍱 Lunch Box — incluido (Takahara) · 🌙 Cena — incluida en Chikatsuyu</div>
+      </div>
+    </div>
+    <div class="act c-sight">
+      <div class="act-content">
+        <div class="act-name">Caminata: Takahara → Chikatsuyu</div>
+        <div class="act-note">~10 km · 4–6h · ↑590m ↓640m · jornada completa por bosques y crestas</div>
+        <div class="act-arch">El área de descanso Michi-no-Eki (cerca poste nº23) vende bebidas y snacks</div>
+        <div class="kk-links">
+          <button class="kk-link" onclick="openPdfModal('assets/files/Kumano-Kodo-Nakahechi-Route-Maps-Takahara-Tsugizakura.pdf','Mapa — Takahara→Tsugizakura')">📄 Mapa del sendero</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="time-slot">
+    <div class="time-label">Noche — Minshuku Chikatsuyu 🛏</div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name">Check-in · Minshuku Chikatsuyu</div>
+        <div class="act-note">✓ Cena incluida · ✓ Desayuno + Lunch Box para el día siguiente incluidos</div>
+        <div class="kk-links">
+          <button class="kk-link" onclick="goToKkDay(2)">📖 Ver Día 2 detallado</button>
+          <button class="kk-link" onclick="goToKkStay('kk-book-chikatsuyu')">🏠 Reserva Chikatsuyu</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── Día 3 Kumano Kodo · May 19 ── -->
+<div id="tpl-day19" style="display:none">
+
+  <div class="time-slot">
+    <div class="time-label">Mañana — Bus + Tramo final 🚌</div>
+    <div class="act c-food">
+      <div class="act-content">
+        <div class="act-name">Comidas del día</div>
+        <div class="act-arch">🌅 Desayuno — incluido en Chikatsuyu · 🍱 Lunch Box — incluido (Chikatsuyu) · 🌙 Cena — incluida en Takiyoshi</div>
+      </div>
+    </div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">9:42</span>Bus Chikatsuyu → Hongu</div>
+        <div class="act-note">Meiko Bus · llega 10:12 Hongu Taisha-mae · ¥1,090 · transbordo al siguiente bus</div>
+      </div>
+    </div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">10:30</span>Bus Hongu → Hosshinmon-oji</div>
+        <div class="act-note">Ryujin Bus · llega 10:45 · ¥470 · inicio de la caminata</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="time-slot">
+    <div class="time-label">Mediodía — Tramo final + Hongu Taisha ⛩️</div>
+    <div class="act c-sight">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">~11:00</span>Caminata: Hosshinmon-oji → Kumano Hongu Taisha</div>
+        <div class="act-note">~7 km · 2–3h · ↑190m ↓460m · tramo final del Nakahechi, el más emblemático</div>
+        <div class="kk-links">
+          <button class="kk-link" onclick="openPdfModal('assets/files/Kumano-Kodo-Nakahechi-Route-Maps-Hongu.pdf','Mapa — Hongu')">📄 Mapa del sendero</button>
+        </div>
+      </div>
+    </div>
+    <div class="act c-arch">
+      <div class="act-content">
+        <div class="act-name">Kumano Hongu Taisha + Oyunohara</div>
+        <div class="act-note">Santuario principal del Kumano Kodo · Heritage Center (9–17h) para registro Dual Pilgrim · Oyunohara: torii más grande del mundo</div>
+        <div class="kk-links">
+          <button class="kk-link" onclick="openPdfModal('assets/files/Hongu-map.pdf','Mapa Hongu')">📄 Mapa Hongu</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="time-slot">
+    <div class="time-label">Tarde — Yunomine Onsen ♨️</div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">16:58</span>Bus Hongu → Yunomine Onsen</div>
+        <div class="act-note">Nara Kotsu · llega 17:09 · ¥310 · no esperar al siguiente (larga espera)</div>
+      </div>
+    </div>
+    <div class="act c-sight">
+      <div class="act-content">
+        <div class="act-name">Yunomine Onsen · Tsuboyu</div>
+        <div class="act-note">Uno de los onsen más antiguos de Japón · Tsuboyu: baño histórico de peregrinos, entradas en la caseta junto al templo</div>
+        <div class="kk-links">
+          <button class="kk-link" onclick="openPdfModal('assets/files/Yunomine-Onsen-map.pdf','Mapa Yunomine Onsen')">📄 Mapa Yunomine</button>
+        </div>
+      </div>
+    </div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name">Check-in · Minshuku Takiyoshi</div>
+        <div class="act-note">✓ Cena incluida · ✓ Desayuno incluido · el Lunch Box del día siguiente es el BOND Bento (entregado a las 7:30)</div>
+        <div class="kk-links">
+          <button class="kk-link" onclick="goToKkDay(3)">📖 Ver Día 3 detallado</button>
+          <button class="kk-link" onclick="goToKkStay('kk-book-takiyoshi')">🏠 Reserva Takiyoshi</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── Día 4 Kumano Kodo · May 20 ── -->
+<div id="tpl-day20" style="display:none">
+
+  <div class="time-slot">
+    <div class="time-label">Mañana — Paseo en Bote 🚣</div>
+    <div class="act c-food">
+      <div class="act-content">
+        <div class="act-name">Comidas del día</div>
+        <div class="act-arch">🌅 Desayuno — incluido en Takiyoshi · 🍱 BOND Bento ×2 — recogé a las 7:30 antes de salir · 🌙 Cena — incluida en Kamenoi Hotel</div>
+      </div>
+    </div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">8:31</span>Bus Yunomine → Michi-no-eki Kumanogawa</div>
+        <div class="act-note">Llega 9:08 · ~¥1,060 · Boat Center — llegar antes de las 9:30 para orientación previa</div>
+        <div class="kk-links">
+          <button class="kk-link" onclick="openPdfModal('assets/files/Gojo-Totsukawa-Hongu-to-Shingu-bus.pdf','Bus Timetable #4')">📄 Horario del bus</button>
+        </div>
+      </div>
+    </div>
+    <div class="act c-sight">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">10:00</span>Paseo en Bote · Río Kumano-gawa</div>
+        <div class="act-note">10:00 → 11:30 · bote de fondo plano tradicional (kawabune) · ruta histórica de peregrinación acuática del Kumano Kodo</div>
+        <div class="kk-links">
+          <button class="kk-link" onclick="goToKkStay('kk-book-boat')">🚣 Ver reserva del bote</button>
+          <button class="kk-link" onclick="openPdfModal('assets/files/Shingu-map.pdf','Mapa Shingu')">📄 Mapa Shingu</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="time-slot">
+    <div class="time-label">Tarde — Shingu + Kii-Katsuura 🚂</div>
+    <div class="act c-arch">
+      <div class="act-content">
+        <div class="act-name">Kumano Hayatama Taisha · Kamikura-jinja</div>
+        <div class="act-note">Tercer gran santuario del Kumano · Kamikura-jinja: buen lugar para el almuerzo con el BOND Bento</div>
+      </div>
+    </div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">15:51</span>Tren Shingu → Kii-Katsuura</div>
+        <div class="act-note">JR local · llega 16:15 · siéntate a la izquierda para vistas costeras</div>
+      </div>
+    </div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">~16:30</span>Check-in · Kamenoi Hotel Nachi Katsuura</div>
+        <div class="act-note">Las maletas llegaron directamente desde Tanabe — te esperan aquí · ✓ Cena incluida (2 noches)</div>
+        <div class="kk-links">
+          <button class="kk-link" onclick="goToKkDay(4)">📖 Ver Día 4 detallado</button>
+          <button class="kk-link" onclick="goToKkStay('kk-book-kamenoi')">🏠 Reserva Kamenoi Hotel</button>
+          <button class="kk-link" onclick="openPdfModal('assets/files/Katsuura-map.pdf','Mapa Katsuura')">📄 Mapa Katsuura</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── Día 5 Kumano Kodo · May 21 ── -->
+<div id="tpl-day21" style="display:none">
+
+  <div class="time-slot">
+    <div class="time-label">Mañana — Nachi Taisha + Cascada ⛩️</div>
+    <div class="act c-food">
+      <div class="act-content">
+        <div class="act-name">Comidas del día</div>
+        <div class="act-arch">🌅 Desayuno — incluido en Kamenoi · 🍱 Almuerzo — por cuenta (restaurantes cerca estación Kii-Katsuura) · 🌙 Cena — incluida en Kamenoi (2ª noche)</div>
+      </div>
+    </div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">8:25</span>Bus Katsuura → Daimon-zaka</div>
+        <div class="act-note">Kumano Kotsu · llega 8:44 · ¥430 · baños y vending en la parada</div>
+      </div>
+    </div>
+    <div class="act c-sight">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">~9:00</span>Caminata Daimon-zaka → Nachi Taisha</div>
+        <div class="act-note">~2 km · ~1h · ↑190m · escalinata de adoquines flanqueada por cedros milenarios</div>
+        <div class="kk-links">
+          <button class="kk-link" onclick="openPdfModal('assets/files/Nachi-map.pdf','Mapa Nachisan')">📄 Mapa Nachisan</button>
+        </div>
+      </div>
+    </div>
+    <div class="act c-arch">
+      <div class="act-content">
+        <div class="act-name">Kumano Nachi Taisha · Seiganto-ji · Cataratas Nachi</div>
+        <div class="act-note">Tercer gran santuario · pagoda de tres pisos con cascada de fondo · Nachi-no-Otaki: 133m, la cascada más alta de Japón</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="time-slot">
+    <div class="time-label">Tarde — Regreso + Tarde libre en Katsuura</div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">11:44</span>Bus Nachi → Kii-Katsuura</div>
+        <div class="act-note">Kumano Kotsu · llega 12:08 · ¥630 · almuerzo por cuenta cerca de la estación</div>
+        <div class="kk-links">
+          <button class="kk-link" onclick="openPdfModal('assets/files/Kii-Katsuura-station-area-map.pdf','Mapa Estación Kii-Katsuura')">📄 Mapa estación Katsuura</button>
+        </div>
+      </div>
+    </div>
+    <div class="act c-sight">
+      <div class="act-content">
+        <div class="act-name">Tarde libre · Puerto de Katsuura</div>
+        <div class="act-note">Noche extra en Kii-Katsuura — disfrutar el puerto, mariscos y onsen de la costa · ✓ Cena incluida en Kamenoi</div>
+        <div class="kk-links">
+          <button class="kk-link" onclick="goToKkDay(5)">📖 Ver Día 5 detallado</button>
+          <button class="kk-link" onclick="goToKkStay('kk-book-kamenoi')">🏠 Reserva Kamenoi Hotel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
 <div id="tpl-day22" style="display:none"><div class="tpl-placeholder">Plan por agregar</div></div>
-<div id="tpl-day23" style="display:none"><div class="tpl-placeholder">Plan por agregar</div></div>
-<div id="tpl-day24" style="display:none"><div class="tpl-placeholder">Plan por agregar</div></div>
+<div id="tpl-day23" style="display:none">
+
+  <div class="sorpresa-banner">
+    <div class="sorpresa-emoji">🎁</div>
+    <div>
+      <div class="sorpresa-title">Sorpresa ✨</div>
+      <div class="sorpresa-hint">Mañana · Por revelar</div>
+    </div>
+  </div>
+
+  <div class="time-slot">
+    <div class="time-label">Mediodía — Experiencia de Sumo 🥋</div>
+    <div class="act c-shopping">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">12:00 – 14:00</span>Experiencia de Sumo · Asakusa</div>
+        <div class="act-note">Demostración de combate · Almuerzo chanko nabe con barra libre · Pagado</div>
+        <div class="kk-links">
+          <a class="kk-link" href="https://maps.app.goo.gl/gEYxVH1e9uqiZ67q6" target="_blank" rel="noopener">📍 Ver en Maps</a>
+          <a class="kk-link" href="https://bookings.bokun.io/MjA2NDg1YzItMTQ2OC00ZmU0LTgzYjMtZTQxM2UxZDliNmEw?lng=en" target="_blank" rel="noopener">↗ Ver ticket</a>
+          <button class="kk-link" onclick="goToAtrac('atrac-sumo')">🎟 Ver en Atracciones</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sorpresa-banner">
+    <div class="sorpresa-emoji">🌟</div>
+    <div>
+      <div class="sorpresa-title">Sorpresa ✨</div>
+      <div class="sorpresa-hint">Tarde — Noche · Por revelar</div>
+    </div>
+  </div>
+
+</div>
+<div id="tpl-day24" style="display:none">
+
+  <div class="time-slot">
+    <div class="time-label">Mañana — Mercado de Pulgas 🏟️</div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">9:00</span>Llegada · Tokyo City Flea Market</div>
+        <div class="act-note">Ōi Racecourse · Primer estacionamiento · Entrada libre · ~700 puestos</div>
+        <div class="act-arch">Monorail → Ōi Racecourse Station · 3 min a pie · o Keikyu → Tateba Station · 10 min a pie</div>
+      </div>
+    </div>
+    <div class="act c-shopping">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">9:00 – 14:30</span>Mercado de Pulgas · Ōi Racecourse</div>
+        <div class="act-note">Ropa vintage, muebles antiguos, antigüedades y curiosidades · Food court disponible · <span class="deadline">⚠ Cierra 14:30</span></div>
+        <div class="act-arch">2-1-2 Katsushima, Shinagawa-ku, Tokyo</div>
+        <div class="kk-links">
+          <a class="kk-link" href="https://maps.app.goo.gl/mJkwBxxrHwjaoo7HA" target="_blank" rel="noopener">🗺 Google Maps</a>
+          <a class="kk-link" href="https://fmfm.jp/event/detail/12335" target="_blank" rel="noopener">↗ Info</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="time-slot">
+    <div class="time-label">Tarde — Libre 🌆</div>
+    <div class="act c-free">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">14:30</span>Tiempo libre en Tokyo</div>
+        <div class="act-note">Plan por agregar</div>
+      </div>
+    </div>
+  </div>
+
+</div>
 <div id="tpl-day25" style="display:none">
 
   <div class="time-slot">
@@ -4147,7 +4850,159 @@
     requestAnimationFrame(() => { navSlider.style.transition = ''; });
   })();
 
+  // Inject version footer into every scrollable section wrap
+  (function () {
+    const footerHTML = `<a class="version-footer" href="https://github.com/yamnem/yamnem.github.io" target="_blank" rel="noopener"><svg width="10" height="10" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg><span class="version-repo">GitHub Repository</span> — v0.1.3</a>`;
+    document.querySelectorAll('.cal-wrap, .stays-wrap, .trains-wrap, .atrac-wrap, .kumano-wrap, .lang-wrap, .info-wrap').forEach(w => {
+      w.insertAdjacentHTML('beforeend', footerHTML);
+    });
+  })();
+
   let current = null;
+
+  const STAY_PILL = {
+    day03: { id: 'stay-minamiotsuka', label: 'AirBnb · Minamiōtsuka' },
+    day04: { id: 'stay-minamiotsuka', label: 'AirBnb · Minamiōtsuka' },
+    day05: { id: 'stay-minamiotsuka', label: 'AirBnb · Minamiōtsuka' },
+    day06: { id: 'stay-minamiotsuka', label: 'AirBnb · Minamiōtsuka' },
+    day07: { id: 'stay-minamiotsuka', label: 'AirBnb · Minamiōtsuka' },
+    day08: { id: 'stay-minamiotsuka', label: 'AirBnb · Minamiōtsuka' },
+    day09: { id: 'stay-shimogyo',     label: 'Hotel · Shimogyo' },
+    day10: { id: 'stay-shimogyo',     label: 'Hotel · Shimogyo' },
+    day11: { id: 'stay-shimogyo',     label: 'Hotel · Shimogyo' },
+    day12: { id: 'stay-shimogyo',     label: 'Hotel · Shimogyo' },
+    day13: { id: 'stay-shimogyo',     label: 'Hotel · Shimogyo' },
+    day14: { id: 'stay-shimogyo',     label: 'Hotel · Shimogyo' },
+    day15: { id: 'stay-shimanouchi',  label: 'AirBnb · Shimanouchi' },
+    day16: { id: 'stay-shimanouchi',  label: 'AirBnb · Shimanouchi' },
+    day22: { id: 'stay-kameido',      label: 'Lang Hotel · Kameido' },
+    day23: { id: 'stay-kameido',      label: 'Lang Hotel · Kameido' },
+    day24: { id: 'stay-kameido',      label: 'Lang Hotel · Kameido' },
+    day25: { id: 'stay-kameido',      label: 'Lang Hotel · Kameido' },
+    day26: { id: 'stay-kameido',      label: 'Lang Hotel · Kameido' },
+    day27: { id: 'stay-kameido',      label: 'Lang Hotel · Kameido' },
+    day28: { id: 'stay-kameido',      label: 'Lang Hotel · Kameido' },
+  };
+
+  const TRAIN_PILL = {
+    day09: { id: 'train-tokyo-kyoto', label: 'NOZOMI 107 · Tokyo → Kyoto' },
+    day17: { id: 'train-osaka-kii',   label: 'KUROSHIO 01 · Osaka → Kii-Tanabe' },
+    day22: { id: 'train-kii-osaka',   label: 'KUROSHIO 12 + NOZOMI 14 · Kii-Katsuura → Tokyo' },
+  };
+
+  const KUMANO_PILL = {
+    day17: { day: 1, label: 'Kumano Kodo · Día 1' },
+    day18: { day: 2, label: 'Kumano Kodo · Día 2' },
+    day19: { day: 3, label: 'Kumano Kodo · Día 3' },
+    day20: { day: 4, label: 'Kumano Kodo · Día 4' },
+    day21: { day: 5, label: 'Kumano Kodo · Día 5' },
+  };
+
+  const KUMANO_STAY_PILL = {
+    day17: [{ id: 'kk-book-takahara',  label: 'Takahara Lodge' }],
+    day18: [{ id: 'kk-book-chikatsuyu', label: 'Minshuku Chikatsuyu' }],
+    day19: [{ id: 'kk-book-takiyoshi', label: 'Minshuku Takiyoshi' }],
+    day20: [{ id: 'kk-book-boat',      label: 'Paseo en Bote' },
+            { id: 'kk-book-kamenoi',   label: 'Kamenoi Hotel' }],
+    day21: [{ id: 'kk-book-kamenoi',   label: 'Kamenoi Hotel' }],
+  };
+
+  function goToInfoDoc(docId) {
+    switchSection('info');
+    switchInfoTab(1);
+    const card = document.getElementById(docId);
+    if (!card) return;
+    requestAnimationFrame(() => {
+      const sec = document.getElementById('sec-info');
+      sec.scrollTo({ top: card.offsetTop - 80, behavior: 'smooth' });
+      card.classList.remove('highlight-pulse');
+      void card.offsetWidth;
+      card.classList.add('highlight-pulse');
+      card.addEventListener('animationend', () => card.classList.remove('highlight-pulse'), { once: true });
+    });
+  }
+
+  function goToTrain(trainId) {
+    closeDayPanel();
+    setTimeout(() => {
+      switchSection('trenes');
+      const card = document.getElementById(trainId);
+      if (!card) return;
+      requestAnimationFrame(() => {
+        const sec = document.getElementById('sec-trenes');
+        sec.scrollTo({ top: card.offsetTop - 80, behavior: 'smooth' });
+        card.classList.remove('highlight-pulse');
+        void card.offsetWidth;
+        card.classList.add('highlight-pulse');
+        card.addEventListener('animationend', () => card.classList.remove('highlight-pulse'), { once: true });
+      });
+    }, 220);
+  }
+
+  function goToAtrac(cardId) {
+    closeDayPanel();
+    setTimeout(() => {
+      switchSection('atracciones');
+      const card = document.getElementById(cardId);
+      if (!card) return;
+      requestAnimationFrame(() => {
+        const sec = document.getElementById('sec-atracciones');
+        sec.scrollTo({ top: card.offsetTop - 80, behavior: 'smooth' });
+        card.classList.remove('highlight-pulse');
+        void card.offsetWidth;
+        card.classList.add('highlight-pulse');
+        card.addEventListener('animationend', () => card.classList.remove('highlight-pulse'), { once: true });
+      });
+    }, 220);
+  }
+
+  function goToKkDay(dayNum) {
+    closeDayPanel();
+    setTimeout(() => {
+      switchSection('kumano');
+      switchKumano('kumano');
+      switchKkDay(dayNum);
+      requestAnimationFrame(() => {
+        document.getElementById('sec-kumano').scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }, 220);
+  }
+
+  function goToKkStay(cardId) {
+    closeDayPanel();
+    setTimeout(() => {
+      switchSection('kumano');
+      switchKumano('kumano');
+      switchKkDay(6);
+      const card = document.getElementById(cardId);
+      if (!card) return;
+      requestAnimationFrame(() => {
+        const sec = document.getElementById('sec-kumano');
+        sec.scrollTo({ top: card.offsetTop - 80, behavior: 'smooth' });
+        card.classList.remove('highlight-pulse');
+        void card.offsetWidth;
+        card.classList.add('highlight-pulse');
+        card.addEventListener('animationend', () => card.classList.remove('highlight-pulse'), { once: true });
+      });
+    }, 220);
+  }
+
+  function goToStay(stayId) {
+    closeDayPanel();
+    setTimeout(() => {
+      switchSection('stays');
+      const card = document.getElementById(stayId);
+      if (!card) return;
+      requestAnimationFrame(() => {
+        const sec = document.getElementById('sec-stays');
+        sec.scrollTo({ top: card.offsetTop - 80, behavior: 'smooth' });
+        card.classList.remove('highlight-pulse');
+        void card.offsetWidth; // force reflow so re-adding the class restarts animation
+        card.classList.add('highlight-pulse');
+        card.addEventListener('animationend', () => card.classList.remove('highlight-pulse'), { once: true });
+      });
+    }, 220);
+  }
 
   function closeDayPanel() {
     const panel = document.getElementById('detail-panel');
@@ -4212,8 +5067,55 @@
       <button class="detail-close" onclick="closeDayPanel()">✕</button>`;
 
     // Populate body
-    document.getElementById('detail-body').innerHTML =
-      document.getElementById(`tpl-${id}`).innerHTML;
+    const body = document.getElementById('detail-body');
+    body.innerHTML = document.getElementById(`tpl-${id}`).innerHTML;
+
+    // Pills injected via prepend — last injected ends up topmost.
+    // Desired visual order (top→bottom): 🚄 train · ⛩️ KK day tab · 🏠 KK stays · 🏠 regular stay
+    // So inject in reverse: regular stay first, KK stays second, KK day third, train last.
+
+    // 1 · Regular stay pill (injected first → ends up at bottom)
+    const stayInfo = STAY_PILL[id];
+    if (stayInfo) {
+      const pill = document.createElement('button');
+      pill.className = 'stay-link-pill';
+      pill.innerHTML = `🏠 ${stayInfo.label}`;
+      pill.onclick = () => goToStay(stayInfo.id);
+      body.prepend(pill);
+    }
+
+    // 2 · Kumano stay pills (as group, maintaining array order within the group)
+    const kumanoStays = KUMANO_STAY_PILL[id];
+    if (kumanoStays) {
+      const pills = kumanoStays.map(info => {
+        const pill = document.createElement('button');
+        pill.className = 'stay-link-pill';
+        pill.innerHTML = `🏠 ${info.label}`;
+        pill.onclick = () => goToKkStay(info.id);
+        return pill;
+      });
+      body.prepend(...pills);
+    }
+
+    // 3 · KK day tab pill (injected third → above lodging)
+    const kumanoInfo = KUMANO_PILL[id];
+    if (kumanoInfo) {
+      const pill = document.createElement('button');
+      pill.className = 'stay-link-pill';
+      pill.innerHTML = `⛩️ ${kumanoInfo.label}`;
+      pill.onclick = () => goToKkDay(kumanoInfo.day);
+      body.prepend(pill);
+    }
+
+    // 4 · Train pill (injected last → ends up at very top)
+    const trainInfo = TRAIN_PILL[id];
+    if (trainInfo) {
+      const pill = document.createElement('button');
+      pill.className = 'stay-link-pill';
+      pill.innerHTML = `🚄 ${trainInfo.label}`;
+      pill.onclick = () => goToTrain(trainInfo.id);
+      body.prepend(pill);
+    }
 
     // Compute origin offset from clicked cell to viewport center
     const cell = document.querySelector(`[data-day="${id}"]`);
@@ -4291,7 +5193,6 @@
   document.getElementById('detail-scroll').addEventListener('scroll', syncFade, { passive: true });
 </script>
 
-<a class="version-footer" href="https://github.com/yamnem/yamnem.github.io" target="_blank" rel="noopener"><svg width="10" height="10" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg><span class="version-repo">GitHub Repository</span> — v0.1.2</a>
 
 <!-- ══════════════ PDF Preview Modal ══════════════ -->
 <div id="pdf-modal" style="display:none" onclick="if(event.target===this)closePdfModal()">
@@ -4334,9 +5235,10 @@
     <button class="ham-item" data-section="atracciones" onclick="switchSection('atracciones');closeHamburger()">Atracciones</button>
     <button class="ham-item" data-section="lenguaje" onclick="switchSection('lenguaje');closeHamburger()">Lenguaje</button>
     <button class="ham-item" data-section="mapa" onclick="switchSection('mapa');closeHamburger()">Mapas</button>
-    <button class="ham-item" data-section="info" onclick="switchSection('info');closeHamburger()">Información importante</button>
+    <button class="ham-item" data-section="info" onclick="switchSection('info');closeHamburger()">Links & Documentos</button>
   </nav>
 </div>
+
 
 </body>
 </html>
