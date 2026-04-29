@@ -729,9 +729,11 @@
     .info-icon-box.flight     { background: #1E40AF; }
     .info-icon-box.city-tokyo  { background: #FF7043; }
     .info-icon-box.city-kyoto  { background: #7B1FA2; }
+    .info-icon-box.city-osaka  { background: #FFA000; }
     .info-icon-box.city-kumano { background: #00796B; }
     .info-card.city-tokyo  { --pulse-from: rgba(255,112,67,0.6); --pulse-mid: rgba(255,112,67,0.22); --pulse-to: rgba(255,112,67,0); }
     .info-card.city-kyoto  { --pulse-from: rgba(123,31,162,0.6);  --pulse-mid: rgba(123,31,162,0.22);  --pulse-to: rgba(123,31,162,0); }
+    .info-card.city-osaka  { --pulse-from: rgba(255,160,0,0.6);   --pulse-mid: rgba(255,160,0,0.22);   --pulse-to: rgba(255,160,0,0); }
     .info-card.city-kumano { --pulse-from: rgba(0,121,107,0.6);   --pulse-mid: rgba(0,121,107,0.22);   --pulse-to: rgba(0,121,107,0); }
     .kk-booking-card { --pulse-from: rgba(0,121,107,0.6); --pulse-mid: rgba(0,121,107,0.22); --pulse-to: rgba(0,121,107,0); }
     .kk-booking-card.highlight-pulse { animation: stay-card-pulse 0.9s ease-out 3; }
@@ -1432,20 +1434,22 @@
       <!-- Row 2 -->
       <!-- May 4–6 — Golden Week -->
       <div class="cal-cell trip-day holiday city-tokyo" data-day="day04" onclick="selectDay('day04')">
-        <div class="cal-emoji">✨</div>
+        <div class="cal-emoji">🏛️</div>
         <div class="cal-num">4</div>
         <div class="cal-day-name">Lun</div>
-        <div class="cal-trip-name">Fuji-Q alert <span class="trip-time">18:00</span></div>
+        <div class="cal-trip-name">Daikanyama → Shinjuku</div>
       </div>
       <div class="cal-cell trip-day holiday city-tokyo" data-day="day05" onclick="selectDay('day05')">
-        <div class="cal-emoji">✨</div>
+        <div class="cal-emoji">🗼</div>
         <div class="cal-num">5</div>
         <div class="cal-day-name">Mar</div>
+        <div class="cal-trip-name">Omotesando → Akihabara</div>
       </div>
       <div class="cal-cell trip-day holiday city-tokyo" data-day="day06" onclick="selectDay('day06')">
-        <div class="cal-emoji">✨</div>
+        <div class="cal-emoji">⛩️</div>
         <div class="cal-num">6</div>
         <div class="cal-day-name">Mié</div>
+        <div class="cal-trip-name">Meiji → Shibuya</div>
       </div>
       <div class="cal-cell trip-day city-tokyo" data-day="day07" onclick="selectDay('day07')">
         <div class="cal-emoji">🎢</div>
@@ -1467,8 +1471,10 @@
         <div class="cal-trip-name">Nozomi 107 <span class="trip-time">7:00</span></div>
       </div>
       <div class="cal-cell trip-day city-kyoto" data-day="day10" onclick="selectDay('day10')">
+        <div class="cal-emoji">🏐</div>
         <div class="cal-num">10</div>
         <div class="cal-day-name">Dom</div>
+        <div class="cal-trip-name">Bluteon · Osaka <span class="trip-time">18:05</span></div>
       </div>
 
       <!-- Row 3 -->
@@ -2224,14 +2230,14 @@
       </div>
     </div>
 
-    <!-- 2 · Osaka Büuteon · 10 mayo -->
+    <!-- 2 · Osaka Bluteon · 10 mayo -->
     <div class="atrac-card city-osaka">
       <div class="atrac-date-box city-osaka">
         <span class="atrac-day">10</span>
         <span class="atrac-month">Mayo</span>
       </div>
       <div class="atrac-body">
-        <div class="atrac-name">Osaka Büuteon</div>
+        <div class="atrac-name">Osaka Bluteon</div>
         <div class="atrac-meta">
           <span class="atrac-meta-item">📍 Minato, Osaka</span>
           <span class="atrac-meta-item">🕕 6:00 PM</span>
@@ -3726,6 +3732,17 @@
         </div>
       </div>
 
+      <div class="info-card city-osaka" id="info-volley-osaka">
+        <div class="info-icon-box city-osaka">🏐</div>
+        <div class="info-body">
+          <div class="info-title">Recibo · Osaka Bluteon — SV League</div>
+          <div class="info-desc">Asue Arena Osaka · Mayo 10 · 18:05 · Bloque 2B1 · Fila 7 · Asientos 8–9 · 2 entradas · Order #22094306</div>
+          <div class="info-links">
+            <button class="info-link" onclick="openPdfModal('assets/files/osaka_blutheon_receipt.pdf','Recibo — Osaka Bluteon SV League')">📄 Ver recibo</button>
+          </div>
+        </div>
+      </div>
+
       <div class="info-card city-tokyo" id="info-sumo">
         <div class="info-icon-box city-tokyo">🥋</div>
         <div class="info-body">
@@ -3747,10 +3764,118 @@
 <div id="tpl-day03" style="display:none"><div class="tpl-placeholder">Plan por agregar</div></div>
 <div id="tpl-day04" style="display:none">
 
-  <div class="tpl-placeholder">Plan por agregar</div>
+  <div class="time-slot">
+    <div class="time-label">Mañana — Daikanyama & Kyu Asakura 🏛️</div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">9:00</span>Llegada a Ebisu Station · JR</div>
+        <div class="act-arch"><span class="deadline">⚠ Salir antes de las 9:30</span> · Evitar tren lleno</div>
+      </div>
+    </div>
+    <div class="act c-arch">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">9:10 – 10:00</span>Recorrido — Daikanyama</div>
+        <div class="act-note">Calles tranquilas · Tiendas abren 10–11</div>
+        <div class="act-arch"><span class="deadline">⚠ Antes de las 10:30</span></div>
+      </div>
+    </div>
+    <div class="act c-arch">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">10:00</span>Kyu Asakura House · 30 min</div>
+        <div class="act-note">Casa histórica de la era Meiji</div>
+        <div class="act-arch"><span class="deadline">⚠ Antes de las 11:30</span> · Puede haber cola</div>
+      </div>
+    </div>
+  </div>
 
   <div class="time-slot">
-    <div class="time-label">Recordatorio — 18:00 🎢</div>
+    <div class="time-label">Media mañana — Nakameguro ☕</div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">10:40</span>Caminata hacia Nakameguro · 15 min</div>
+        <div class="act-note">Paseo por el canal</div>
+      </div>
+    </div>
+    <div class="act c-arch">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">11:00</span>Starbucks Reserve Roastery Tokyo · 40 min</div>
+        <div class="act-note">Edificio diseñado por Kengo Kuma · Nakameguro</div>
+        <div class="act-arch"><span class="deadline">⚠ Antes de las 11:30</span> · Después filas largas</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="time-slot">
+    <div class="time-label">Mediodía — Sangenjaya & Shimokitazawa 🎸</div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">12:00</span>Tren Tokyu Line → Sangenjaya · 15 min</div>
+      </div>
+    </div>
+    <div class="act c-arch">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">12:20</span>Sangenjaya Gorilla Building · 10 min</div>
+        <div class="act-note">Edificio con fachada de gorila · Parada breve</div>
+      </div>
+    </div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">12:45</span>Tren Tokyu Line → Shimokitazawa · 10 min</div>
+      </div>
+    </div>
+    <div class="act c-shopping">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">13:00</span>Recorrer pines — Shimokitazawa · 1h 30</div>
+        <div class="act-note">Barrio vintage · Tiendas de ropa y discos</div>
+        <div class="act-arch"><span class="deadline">⚠ Antes de las 16:00</span> · Después se llena mucho</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="time-slot">
+    <div class="time-label">Tarde — Hatagaya 🚽</div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">14:30</span>Caminata Shimokitazawa → Hatagaya · 20 min</div>
+        <div class="act-note">Zona residencial tranquila</div>
+      </div>
+    </div>
+    <div class="act c-arch">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">14:50</span>Hatagaya Public Toilet · 10 min</div>
+        <div class="act-note">Tokyo Toilet Project · Diseño de arquitecto famoso</div>
+      </div>
+    </div>
+    <div class="act c-shopping">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">15:05</span>ROTOTO STORE · 15 min</div>
+        <div class="act-note">Tienda de calcetines · Cierra ~19:00</div>
+        <div class="act-arch"><span class="deadline">⚠ Antes de las 16:30</span></div>
+      </div>
+    </div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">16:15</span>Tren Keio Line → Shinjuku · 5 min</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="time-slot">
+    <div class="time-label">Tarde — Shinjuku 🌆</div>
+    <div class="act c-shopping">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">16:30</span>Kawaii Money Exchange · 20 min</div>
+        <div class="act-note">Cambio de dinero · Filas frecuentes</div>
+        <div class="act-arch"><span class="deadline">⚠ Antes de las 18:30</span></div>
+      </div>
+    </div>
+    <div class="act c-volley">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">17:00</span>Supotsushoppu GALLERY 2 — Shinjuku · 30 min</div>
+        <div class="act-note">Tienda de vóley · Cierra ~21:00</div>
+        <div class="act-arch"><span class="deadline">⚠ Antes de las 20:30</span></div>
+      </div>
+    </div>
     <div class="act c-shopping">
       <div class="act-content">
         <div class="act-name"><span class="act-time">18:00</span><span class="deadline">⚠ Sacar tickets Priority Scream para Fuji-Q</span></div>
@@ -3759,11 +3884,231 @@
         </div>
       </div>
     </div>
+    <div class="act c-sight">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">18:10</span>Tokyo Metropolitan Government Building · 40 min</div>
+        <div class="act-note">Mirador gratuito · Piso 45</div>
+        <div class="act-arch"><span class="deadline">⚠ Llegar antes de las 18:45</span> · Primer show a las 19:00</div>
+      </div>
+    </div>
+    <div class="act c-night">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">19:00</span>TOKYO Night & Light · 20 min</div>
+        <div class="act-note">Projection mapping en la plaza · Primer show menos concurrido</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="time-slot">
+    <div class="time-label">Noche — Kabukicho & cena 🌙</div>
+    <div class="act c-night">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">19:30</span>Kabukicho / Omoide Yokocho · 1h</div>
+        <div class="act-note">Zona animada · Callejón de la memoria</div>
+      </div>
+    </div>
+    <div class="act c-food">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">21:00</span>Cena — Shinjuku · 1h</div>
+        <div class="act-arch"><span class="deadline">⚠ Antes de las 20:00</span> · Después puede haber espera</div>
+      </div>
+    </div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">22:30</span>Regreso JR Yamanote → Toshima · 20 min</div>
+        <div class="act-note">Tren menos lleno a esta hora</div>
+      </div>
+    </div>
   </div>
 
 </div>
-<div id="tpl-day05" style="display:none"><div class="tpl-placeholder">Plan por agregar</div></div>
-<div id="tpl-day06" style="display:none"><div class="tpl-placeholder">Plan por agregar</div></div>
+<div id="tpl-day05" style="display:none">
+
+  <div class="time-slot">
+    <div class="time-label">Mañana — Omotesando 🏛️</div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">9:30</span>Llegada · Metro Omotesando</div>
+        <div class="act-arch"><span class="deadline">⚠ Antes de las 10:30</span> · Buen horario de llegada</div>
+      </div>
+    </div>
+    <div class="act c-arch">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">9:40</span>Recorrido arquitectura — Omotesando · 1h 30</div>
+        <div class="act-note">Avenida de diseño · Prada, Tod's, 21_21 Design Sight</div>
+        <div class="act-arch"><span class="deadline">⚠ Antes de las 12:00</span> · Después se llena</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="time-slot">
+    <div class="time-label">Mediodía — Tokyo Tower 🗼</div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">11:30</span>Metro → Tokyo Tower · 20 min</div>
+      </div>
+    </div>
+    <div class="act c-shopping">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">12:00</span>RED° TOKYO TOWER — juegos y esports · 1h</div>
+        <div class="act-note">Complejo de juegos dentro de la torre · 4 pisos</div>
+        <div class="act-arch"><span class="deadline">⚠ Antes de las 13:30</span> · Filas por la tarde</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="time-slot">
+    <div class="time-label">Tarde temprana — Ginza 🛍️</div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">13:30</span>Metro → Ginza · 20 min</div>
+      </div>
+    </div>
+    <div class="act c-shopping">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">14:00</span>Paseo por Chuo Dori — Ginza · 1h 30</div>
+        <div class="act-note">Zona comercial exclusiva · La avenida cierra al tráfico los fines de semana</div>
+        <div class="act-arch"><span class="deadline">⚠ Antes de las 16:00</span> · Más turistas después</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="time-slot">
+    <div class="time-label">Tarde — Jimbocho 📚</div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">15:30</span>Metro → Jimbocho · 15 min</div>
+        <div class="act-note">Barrio tranquilo de librerías de segunda mano</div>
+      </div>
+    </div>
+    <div class="act c-shopping">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">16:00</span>Recorrido librerías — Jimbocho · 45 min</div>
+        <div class="act-note">Mayor concentración de librerías de segunda mano del mundo</div>
+        <div class="act-arch"><span class="deadline">⚠ Antes de las 17:30</span> · Algunas cierran temprano</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="time-slot">
+    <div class="time-label">Tarde-noche — Akihabara 🎮</div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">17:00</span>Tren JR → Akihabara · 10 min</div>
+      </div>
+    </div>
+    <div class="act c-anime">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">17:15</span>Cure Maid Café · 45 min</div>
+        <div class="act-note">Maid café temático · Merienda incluida</div>
+        <div class="act-arch"><span class="deadline">⚠ Antes de las 18:30</span> · Después filas</div>
+      </div>
+    </div>
+    <div class="act c-anime">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">18:15</span>Arcades y tiendas — Akihabara · 2h</div>
+        <div class="act-note">Zona muy activa · Manga, figuras, electrónica</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="time-slot">
+    <div class="time-label">Noche — Ikebukuro 🎤</div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">20:30</span>Tren JR Yamanote → Ikebukuro · 20 min</div>
+        <div class="act-note">Cerca del alojamiento</div>
+      </div>
+    </div>
+    <div class="act c-night">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">21:00</span>Karaoke / bares — Ikebukuro · 2h</div>
+        <div class="act-note">Buena zona nocturna · Múltiples opciones</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div id="tpl-day06" style="display:none">
+
+  <div class="time-slot">
+    <div class="time-label">Mañana temprana — Meiji Shrine ⛩️</div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">8:30</span>Llegada · JR → Meiji Shrine</div>
+        <div class="act-arch"><span class="deadline">⚠ Antes de las 9:30</span> · Después llegan grupos</div>
+      </div>
+    </div>
+    <div class="act c-sight">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">8:45</span>Recorrer Meiji Shrine · 1h</div>
+        <div class="act-note">Bosque de cipreses centenarios · Entrada gratuita</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="time-slot">
+    <div class="time-label">Mañana — Harajuku & Omotesando 🛍️</div>
+    <div class="act c-shopping">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">10:00</span>Paseo — Harajuku · 1h 30</div>
+        <div class="act-note">Takeshita Street · Moda alternativa y kawaii</div>
+        <div class="act-arch"><span class="deadline">⚠ Antes de las 12:00</span> · Luego se llena Takeshita</div>
+      </div>
+    </div>
+    <div class="act c-arch">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">11:30</span>Omotesando — avenida de arquitectura · 1h</div>
+        <div class="act-note">Zona de diseño · Omotesando Hills (Tadao Ando)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="time-slot">
+    <div class="time-label">Tarde — Shibuya 🚶</div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">13:00</span>Caminata → Shibuya · 20 min</div>
+      </div>
+    </div>
+    <div class="act c-sight">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">13:30</span>Shibuya Crossing · 30 min</div>
+        <div class="act-note">El cruce peatonal más transitado del mundo · Siempre lleno</div>
+      </div>
+    </div>
+    <div class="act c-shopping">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">14:00</span>Recorrer barrio — Shibuya · 3h</div>
+        <div class="act-note">Shopping y cafés · Shibuya 109, Scramble Square</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="time-slot">
+    <div class="time-label">Noche — Ikebukuro 🌙</div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">18:00</span>Tren JR → Ikebukuro · 20 min</div>
+        <div class="act-note">Cerca del alojamiento</div>
+      </div>
+    </div>
+    <div class="act c-anime">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">18:30</span>Anime shops — Ikebukuro · 2h</div>
+        <div class="act-note">Sunshine City · Animate · Algunas tiendas cierran a las 21:00</div>
+        <div class="act-arch"><span class="deadline">⚠ Antes de las 21:00</span></div>
+      </div>
+    </div>
+    <div class="act c-food">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">20:30</span>Cena — Ikebukuro · 1h</div>
+        <div class="act-arch"><span class="deadline">⚠ Antes de las 20:00</span> · Evita fila larga</div>
+      </div>
+    </div>
+  </div>
+
+</div>
 <div id="tpl-day07" style="display:none">
 
   <div class="time-slot">
@@ -3928,7 +4273,45 @@
 
 </div>
 <div id="tpl-day09" style="display:none"><div class="tpl-placeholder">Plan por agregar</div></div>
-<div id="tpl-day10" style="display:none"><div class="tpl-placeholder">Plan por agregar</div></div>
+<div id="tpl-day10" style="display:none">
+
+  <div class="time-slot">
+    <div class="time-label">Mañana — Kyoto → Osaka 🚉</div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name">Traslado a Osaka · Hankyu Line</div>
+        <div class="act-note">Hankyu Kyoto Line · Kyoto-Kawaramachi → Osaka-Umeda · ~45 min · Sin reserva necesaria</div>
+        <div class="act-arch">Salir temprano para aprovechar el día · Trenes frecuentes desde las 6:00</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="time-slot">
+    <div class="time-label">Día en Osaka ✨</div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name">Plan por definir</div>
+        <div class="act-note">Día completo en Osaka · Itinerario por agregar</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="time-slot">
+    <div class="time-label">Noche — Partido de vóley 🏐</div>
+    <div class="act c-volley">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">18:05</span>Osaka Bluteon — SV League · Asue Arena Osaka</div>
+        <div class="act-note">Bloque 2B1 · Fila 7 · Asientos 8–9 · 2 entradas · Minato-ku, Osaka</div>
+        <div class="act-arch"><span class="deadline">⚠ Los tickets están en la app SV Japan — el recibo NO da acceso al recinto</span></div>
+        <div class="kk-links">
+          <a class="kk-link" href="https://maps.app.goo.gl/XZBWCcbrKUkzqJm46" target="_blank" rel="noopener">📍 Asue Arena Osaka</a>
+          <button class="kk-link" onclick="goToInfoDoc('info-volley-osaka')">📄 Ver recibo</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
 <div id="tpl-day11" style="display:none">
 
   <div class="time-slot">
@@ -4881,7 +5264,7 @@
 
   // Inject version footer into every scrollable section wrap
   (function () {
-    const footerHTML = `<a class="version-footer" href="https://github.com/yamnem/yamnem.github.io" target="_blank" rel="noopener"><svg width="10" height="10" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg><span class="version-repo">GitHub Repository</span> — v0.2.0</a>`;
+    const footerHTML = `<a class="version-footer" href="https://github.com/yamnem/yamnem.github.io" target="_blank" rel="noopener"><svg width="10" height="10" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg><span class="version-repo">GitHub Repository</span> — v0.2.1</a>`;
     document.querySelectorAll('.cal-wrap, .stays-wrap, .trains-wrap, .atrac-wrap, .kumano-wrap, .lang-wrap, .info-wrap').forEach(w => {
       w.insertAdjacentHTML('beforeend', footerHTML);
     });

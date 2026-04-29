@@ -8,6 +8,11 @@ Live at: https://yamnem.github.io
 
 ## Changelog
 
+### v0.2.1 — 2026-04-29
+- Calendar day focus: full itinerary for days 4, 5, 6 (Daikanyama→Shinjuku · Omotesando→Akihabara · Meiji→Shibuya) with Golden Week time limits; calendar cell previews updated
+- Calendar day 10: Osaka Bluteon SV League semifinal (May 10 · 18:05 · Asue Arena Osaka) with Hankyu travel recommendation from Kyoto, Google Maps link, and SV Japan app ticket notice
+- Links & Documentos: Osaka Bluteon receipt card (Osaka amber color coding + highlight pulse on redirect from Calendar)
+
 ### v0.2.0 — 2026-04-28
 - Rebranded site header from "Itinerario de Viaje" to **Travel Buddy**
 - Added themed easter egg 🤫
