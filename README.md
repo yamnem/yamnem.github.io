@@ -6,6 +6,18 @@ Live at: https://yamnem.github.io
 
 ---
 
+## PWA Testing
+
+### Android (Pixel 10 Pro) — 2026-04-29 ✅
+- Installed via Chrome → Add to Home Screen; cover photo used as app icon
+- SW precached all 43 assets on first WiFi visit
+- Full offline functionality confirmed: app loads, navigation works, PDFs open
+- Verified with Chrome fully closed — PWA runs independently from browser
+
+### iOS (iPhone 17) — pending
+
+---
+
 ## Changelog
 
 ### v0.3.0 — 2026-04-29
