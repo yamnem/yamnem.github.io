@@ -8,6 +8,12 @@ Live at: https://yamnem.github.io
 
 ## Changelog
 
+### v0.2.3 — 2026-04-29
+- Ethiopian Airlines Documentos card: added Detalles, Recibo Yamil and Recibo Melu PDFs; ⚠ notice that documents are not valid boarding passes
+- Calendar days 1, 2, 29: now clickable with gray "city-transit" color coding; full flight schedule in day focus (ET 0507 / ET 0672 / ET 0673 / ET 0506 with segments, times, seats)
+- Calendar days 3 and 28: arrival and departure flight details added to day focus; flight document redirect pill
+- 🌍 Tránsito legend entry added to calendar footer
+
 ### v0.2.2 — 2026-04-29
 - Unplanned day focus cards now show a styled empty state (dashed border, off-white background, ✏️ icon)
 - Calendar cells for unplanned days 13, 16, 26, 27 now show ✏️ + faded "Por planificar" label

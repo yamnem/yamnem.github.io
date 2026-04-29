@@ -1130,21 +1130,24 @@
     .c-arch .act-arch { color: var(--arch); }
 
     /* ── City color coding — ring around day number ── */
-    .cal-cell.city-tokyo .cal-num  { border: 2.5px solid #FF7043; }
-    .cal-cell.city-kyoto .cal-num  { border: 2.5px solid #7B1FA2; }
-    .cal-cell.city-osaka .cal-num  { border: 2.5px solid #FFA000; }
-    .cal-cell.city-kumano .cal-num { border: 2.5px solid #00796B; }
+    .cal-cell.city-tokyo   .cal-num  { border: 2.5px solid #FF7043; }
+    .cal-cell.city-kyoto   .cal-num  { border: 2.5px solid #7B1FA2; }
+    .cal-cell.city-osaka   .cal-num  { border: 2.5px solid #FFA000; }
+    .cal-cell.city-kumano  .cal-num  { border: 2.5px solid #00796B; }
+    .cal-cell.city-transit .cal-num  { border: 2.5px solid #78909C; }
 
     /* Selected: fill with city color instead of navy */
-    .cal-cell.city-tokyo.trip-day.selected .cal-num  { background: #E64A19 !important; border-color: #E64A19 !important; box-shadow: 0 2px 10px rgba(230,74,25,0.45) !important; }
-    .cal-cell.city-kyoto.trip-day.selected .cal-num  { background: #6A1B9A !important; border-color: #6A1B9A !important; box-shadow: 0 2px 10px rgba(106,27,154,0.45) !important; }
-    .cal-cell.city-osaka.trip-day.selected .cal-num  { background: #F57C00 !important; border-color: #F57C00 !important; box-shadow: 0 2px 10px rgba(245,124,0,0.45) !important; }
-    .cal-cell.city-kumano.trip-day.selected .cal-num { background: #00695C !important; border-color: #00695C !important; box-shadow: 0 2px 10px rgba(0,105,92,0.45) !important; }
+    .cal-cell.city-tokyo.trip-day.selected   .cal-num { background: #E64A19 !important; border-color: #E64A19 !important; box-shadow: 0 2px 10px rgba(230,74,25,0.45) !important; }
+    .cal-cell.city-kyoto.trip-day.selected   .cal-num { background: #6A1B9A !important; border-color: #6A1B9A !important; box-shadow: 0 2px 10px rgba(106,27,154,0.45) !important; }
+    .cal-cell.city-osaka.trip-day.selected   .cal-num { background: #F57C00 !important; border-color: #F57C00 !important; box-shadow: 0 2px 10px rgba(245,124,0,0.45) !important; }
+    .cal-cell.city-kumano.trip-day.selected  .cal-num { background: #00695C !important; border-color: #00695C !important; box-shadow: 0 2px 10px rgba(0,105,92,0.45) !important; }
+    .cal-cell.city-transit.trip-day.selected .cal-num { background: #546E7A !important; border-color: #546E7A !important; box-shadow: 0 2px 10px rgba(84,110,122,0.45) !important; }
 
-    .detail-date-box.city-tokyo  { background: #E64A19; }
-    .detail-date-box.city-kyoto  { background: #6A1B9A; }
-    .detail-date-box.city-osaka  { background: #F57C00; }
-    .detail-date-box.city-kumano { background: #00695C; }
+    .detail-date-box.city-tokyo   { background: #E64A19; }
+    .detail-date-box.city-kyoto   { background: #6A1B9A; }
+    .detail-date-box.city-osaka   { background: #F57C00; }
+    .detail-date-box.city-kumano  { background: #00695C; }
+    .detail-date-box.city-transit { background: #546E7A; }
 
     .city-legend-strip {
       display: flex; gap: 8px; flex-wrap: wrap;
@@ -1429,13 +1432,24 @@
       <div class="cal-cell empty"><div class="cal-num"></div></div>
       <div class="cal-cell empty"><div class="cal-num"></div></div>
       <div class="cal-cell empty"><div class="cal-num"></div></div>
-      <div class="cal-cell regular"><div class="cal-num">1</div></div>
-      <div class="cal-cell regular"><div class="cal-num">2</div></div>
+      <div class="cal-cell trip-day city-transit" data-day="day01" onclick="selectDay('day01')">
+        <div class="cal-emoji">✈️</div>
+        <div class="cal-num">1</div>
+        <div class="cal-day-name">Vie</div>
+        <div class="cal-trip-name">ET 0507 · EZE <span class="trip-time">21:55</span></div>
+      </div>
+      <div class="cal-cell trip-day city-transit" data-day="day02" onclick="selectDay('day02')">
+        <div class="cal-emoji">✈️</div>
+        <div class="cal-num">2</div>
+        <div class="cal-day-name">Sáb</div>
+        <div class="cal-trip-name">GRU → ADD → ICN</div>
+      </div>
       <!-- May 3 — Llegada (Dom · Constitución) -->
       <div class="cal-cell trip-day holiday city-tokyo" data-day="day03" onclick="selectDay('day03')">
         <div class="cal-emoji">✈️</div>
         <div class="cal-num">3</div>
         <div class="cal-day-name">Dom</div>
+        <div class="cal-trip-name">ET 0672 · NRT <span class="trip-time">19:40</span></div>
       </div>
 
       <!-- Row 2 -->
@@ -1600,8 +1614,14 @@
         <div class="cal-emoji">✈️</div>
         <div class="cal-num">28</div>
         <div class="cal-day-name">Jue</div>
+        <div class="cal-trip-name">ET 0673 · NRT <span class="trip-time">20:40</span></div>
       </div>
-      <div class="cal-cell regular"><div class="cal-num">29</div></div>
+      <div class="cal-cell trip-day city-transit" data-day="day29" onclick="selectDay('day29')">
+        <div class="cal-emoji">🏠</div>
+        <div class="cal-num">29</div>
+        <div class="cal-day-name">Vie</div>
+        <div class="cal-trip-name">ET 0506 · EZE <span class="trip-time">20:25</span></div>
+      </div>
       <div class="cal-cell regular"><div class="cal-num">30</div></div>
       <div class="cal-cell regular"><div class="cal-num">31</div></div>
     </div>
@@ -1609,6 +1629,7 @@
     <div class="cal-footer">
 <div class="emoji-index">
         <span>✈️ Vuelos</span>
+        <span>🌍 Tránsito</span>
         <span>✨ Golden Week</span>
         <span>🎉 Cumpleaños</span>
         <span>🏖️ Day-Trip</span>
@@ -3688,13 +3709,17 @@
         </div>
       </div>
 
-      <div class="info-card">
+      <div class="info-card" id="info-vuelo-ethiopian">
         <div class="info-icon-box flight">✈️</div>
         <div class="info-body">
-          <div class="info-title">Vuelo Ethiopian Airlines</div>
-          <div class="info-desc">Confirmación de vuelo e información de asientos</div>
+          <div class="info-title">Vuelo Ethiopian Airlines · JEDJXX</div>
+          <div class="info-desc">EZE → NRT · 1 Mayo &nbsp;/&nbsp; NRT → EZE · 28 Mayo · Res. JEDJXX</div>
+          <div class="info-desc" style="margin-top:5px"><span class="deadline">⚠ Estos documentos NO son válidos como pase de abordar</span></div>
           <div class="info-links">
-            <button class="info-link" onclick="openPdfModal('assets/files/Ethiopian_JEDJXX.pdf','Ethiopian Airlines — Confirmación de vuelo')">📄 Ver documento</button>
+            <button class="info-link" onclick="openPdfModal('assets/files/Ethiopian_JEDJXX.pdf','Ethiopian Airlines — Confirmación de vuelo')">📄 Confirmación</button>
+            <button class="info-link" onclick="openPdfModal('assets/files/ethiopian_details.pdf','Ethiopian Airlines — Detalles de vuelo')">📄 Detalles</button>
+            <button class="info-link" onclick="openPdfModal('assets/files/ethiopian_receipt_yamil.pdf','Ethiopian Airlines — Recibo Yamil')">📄 Recibo Yamil</button>
+            <button class="info-link" onclick="openPdfModal('assets/files/ethiopian_receipt_melu.pdf','Ethiopian Airlines — Recibo Melu')">📄 Recibo Melu</button>
           </div>
         </div>
       </div>
@@ -3776,7 +3801,119 @@
 
 
 <!-- ══════════════ Day content templates ══════════════ -->
-<div id="tpl-day03" style="display:none"><div class="tpl-placeholder">Plan por agregar</div></div>
+<div id="tpl-day01" style="display:none">
+
+  <div class="time-slot">
+    <div class="time-label">Noche — Partida desde Buenos Aires ✈️</div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">21:55</span>ET 0507 · EZE → GRU · 2h 35m</div>
+        <div class="act-note">Buenos Aires Ezeiza → São Paulo Guarulhos Terminal 3 · Boeing 777</div>
+        <div class="act-arch">Asientos 26D (Yamil) · 26C (Melu) · 2 valijas c/u</div>
+      </div>
+    </div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">00:30</span>Escala · São Paulo Guarulhos · Terminal 3</div>
+        <div class="act-note">Cambio de avión · Continúa el 2 de Mayo a las 01:45</div>
+      </div>
+    </div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name">Documentos de vuelo</div>
+        <div class="kk-links">
+          <button class="kk-link" onclick="goToInfoDoc('info-vuelo-ethiopian')">📄 Ver documentos</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div id="tpl-day02" style="display:none">
+
+  <div class="time-slot">
+    <div class="time-label">Madrugada — São Paulo → Addis Abeba ✈️</div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">01:45</span>ET 0507 · GRU → ADD · 12h</div>
+        <div class="act-note">São Paulo Guarulhos Terminal 3 → Addis Abeba Terminal 2 · Boeing 777</div>
+        <div class="act-arch">Asientos 26D (Yamil) · 26C (Melu) · Almuerzo incluido</div>
+      </div>
+    </div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">19:45</span>Llegada · Addis Abeba ADD · Terminal 2</div>
+        <div class="act-note">Escala de ~2h 50min · Misma terminal</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="time-slot">
+    <div class="time-label">Noche — Addis Abeba → Seúl ✈️</div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">22:35</span>ET 0672 · ADD → ICN · 11h 25m</div>
+        <div class="act-note">Addis Abeba Terminal 2 → Seoul Incheon Terminal 1 · Desayuno incluido</div>
+        <div class="act-arch">Asientos 46J (Yamil) · 46K (Melu) · Llegan a Seúl el 3 Mayo 16:00</div>
+      </div>
+    </div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name">Documentos de vuelo</div>
+        <div class="kk-links">
+          <button class="kk-link" onclick="goToInfoDoc('info-vuelo-ethiopian')">📄 Ver documentos</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div id="tpl-day03" style="display:none">
+
+  <div class="time-slot">
+    <div class="time-label">Tarde — En tránsito · Seúl Incheon ✈️</div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">16:00</span>Llegada a Seoul Incheon · ICN Terminal 1</div>
+        <div class="act-note">ET 0672 · Proveniente de Addis Abeba · Escala de ~1h15m</div>
+        <div class="act-arch">Asientos 46J (Yamil) · 46K (Melu)</div>
+      </div>
+    </div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">17:15</span>ET 0672 · ICN → NRT · 2h 25m</div>
+        <div class="act-note">Seoul Incheon Terminal 1 → Tokyo Narita Terminal 1 · Boeing 787</div>
+        <div class="act-arch">Asientos 46J (Yamil) · 46K (Melu)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="time-slot">
+    <div class="time-label">Noche — Llegada a Tokyo 🏙️</div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">19:40</span>Llegada · Tokyo Narita Terminal 1</div>
+        <div class="act-note">Aduana e inmigración · Tener pasaportes y tarjeta de entrada a mano</div>
+      </div>
+    </div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name">Traslado Narita → Toshima</div>
+        <div class="act-note">Narita Express (N'EX) o Limousine Bus hasta Ikebukuro · ~1h 30m</div>
+        <div class="act-arch">Check-in AirBnb · Minamiōtsuka · Toshima</div>
+      </div>
+    </div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name">Vuelo de ida — documentos</div>
+        <div class="kk-links">
+          <button class="kk-link" onclick="goToInfoDoc('info-vuelo-ethiopian')">📄 Ver documentos de vuelo</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
 <div id="tpl-day04" style="display:none">
 
   <div class="time-slot">
@@ -5120,11 +5257,121 @@
 </div>
 <div id="tpl-day26" style="display:none"><div class="tpl-placeholder">Plan por agregar</div></div>
 <div id="tpl-day27" style="display:none"><div class="tpl-placeholder">Plan por agregar</div></div>
-<div id="tpl-day28" style="display:none"><div class="tpl-placeholder">Plan por agregar</div></div>
+<div id="tpl-day28" style="display:none">
+
+  <div class="time-slot">
+    <div class="time-label">Día — Último día en Tokyo 🌆</div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name">Check-out · Lang Hotel · Kameido</div>
+        <div class="act-note">Check-out antes de las 11:00 AM · Guardar equipaje si es necesario</div>
+      </div>
+    </div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name">Plan por definir</div>
+        <div class="act-note">Último día libre en Tokyo · Itinerario por agregar</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="time-slot">
+    <div class="time-label">Noche — Regreso a Buenos Aires ✈️</div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name">Traslado Tokyo → Narita · Terminal 1</div>
+        <div class="act-note">Narita Express (N'EX) · Salir con tiempo suficiente · ~1h 30m hasta el aeropuerto</div>
+        <div class="act-arch"><span class="deadline">⚠ Llegar al aeropuerto con al menos 3h de anticipación</span></div>
+      </div>
+    </div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">20:40</span>ET 0673 · NRT → ICN · 2h 25m</div>
+        <div class="act-note">Tokyo Narita Terminal 1 → Seoul Incheon Terminal 1 · Boeing 787</div>
+        <div class="act-arch">Asientos 21K (Yamil) · 21L (Melu) · Conexión en Seúl → Addis Abeba → Guarulhos → Buenos Aires · Llegada EZE 29 Mayo 20:25</div>
+      </div>
+    </div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name">Vuelo de regreso — documentos</div>
+        <div class="kk-links">
+          <button class="kk-link" onclick="goToInfoDoc('info-vuelo-ethiopian')">📄 Ver documentos de vuelo</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div id="tpl-day29" style="display:none">
+
+  <div class="time-slot">
+    <div class="time-label">Madrugada — Seúl → Addis Abeba ✈️</div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">00:20</span>ET 0673 · ICN → ADD · 12h 35m</div>
+        <div class="act-note">Seoul Incheon Terminal 1 → Addis Abeba Terminal 2 · Desayuno incluido</div>
+        <div class="act-arch">Asientos 21K (Yamil) · 21L (Melu) · Continuación del vuelo del 28 Mayo</div>
+      </div>
+    </div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">06:55</span>Llegada · Addis Abeba ADD · Terminal 2</div>
+        <div class="act-note">Escala de ~2h 45min</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="time-slot">
+    <div class="time-label">Mañana — Addis Abeba → São Paulo ✈️</div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">09:40</span>ET 0506 · ADD → GRU · 12h 40m</div>
+        <div class="act-note">Addis Abeba Terminal 2 → São Paulo Guarulhos Terminal 3 · Boeing 777</div>
+        <div class="act-arch">Asientos 26D (Yamil) · 26C (Melu) · Almuerzo incluido</div>
+      </div>
+    </div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">16:20</span>Llegada · São Paulo Guarulhos · Terminal 3</div>
+        <div class="act-note">Escala de ~1h 10min · Cambio de avión</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="time-slot">
+    <div class="time-label">Tarde — São Paulo → Buenos Aires 🏠</div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">17:30</span>ET 0506 · GRU → EZE · 2h 55m</div>
+        <div class="act-note">São Paulo Guarulhos Terminal 3 → Buenos Aires Ezeiza · Boeing 777</div>
+        <div class="act-arch">Asientos 26D (Yamil) · 26C (Melu)</div>
+      </div>
+    </div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">20:25</span>Llegada · Buenos Aires Ezeiza 🏠</div>
+        <div class="act-note">¡Fin del viaje!</div>
+      </div>
+    </div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name">Documentos de vuelo</div>
+        <div class="kk-links">
+          <button class="kk-link" onclick="goToInfoDoc('info-vuelo-ethiopian')">📄 Ver documentos</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
 
 
 <script>
   const META = {
+    day01: { dateNum:'1',  dateMo:'Mayo', city:'transit', title:'Vuelo de ida — Partida',        sub:'Viernes · ET 0507 EZE → GRU 21:55',                     badge:null, holiday:false },
+    day02: { dateNum:'2',  dateMo:'Mayo', city:'transit', title:'Vuelo de ida — En tránsito',    sub:'Sábado · GRU → ADD → ICN · Llegan a Seúl el 3 mayo',   badge:null, holiday:false },
+    day29: { dateNum:'29', dateMo:'Mayo', city:'transit', title:'Vuelo de regreso — Llegada',    sub:'Viernes · ICN → ADD → GRU → EZE 20:25',                 badge:null, holiday:false },
     day03: { dateNum:'3',  dateMo:'Mayo', city:'tokyo',  title:'Día 1 — Llegada a Tokyo',          sub:'Domingo · Vuelo llega a NRT a las 19:40',                badge:null,      holiday:true  },
     day04: { dateNum:'4',  dateMo:'Mayo', city:'tokyo',  title:'Día 2 — Tokyo',                    sub:'Lunes · Golden Week',                                    badge:'holiday', badgeText:'Golden Week', holiday:true },
     day05: { dateNum:'5',  dateMo:'Mayo', city:'tokyo',  title:'Día 3 — Tokyo',                    sub:'Martes · Día del Niño · Golden Week',                    badge:'holiday', badgeText:'Golden Week', holiday:true },
@@ -5279,7 +5526,7 @@
 
   // Inject version footer into every scrollable section wrap
   (function () {
-    const footerHTML = `<a class="version-footer" href="https://github.com/yamnem/yamnem.github.io" target="_blank" rel="noopener"><svg width="10" height="10" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg><span class="version-repo">GitHub Repository</span> — v0.2.2</a>`;
+    const footerHTML = `<a class="version-footer" href="https://github.com/yamnem/yamnem.github.io" target="_blank" rel="noopener"><svg width="10" height="10" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg><span class="version-repo">GitHub Repository</span> — v0.2.3</a>`;
     document.querySelectorAll('.cal-wrap, .stays-wrap, .trains-wrap, .atrac-wrap, .kumano-wrap, .lang-wrap, .info-wrap').forEach(w => {
       w.insertAdjacentHTML('beforeend', footerHTML);
     });
