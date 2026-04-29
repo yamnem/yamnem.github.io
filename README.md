@@ -8,6 +8,11 @@ Live at: https://yamnem.github.io
 
 ## Changelog
 
+### v0.2.2 — 2026-04-29
+- Unplanned day focus cards now show a styled empty state (dashed border, off-white background, ✏️ icon)
+- Calendar cells for unplanned days 13, 16, 26, 27 now show ✏️ + faded "Por planificar" label
+- Renamed Büuteon → Bluteon across all instances
+
 ### v0.2.1 — 2026-04-29
 - Calendar day focus: full itinerary for days 4, 5, 6 (Daikanyama→Shinjuku · Omotesando→Akihabara · Meiji→Shibuya) with Golden Week time limits; calendar cell previews updated
 - Calendar day 10: Osaka Bluteon SV League semifinal (May 10 · 18:05 · Asue Arena Osaka) with Hankyu travel recommendation from Kyoto, Google Maps link, and SV Japan app ticket notice
