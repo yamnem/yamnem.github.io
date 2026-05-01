@@ -22,6 +22,11 @@ Live at: https://yamnem.github.io
 
 ## Changelog
 
+### v1.0.0 — 2026-05-01
+- Day 12 (Naoshima): Chichu Art Museum added to afternoon (Tadao Ando, Monet/Turrell/De Maria, ⚠ online booking required); Lee Ufan reservation warning added; Shima Kitchen surfaced as lunch alternative with booking note
+- Day 13 (Kyoto): Kichi Kichi Omurice warning upgraded to "semanas de anticipación"
+- Day 14 (Kyoto): Onsen options updated with tattoo-friendly flags; Funaoka Onsen added as Option C (tattoo-friendly sento, 100 years old, ¥530); Head Spa moved to Option D; kashikiri pricing and booking notes added for all options
+
 ### v0.3.3 — 2026-04-30
 - Calendar days 9–16: full day schedules added from Melu's itinerary spreadsheet
   - Day 9: Kyoto arrival — Heian Flea Market · Nishiki · Gion · Kiyomizudera · Arashiyama · Kimono Forest

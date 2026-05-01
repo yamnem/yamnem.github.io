@@ -5060,8 +5060,9 @@
     <div class="time-label">Mediodía — Almuerzo 🍽️</div>
     <div class="act c-food">
       <div class="act-content">
-        <div class="act-name"><span class="act-time">12:30</span>Aisunao</div>
-        <div class="act-note">Almuerzo recomendado en Honmura · cocina local</div>
+        <div class="act-name"><span class="act-time">12:30</span>Aisunao · o Shima Kitchen</div>
+        <div class="act-note">Aisunao: cocina local en Honmura · Shima Kitchen: opción alternativa muy recomendada en la isla</div>
+        <div class="act-arch"><span class="deadline">⚠ Shima Kitchen requiere reserva online con anticipación</span></div>
       </div>
     </div>
   </div>
@@ -5076,8 +5077,16 @@
     </div>
     <div class="act c-arch">
       <div class="act-content">
-        <div class="act-name"><span class="act-time">14:00</span>Lee Ufan Museum</div>
+        <div class="act-name"><span class="act-time">14:00</span>Chichu Art Museum · Tadao Ando</div>
+        <div class="act-note">Museo enterrado bajo la colina diseñado por Tadao Ando · obras de Monet, Turrell y De Maria · ~1h · ¥2,100</div>
+        <div class="act-arch"><span class="deadline">⚠ Reservar online con fecha y hora — cupos muy limitados</span></div>
+      </div>
+    </div>
+    <div class="act c-arch">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">15:10</span>Lee Ufan Museum</div>
         <div class="act-note">Espacio minimalista diseñado por Tadao Ando · ~40 min · ¥1,050</div>
+        <div class="act-arch"><span class="deadline">⚠ Reservar online — confirmar política de reserva actual</span></div>
       </div>
     </div>
     <div class="act c-arch">
@@ -5197,7 +5206,7 @@
       <div class="act-content">
         <div class="act-name"><span class="act-time">20:00</span>Cena cerca de TeamLab</div>
         <div class="act-note">Zona norte de Kyoto · varios restaurantes en Kitaoji y alrededores</div>
-        <div class="act-arch">Kichi Kichi Omurice si se reservó con anticipación — muy solicitado</div>
+        <div class="act-arch"><span class="deadline">⚠ Kichi Kichi Omurice: reservar con semanas de anticipación — suele estar lleno</span> · Otras opciones en Kitaoji si no hay lugar</div>
       </div>
     </div>
   </div>
@@ -5281,21 +5290,28 @@
     <div class="time-label">Tarde — Onsen & Relax ♨️</div>
     <div class="act c-sight">
       <div class="act-content">
-        <div class="act-name"><span class="act-time">14:30</span>Opción A · Kurama Onsen</div>
-        <div class="act-note">Onsen en el valle de Kurama · apto para tatuajes · baño al aire libre con vistas al bosque · ¥2,500 · ~2h</div>
-        <div class="act-arch">Eizan Railway → Kurama · ~30 min desde el centro</div>
+        <div class="act-name"><span class="act-time">14:30</span>Opción A · Kurama Onsen ⭐</div>
+        <div class="act-note">Onsen en el valle de Kurama · baño al aire libre entre cedros · kashikiri disponible ~¥2,100–2,700/50min · ~2h</div>
+        <div class="act-arch">Tatuajes ✅ · Eizan Railway → Kurama · ~30 min desde el centro · llamar directo para reservar kashikiri</div>
       </div>
     </div>
     <div class="act c-accom">
       <div class="act-content">
         <div class="act-name"><span class="act-time">14:30</span>Opción B · Ryokan Yachiyo · Nanzenji</div>
-        <div class="act-note">Onsen privado en ryokan histórico del barrio de Nanzenji · ambiente muy tradicional</div>
-        <div class="act-arch">Reserva previa necesaria · verificar política de tatuajes</div>
+        <div class="act-note">Onsen kashikiri en ryokan histórico del barrio de Nanzenji · ambiente muy tradicional</div>
+        <div class="act-arch">Tatuajes — consultar directamente · reserva previa necesaria · disponible para no-huéspedes según disponibilidad</div>
       </div>
     </div>
     <div class="act c-sight">
       <div class="act-content">
-        <div class="act-name"><span class="act-time">14:30</span>Opción C · Head Spa</div>
+        <div class="act-name"><span class="act-time">14:30</span>Opción C · Funaoka Onsen · Sento centenario</div>
+        <div class="act-note">Sento tradicional de 100 años en el centro de Kyoto · arquitectura histórica · ¥530 · sin área privada</div>
+        <div class="act-arch">Tatuajes ✅ · Abre 15:00 · cerrado los martes · muy auténtico y accesible</div>
+      </div>
+    </div>
+    <div class="act c-sight">
+      <div class="act-content">
+        <div class="act-name"><span class="act-time">14:30</span>Opción D · Head Spa</div>
         <div class="act-note">Tratamiento de spa capilar japonés · muy popular entre turistas · reservar online con antelación · ~1h30</div>
       </div>
     </div>
@@ -6242,7 +6258,7 @@
 
   // Inject version footer into every scrollable section wrap
   (function () {
-    const footerHTML = `<a class="version-footer" href="https://github.com/yamnem/yamnem.github.io" target="_blank" rel="noopener"><svg width="10" height="10" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg><span class="version-repo">GitHub Repository</span> — v0.3.3</a>`;
+    const footerHTML = `<a class="version-footer" href="https://github.com/yamnem/yamnem.github.io" target="_blank" rel="noopener"><svg width="10" height="10" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg><span class="version-repo">GitHub Repository</span> — v1.0.0</a>`;
     document.querySelectorAll('.cal-wrap, .stays-wrap, .trains-wrap, .atrac-wrap, .kumano-wrap, .lang-wrap, .info-wrap').forEach(w => {
       w.insertAdjacentHTML('beforeend', footerHTML);
     });
