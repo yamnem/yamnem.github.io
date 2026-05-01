@@ -22,6 +22,17 @@ Live at: https://yamnem.github.io
 
 ## Changelog
 
+### v0.3.3 — 2026-04-30
+- Calendar days 9–16: full day schedules added from Melu's itinerary spreadsheet
+  - Day 9: Kyoto arrival — Heian Flea Market · Nishiki · Gion · Kiyomizudera · Arashiyama · Kimono Forest
+  - Day 10: Minoh waterfall hike (Katsuo-ji + cascade) added to morning; Tenma dinner + Ohatsu Tenjin + last train added post-volleyball
+  - Day 11: Fushimi Inari afternoon + sake canal + Fushimi Sake Village dinner added after Nintendo Museum
+  - Day 13: Kurama temple hike → Kibune lunch → Nijō Castle + Kinkaku-ji → TeamLab Biovortex
+  - Day 14: Onsen afternoon options (Kurama / Yachiyo / Head Spa) + Gion dinner added after La Collina return
+  - Day 15: Full Osaka arrival day — Kuromon · Dotonbori · Nipponbashi · Orange Street · Shinsekai · Shitennoji · PARCO
+  - Day 16: Nakazakichō vintage · Tenma · Tadao Ando library · Osaka Castle · Ohatsu Tenjin · farewell dinner
+- Calendar cell previews and META subtitles updated for days 9–16
+
 ### v0.3.2 — 2026-05-01
 - Day focus: inline 📝 Notas editor on every day — add, edit or clear personal plans per day; persists in localStorage across sessions, app restarts and offline SW loads
 
