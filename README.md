@@ -22,6 +22,9 @@ Live at: https://yamnem.github.io
 
 ## Changelog
 
+### v0.3.2 — 2026-05-01
+- Day focus: inline 📝 Notas editor on every day — add, edit or clear personal plans per day; persists in localStorage across sessions, app restarts and offline SW loads
+
 ### v0.3.1 — 2026-05-01
 - Day 3 itinerary: airport tasks after landing added (Suica IC cards, eSIM activation on Softbank, ATM cash, Keisei Skyliner transfer details pending)
 - Links & Documentos: boarding pass PDF card for outbound flight; linked from May 1 day focus
