@@ -14,11 +14,23 @@ Live at: https://yamnem.github.io
 - Full offline functionality confirmed: app loads, navigation works, PDFs open
 - Verified with Chrome fully closed — PWA runs independently from browser
 
-### iOS (iPhone 17) — pending
+### iOS (Safari) — 2026-05-01 ✅
+- "Add to Home Screen" not always surfaced by Safari, but offline works via open tab after initial WiFi load
+- SW caches all assets on first visit; app fully functional without connection as long as the tab stays in memory
 
 ---
 
 ## Changelog
+
+### v0.3.1 — 2026-05-01
+- Day 3 itinerary: airport tasks after landing added (Suica IC cards, eSIM activation on Softbank, ATM cash, Keisei Skyliner transfer details pending)
+- Links & Documentos: boarding pass PDF card for outbound flight; linked from May 1 day focus
+- Calendar day focus: `goToInfoDoc` now closes the day panel before navigating to Documentos; highlight pulse fix for info-cards without a city class (missing CSS variable fallback)
+- Calendar day 23: password-protected focus panel added
+- Lenguaje: new Números category with 6 cards (1–9, juu, hyaku, sen, man) including unlucky-number nuances and irregular compound forms
+- Lenguaje: card tap now opens a focus modal (animates from card position, scrollable, X top-right, backdrop to close) replacing the old flip-in-place behaviour
+- Lenguaje: new Frases útiles cards — Osusume (recommendations + sentence compounding) and Kore kudasai expanded with Kore/Sore/Are/Dore demonstratives
+- Lenguaje: tip text reformatted with bullet lists and line breaks on multi-part cards
 
 ### v0.3.0 — 2026-04-29
 - Service Worker added (`sw.js`): cache-first offline support, precaches 43 assets (HTML, PDFs, images), skipWaiting + clients.claim for immediate activation

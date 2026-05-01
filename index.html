@@ -444,6 +444,69 @@
     }
     .phrase-tip.visible { opacity: 1; pointer-events: auto; transform: scale(1); }
 
+    /* ── Language card modal ── */
+    .lang-modal-outer {
+      position: fixed; inset: 0; z-index: 500;
+      display: flex; align-items: center; justify-content: center;
+      padding: clamp(16px, 4vw, 40px);
+      pointer-events: none;
+    }
+    .lang-modal-outer.open { pointer-events: auto; }
+    .lang-modal-backdrop {
+      position: absolute; inset: 0;
+      background: rgba(0,0,0,0.40); opacity: 0;
+      transition: opacity 0.2s ease; cursor: pointer;
+    }
+    .lang-modal-outer.open .lang-modal-backdrop { opacity: 1; pointer-events: auto; }
+    .lang-modal-panel {
+      position: relative; z-index: 1;
+      background: #fff; border-radius: 16px;
+      box-shadow: 0 16px 56px rgba(0,0,0,0.28), 0 2px 8px rgba(0,0,0,0.10);
+      width: 100%; max-width: 480px;
+      overflow: hidden; opacity: 0; pointer-events: none;
+      will-change: transform, opacity;
+    }
+    .lang-modal-scroll {
+      overflow-y: auto; max-height: 82vh; scrollbar-width: none;
+    }
+    .lang-modal-scroll::-webkit-scrollbar { display: none; }
+    .lang-modal-fade-top, .lang-modal-fade-bottom {
+      position: absolute; left: 0; right: 0; height: 52px;
+      pointer-events: none; z-index: 10; opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+    .lang-modal-fade-top    { top: 0;    background: linear-gradient(to bottom, #fff, rgba(255,255,255,0)); }
+    .lang-modal-fade-bottom { bottom: 0; background: linear-gradient(to top,    #fff, rgba(255,255,255,0)); }
+    .lang-modal-panel.fade-top    .lang-modal-fade-top    { opacity: 1; }
+    .lang-modal-panel.fade-bottom .lang-modal-fade-bottom { opacity: 1; }
+    .lang-modal-close-row { display: flex; justify-content: flex-end; padding: 16px 18px 0; }
+    .lang-modal-close {
+      background: none; border: none; font-size: 18px;
+      color: var(--sub); cursor: pointer; padding: 4px 8px;
+      border-radius: 8px; line-height: 1;
+    }
+    .lang-modal-close:hover { background: rgba(0,0,0,0.06); }
+    .lang-modal-content {
+      padding: 12px 28px 36px;
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center; gap: 6px;
+    }
+    .lang-modal-name  { font-size: 22px; font-weight: 800; color: var(--navy); line-height: 1.25; }
+    .lang-modal-pron  { font-size: 13px; color: #8A7A6A; font-family: 'Courier New', Courier, monospace; letter-spacing: 0.3px; }
+    .lang-modal-when  { font-size: 14px; color: var(--muted); font-style: italic; margin-top: 2px; }
+    .lang-modal-divider { width: 40px; height: 1.5px; background: var(--border); border-radius: 2px; margin: 10px 0 6px; }
+    .lang-modal-tip   { font-size: 14px; color: var(--sub); line-height: 1.65; }
+    .lang-modal-tip .tip-list {
+      list-style: none; padding: 0; margin: 7px 0 4px;
+      text-align: left; align-self: stretch;
+    }
+    .lang-modal-tip .tip-list li {
+      padding-left: 16px; position: relative; margin-bottom: 4px;
+    }
+    .lang-modal-tip .tip-list li::before {
+      content: '·'; position: absolute; left: 3px; font-weight: 700; color: var(--navy);
+    }
+
     /* ── Kumano sub-toggle ── */
     .kumano-wrap { max-width: 900px; margin: 0 auto; padding: 24px 24px 0; }
     .kumano-toggle-row { display: flex; justify-content: center; margin-bottom: 28px; }
@@ -718,6 +781,9 @@
       overflow: hidden;
       margin-bottom: 12px;
       display: flex;
+      --pulse-from: rgba(120,120,130,0.55);
+      --pulse-mid:  rgba(120,120,130,0.20);
+      --pulse-to:   rgba(120,120,130,0);
     }
     .info-icon-box {
       flex-shrink: 0;
@@ -1270,6 +1336,51 @@
       font-size: 10.5px; font-weight: 600; color: #6B47B8;
       padding: 8px 14px; text-align: center;
       border-top: 1px dashed #D8CEF0; background: #F3EFFC;
+    }
+
+    /* ── Surprise gate (day 23 password screen) ── */
+    .surprise-gate {
+      display: flex; flex-direction: column; align-items: center;
+      padding: 40px 24px 32px; gap: 10px; text-align: center;
+    }
+    .surprise-gate-emoji { font-size: 52px; line-height: 1; margin-bottom: 4px; }
+    .surprise-gate-title {
+      font-size: 19px; font-weight: 800; color: var(--navy);
+      letter-spacing: -0.3px;
+    }
+    .surprise-gate-hint {
+      font-size: 13px; color: var(--sub); line-height: 1.5;
+      margin-bottom: 8px;
+    }
+    .surprise-gate-row {
+      display: flex; gap: 8px; width: 100%; max-width: 280px;
+    }
+    .surprise-gate-input {
+      flex: 1; padding: 10px 14px; border-radius: 12px;
+      border: 1.5px solid var(--border); background: var(--card);
+      font-size: 15px; color: var(--navy); outline: none;
+      transition: border-color 0.15s;
+    }
+    .surprise-gate-input:focus { border-color: #7C3AED; }
+    .surprise-gate-input.shake {
+      animation: surprise-shake 0.35s ease;
+    }
+    .surprise-gate-btn {
+      padding: 10px 16px; border-radius: 12px; border: none; cursor: pointer;
+      background: linear-gradient(135deg, #7C3AED, #DB2777);
+      color: #fff; font-size: 14px; font-weight: 700;
+      transition: opacity 0.15s;
+    }
+    .surprise-gate-btn:active { opacity: 0.8; }
+    .surprise-gate-error {
+      font-size: 12px; color: #DB2777; font-weight: 600; min-height: 16px;
+    }
+    @keyframes surprise-shake {
+      0%,100% { transform: translateX(0); }
+      20%      { transform: translateX(-6px); }
+      40%      { transform: translateX(6px); }
+      60%      { transform: translateX(-4px); }
+      80%      { transform: translateX(4px); }
     }
 
     @media (max-width: 600px) {
@@ -1981,6 +2092,7 @@
       <button class="lang-filter" data-cat="cortesia">Cortesía</button>
       <button class="lang-filter" data-cat="respuestas">Respuestas</button>
       <button class="lang-filter" data-cat="frases">Frases útiles</button>
+      <button class="lang-filter" data-cat="numeros">Números</button>
     </div>
   </div>
   <div class="lang-wrap">
@@ -2087,7 +2199,7 @@
           </div>
           <div class="phrase-chevron">▾</div>
         </div>
-        <div class="phrase-tip">Muy común. Usala para pedir permiso, disculparte o llamar a un empleado. Es la frase más versátil del viaje.</div>
+        <div class="phrase-tip">Muy versátil. Usala para:<ul class="tip-list"><li>Llamar la atención de un empleado</li><li>Pedir permiso al pasar</li><li>Disculparte levemente</li></ul>Es la frase más útil del viaje.</div>
       </div>
 
       <div class="phrase-card">
@@ -2176,7 +2288,7 @@
           </div>
           <div class="phrase-chevron">▾</div>
         </div>
-        <div class="phrase-tip">Muy útil para rechazar con cortesía o tranquilizar a alguien. El tono lo hace todo: puede ser afirmativo o negativo.</div>
+        <div class="phrase-tip">El tono lo cambia todo:<ul class="tip-list"><li>Afirmativo → "Estoy bien / Todo en orden"</li><li>Como rechazo → "No, gracias / No hace falta"</li></ul>Útil para rechazar con cortesía sin decir "no" directamente.</div>
       </div>
 
       <div class="phrase-card">
@@ -2241,8 +2353,97 @@
           </div>
           <div class="phrase-chevron">▾</div>
         </div>
-        <div class="phrase-tip">Frase ideal para comprar o pedir algo señalando. Cortés y directa — funciona en restaurantes, tiendas y kioscos.</div>
+        <div class="phrase-tip">Frase ideal para comprar o pedir algo señalando.<br><br><em>Kore</em> = esto (cerca tuyo)<br><em>Sore</em> = eso (cerca del otro)<br><em>Are</em> = aquello (lejos de ambos)<br><br>Si te muestran opciones, preguntá <em>Dore ga ii desu ka?</em> = "¿Cuál es mejor?"</div>
       </div>
+
+      <div class="phrase-card">
+        <div class="phrase-main">
+          <div class="phrase-text">
+            <div class="phrase-name">Osusume wa nan desu ka?</div>
+            <div class="phrase-pronunciation">o-su-SU-me wa nan des(ɯ) ka?</div>
+            <div class="phrase-when">"¿Qué me recomendás?"</div>
+          </div>
+          <div class="phrase-chevron">▾</div>
+        </div>
+        <div class="phrase-tip"><em>Osusume</em> (おすすめ) = "recomendación".<br><br>Para especificar el tema, agregá <em>[tema] no</em> antes:<br><em>Ramen no osusume wa nan desu ka?</em><br>→ "¿Qué ramen me recomendás?"<br><br>Señalando opciones en un menú:<br><em>Osusume wa dore desu ka?</em><br>→ "¿Cuál me recomendás?"</div>
+      </div>
+    </div>
+
+    <div class="phrase-group" data-cat="numeros">
+      <div class="phrase-group-label">Números</div>
+
+      <div class="phrase-card">
+        <div class="phrase-main">
+          <div class="phrase-text">
+            <div class="phrase-name">Ichi · Ni · San · Yon · Go</div>
+            <div class="phrase-pronunciation">i-chi · ni · san · yon · go</div>
+            <div class="phrase-when">1 · 2 · 3 · 4 · 5</div>
+          </div>
+          <div class="phrase-chevron">▾</div>
+        </div>
+        <div class="phrase-tip">El 4 tiene dos lecturas: <em>yon</em> (preferida) y <em>shi</em>. Evitá <em>shi</em> — suena igual que la palabra para "muerte" y se considera de mala suerte.</div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-main">
+          <div class="phrase-text">
+            <div class="phrase-name">Roku · Nana · Hachi · Kyuu</div>
+            <div class="phrase-pronunciation">ro-ku · NA-na · ha-chi · kyuu</div>
+            <div class="phrase-when">6 · 7 · 8 · 9</div>
+          </div>
+          <div class="phrase-chevron">▾</div>
+        </div>
+        <div class="phrase-tip">Dos lecturas a evitar:<ul class="tip-list"><li>7: preferí <em>nana</em>, no <em>shichi</em> (puede confundirse con otras palabras)</li><li>9: preferí <em>kyuu</em>, no <em>ku</em> (suena como "sufrimiento")</li></ul></div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-main">
+          <div class="phrase-text">
+            <div class="phrase-name">Juu 十</div>
+            <div class="phrase-pronunciation">juu</div>
+            <div class="phrase-when">10 · sufijo de decenas</div>
+          </div>
+          <div class="phrase-chevron">▾</div>
+        </div>
+        <div class="phrase-tip">Decenas → número + juu:<br>ni-juu (20) · san-juu (30) · yon-juu (40)…<br><br>Del 11 al 19 → juu + dígito:<br>juu-ichi (11) · juu-ni (12) · juu-san (13)…</div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-main">
+          <div class="phrase-text">
+            <div class="phrase-name">Hyaku 百</div>
+            <div class="phrase-pronunciation">hya-ku</div>
+            <div class="phrase-when">100 · sufijo de centenas</div>
+          </div>
+          <div class="phrase-chevron">▾</div>
+        </div>
+        <div class="phrase-tip">100 = hyaku.<br><br>Irregulares:<ul class="tip-list"><li>300 = <em>san-byaku</em></li><li>600 = <em>roppyaku</em></li><li>800 = <em>happyaku</em></li></ul>Regular: ni-hyaku · yon-hyaku · go-hyaku · nana-hyaku · kyuu-hyaku</div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-main">
+          <div class="phrase-text">
+            <div class="phrase-name">Sen 千</div>
+            <div class="phrase-pronunciation">sen</div>
+            <div class="phrase-when">1.000 · sufijo de miles</div>
+          </div>
+          <div class="phrase-chevron">▾</div>
+        </div>
+        <div class="phrase-tip">1.000 = sen (sin "ichi" adelante).<br><br>Irregulares:<ul class="tip-list"><li>3.000 = <em>san-zen</em></li><li>8.000 = <em>hassen</em></li></ul>Regular: ni-sen · yon-sen · go-sen · nana-sen · kyuu-sen</div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-main">
+          <div class="phrase-text">
+            <div class="phrase-name">Man 万</div>
+            <div class="phrase-pronunciation">man</div>
+            <div class="phrase-when">10.000 · la unidad clave en japonés</div>
+          </div>
+          <div class="phrase-chevron">▾</div>
+        </div>
+        <div class="phrase-tip">El japonés agrupa de a 10.000, no de a 1.000:<br><br><em>ichi-man</em> = 10.000<br><em>juu-man</em> = 100.000<br><em>hyaku-man</em> = 1.000.000<br><br>Clave para precios: ¥10.000 = <em>ichi-man en</em>.</div>
+      </div>
+
     </div>
 
   </div>
@@ -3729,6 +3930,17 @@
         </div>
       </div>
 
+      <div class="info-card" id="info-vuelo-checkin">
+        <div class="info-icon-box flight">🎫</div>
+        <div class="info-body">
+          <div class="info-title">Pase de abordar · Vuelo de ida</div>
+          <div class="info-desc">EZE → GRU → ADD → ICN → NRT · 1–3 Mayo · Ethiopian Airlines</div>
+          <div class="info-links">
+            <button class="info-link" onclick="openPdfModal('assets/files/ethiopian_ida_checkin.pdf','Pase de abordar — Vuelo de ida')">📄 Check-in</button>
+          </div>
+        </div>
+      </div>
+
       <div class="info-card city-kyoto" id="info-tren-1">
         <div class="info-icon-box city-kyoto">🚄</div>
         <div class="info-body">
@@ -3828,6 +4040,7 @@
         <div class="act-name">Documentos de vuelo</div>
         <div class="kk-links">
           <button class="kk-link" onclick="goToInfoDoc('info-vuelo-ethiopian')">📄 Ver documentos</button>
+          <button class="kk-link" onclick="goToInfoDoc('info-vuelo-checkin')">🎫 Pase de abordar</button>
         </div>
       </div>
     </div>
@@ -3903,17 +4116,40 @@
     </div>
     <div class="act c-accom">
       <div class="act-content">
-        <div class="act-name">Traslado Narita → Toshima</div>
-        <div class="act-note">Narita Express (N'EX) o Limousine Bus hasta Ikebukuro · ~1h 30m</div>
-        <div class="act-arch">Check-in AirBnb · Minamiōtsuka · Toshima</div>
-      </div>
-    </div>
-    <div class="act c-accom">
-      <div class="act-content">
         <div class="act-name">Vuelo de ida — documentos</div>
         <div class="kk-links">
           <button class="kk-link" onclick="goToInfoDoc('info-vuelo-ethiopian')">📄 Ver documentos de vuelo</button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="time-slot">
+    <div class="time-label">Noche — En el aeropuerto · Narita T1 🛂</div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name">Suica · Cargar tarjetas IC</div>
+        <div class="act-note">Máquinas JR East al salir de aduana · 1 tarjeta por persona</div>
+        <div class="act-arch">Mínimo ¥1,000 de carga inicial</div>
+      </div>
+    </div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name">Activar eSIM — Softbank</div>
+        <div class="act-note">Conectar el Pixel a la red Softbank · eSIM ya instalada</div>
+      </div>
+    </div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name">Efectivo · ATM o casa de cambio</div>
+        <div class="act-note">7-Eleven ATM en el aeropuerto acepta tarjetas extranjeras · Solo algo de bolsillo</div>
+      </div>
+    </div>
+    <div class="act c-accom">
+      <div class="act-content">
+        <div class="act-name">Traslado Narita → Toshima</div>
+        <div class="act-note">Keisei Skyliner + combinaciones · Detalles por confirmar</div>
+        <div class="act-arch">Check-in AirBnb · Minamiōtsuka · Toshima</div>
       </div>
     </div>
   </div>
@@ -5045,14 +5281,6 @@
 <div id="tpl-day22" style="display:none"><div class="tpl-placeholder">Plan por agregar</div></div>
 <div id="tpl-day23" style="display:none">
 
-  <div class="sorpresa-banner">
-    <div class="sorpresa-emoji">🎁</div>
-    <div>
-      <div class="sorpresa-title">Sorpresa ✨</div>
-      <div class="sorpresa-hint">Mañana · Por revelar</div>
-    </div>
-  </div>
-
   <div class="time-slot">
     <div class="time-label">Mediodía — Experiencia de Sumo 🥋</div>
     <div class="act c-shopping">
@@ -5068,15 +5296,13 @@
     </div>
   </div>
 
-  <div class="sorpresa-banner">
-    <div class="sorpresa-emoji">🌟</div>
-    <div>
-      <div class="sorpresa-title">Sorpresa ✨</div>
-      <div class="sorpresa-hint">Tarde — Noche · Por revelar</div>
-    </div>
-  </div>
-
 </div>
+
+<!-- Surprise plans for day 23 — filled in by Melu, revealed on password unlock -->
+<!-- AM: injected BEFORE the Sumo block (morning plans) -->
+<div id="tpl-day23-surprise-am" style="display:none"></div>
+<!-- PM: injected AFTER the Sumo block (afternoon/evening plans) -->
+<div id="tpl-day23-surprise-pm" style="display:none"></div>
 <div id="tpl-day24" style="display:none">
 
   <div class="time-slot">
@@ -5531,7 +5757,7 @@
 
   // Inject version footer into every scrollable section wrap
   (function () {
-    const footerHTML = `<a class="version-footer" href="https://github.com/yamnem/yamnem.github.io" target="_blank" rel="noopener"><svg width="10" height="10" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg><span class="version-repo">GitHub Repository</span> — v0.3.0</a>`;
+    const footerHTML = `<a class="version-footer" href="https://github.com/yamnem/yamnem.github.io" target="_blank" rel="noopener"><svg width="10" height="10" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg><span class="version-repo">GitHub Repository</span> — v0.3.1</a>`;
     document.querySelectorAll('.cal-wrap, .stays-wrap, .trains-wrap, .atrac-wrap, .kumano-wrap, .lang-wrap, .info-wrap').forEach(w => {
       w.insertAdjacentHTML('beforeend', footerHTML);
     });
@@ -5587,6 +5813,65 @@
   })();
 
   let current = null;
+  const SURPRISE_PASS = '1234';
+  let _surpriseUnlocked = false;
+
+  function showSurpriseGate() {
+    const body = document.getElementById('detail-body');
+    body.innerHTML = document.getElementById('tpl-day23').innerHTML;
+    const gate = document.createElement('div');
+    gate.id = 'surprise-gate';
+    gate.className = 'surprise-gate';
+    gate.innerHTML = `
+      <div class="surprise-gate-emoji">🎂</div>
+      <div class="surprise-gate-title">¡Feliz cumpleaños, Yamil!</div>
+      <div class="surprise-gate-hint">Melu tiene algo especial preparado para hoy.<br>¿Conocés la contraseña?</div>
+      <div class="surprise-gate-row">
+        <input id="sgInput" class="surprise-gate-input" type="password" placeholder="Contraseña"
+               onkeydown="if(event.key==='Enter')unlockSurprise()">
+        <button class="surprise-gate-btn" onclick="unlockSurprise()">Revelar 🎁</button>
+      </div>
+      <div id="sgError" class="surprise-gate-error"></div>`;
+    body.prepend(gate);
+    setTimeout(() => document.getElementById('sgInput')?.focus(), 120);
+  }
+
+  function unlockSurprise() {
+    const input = document.getElementById('sgInput');
+    if (!input) return;
+    if (input.value === SURPRISE_PASS) {
+      _surpriseUnlocked = true;
+      document.getElementById('surprise-gate').remove();
+      const body = document.getElementById('detail-body');
+      const pmTpl = document.getElementById('tpl-day23-surprise-pm');
+      if (pmTpl && pmTpl.innerHTML.trim()) {
+        const div = document.createElement('div');
+        div.innerHTML = pmTpl.innerHTML;
+        body.append(div);
+      }
+      const amTpl = document.getElementById('tpl-day23-surprise-am');
+      if (amTpl && amTpl.innerHTML.trim()) {
+        const div = document.createElement('div');
+        div.innerHTML = amTpl.innerHTML;
+        body.prepend(div);
+      }
+      const stayInfo = STAY_PILL['day23'];
+      if (stayInfo) {
+        const pill = document.createElement('button');
+        pill.className = 'stay-link-pill';
+        pill.innerHTML = `🏠 ${stayInfo.label}`;
+        pill.onclick = () => goToStay(stayInfo.id);
+        body.prepend(pill);
+      }
+      document.getElementById('detail-scroll').scrollTop = 0;
+    } else {
+      input.value = '';
+      input.classList.remove('shake');
+      void input.offsetWidth;
+      input.classList.add('shake');
+      document.getElementById('sgError').textContent = 'Esa no es 😏';
+    }
+  }
 
   const STAY_PILL = {
     day03: { id: 'stay-minamiotsuka', label: 'AirBnb · Minamiōtsuka' },
@@ -5636,18 +5921,21 @@
   };
 
   function goToInfoDoc(docId) {
-    switchSection('info');
-    switchInfoTab(1);
-    const card = document.getElementById(docId);
-    if (!card) return;
-    requestAnimationFrame(() => {
-      const sec = document.getElementById('sec-info');
-      sec.scrollTo({ top: card.offsetTop - 80, behavior: 'smooth' });
-      card.classList.remove('highlight-pulse');
-      void card.offsetWidth;
-      card.classList.add('highlight-pulse');
-      card.addEventListener('animationend', () => card.classList.remove('highlight-pulse'), { once: true });
-    });
+    closeDayPanel();
+    setTimeout(() => {
+      switchSection('info');
+      switchInfoTab(1);
+      const card = document.getElementById(docId);
+      if (!card) return;
+      requestAnimationFrame(() => {
+        const sec = document.getElementById('sec-info');
+        sec.scrollTo({ top: card.offsetTop - 80, behavior: 'smooth' });
+        card.classList.remove('highlight-pulse');
+        void card.offsetWidth;
+        card.classList.add('highlight-pulse');
+        card.addEventListener('animationend', () => card.classList.remove('highlight-pulse'), { once: true });
+      });
+    }, 220);
   }
 
   function goToTrain(trainId) {
@@ -5796,6 +6084,10 @@
 
     // Populate body
     const body = document.getElementById('detail-body');
+    if (id === 'day23' && !_surpriseUnlocked) {
+      showSurpriseGate();
+      // skip pill injection — gate screen handles its own layout
+    } else {
     body.innerHTML = document.getElementById(`tpl-${id}`).innerHTML;
 
     // Pills injected via prepend — last injected ends up topmost.
@@ -5844,6 +6136,7 @@
       pill.onclick = () => goToTrain(trainInfo.id);
       body.prepend(pill);
     }
+    } // end else (non-gated body)
 
     // Compute origin offset from clicked cell to viewport center
     const cell = document.querySelector(`[data-day="${id}"]`);
@@ -5868,6 +6161,53 @@
     });
   }
 
+  function openLangCard(card) {
+    document.getElementById('lm-name').innerHTML = card.querySelector('.phrase-name').innerHTML;
+    document.getElementById('lm-pron').textContent = card.querySelector('.phrase-pronunciation').textContent;
+    document.getElementById('lm-when').innerHTML = card.querySelector('.phrase-when').innerHTML;
+    document.getElementById('lm-tip').innerHTML = card.querySelector('.phrase-tip').innerHTML;
+
+    const outer  = document.getElementById('lang-modal-outer');
+    const panel  = document.getElementById('lang-modal-panel');
+    const scroll = document.getElementById('lang-modal-scroll');
+    const r  = card.getBoundingClientRect();
+    const dx = (r.left + r.width  / 2) - window.innerWidth  / 2;
+    const dy = (r.top  + r.height / 2) - window.innerHeight / 2;
+    scroll.scrollTop = 0;
+    panel.classList.remove('fade-top', 'fade-bottom');
+    outer.style.display = 'flex';
+    panel.style.cssText = `transition:none; opacity:0; transform:translate(${dx}px,${dy}px) scale(0.15); pointer-events:none;`;
+    panel.getBoundingClientRect();
+    requestAnimationFrame(() => {
+      panel.style.cssText = 'transition: opacity 0.22s ease, transform 0.30s cubic-bezier(0.34,1.45,0.64,1); opacity:1; transform:translate(0,0) scale(1); pointer-events:auto;';
+      outer.classList.add('open');
+      syncLangFade();
+    });
+  }
+
+  function closeLangModal() {
+    const outer = document.getElementById('lang-modal-outer');
+    const panel = document.getElementById('lang-modal-panel');
+    panel.style.transition = 'opacity 0.14s ease, transform 0.18s ease';
+    panel.style.opacity = '0';
+    panel.style.transform = 'scale(0.88)';
+    panel.style.pointerEvents = 'none';
+    outer.classList.remove('open');
+    setTimeout(() => {
+      outer.style.display = 'none';
+      panel.style.cssText = '';
+      panel.classList.remove('fade-top', 'fade-bottom');
+    }, 180);
+  }
+
+  function syncLangFade() {
+    const scroll = document.getElementById('lang-modal-scroll');
+    const panel  = document.getElementById('lang-modal-panel');
+    const { scrollTop, scrollHeight, clientHeight } = scroll;
+    panel.classList.toggle('fade-top',    scrollTop > 1);
+    panel.classList.toggle('fade-bottom', scrollHeight - scrollTop - clientHeight > 2);
+  }
+
   function initLang() {
     document.querySelectorAll('.lang-filter').forEach(btn => {
       btn.addEventListener('click', function () {
@@ -5880,10 +6220,7 @@
       });
     });
     document.querySelectorAll('.phrase-card').forEach(card => {
-      card.addEventListener('click', function () {
-        card.classList.toggle('open');
-        card.querySelector('.phrase-tip').classList.toggle('visible');
-      });
+      card.addEventListener('click', () => openLangCard(card));
     });
   }
   initLang();
@@ -5903,6 +6240,30 @@
     if (t.getFullYear() !== 2026 || t.getMonth() !== 4) return;
     daySelector(t.getDate());
   })();
+</script>
+
+<!-- ── Language card modal ── -->
+<div class="lang-modal-outer" id="lang-modal-outer" style="display:none">
+  <div class="lang-modal-backdrop" onclick="closeLangModal()"></div>
+  <div class="lang-modal-panel" id="lang-modal-panel">
+    <div class="lang-modal-fade-top"></div>
+    <div class="lang-modal-fade-bottom"></div>
+    <div class="lang-modal-scroll" id="lang-modal-scroll">
+      <div class="lang-modal-close-row">
+        <button class="lang-modal-close" onclick="closeLangModal()">✕</button>
+      </div>
+      <div class="lang-modal-content">
+        <div class="lang-modal-name" id="lm-name"></div>
+        <div class="lang-modal-pron" id="lm-pron"></div>
+        <div class="lang-modal-when" id="lm-when"></div>
+        <div class="lang-modal-divider"></div>
+        <div class="lang-modal-tip" id="lm-tip"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  document.getElementById('lang-modal-scroll').addEventListener('scroll', syncLangFade, { passive: true });
 </script>
 
 <!-- ── Day detail overlay ── -->
